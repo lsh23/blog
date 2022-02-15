@@ -1,0 +1,36 @@
+spring:
+  profiles:
+    active: dev
+
+---
+spring:
+  config:
+    activate:
+      on-profile: dev
+
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:13307/blog?serverTimezone=Asia/Seoul
+    username: spring
+    password: spring
+
+  jpa:
+    hibernate:
+      ddl-auto: create
+    properties:
+      hibernate:
+        show_sql: true
+#        format_sql: true
+
+  logging:
+    level:
+      root: info
+---
+spring:
+  config:
+    activate:
+      on-profile: prod
+
+  logging:
+    level:
+      root: error
