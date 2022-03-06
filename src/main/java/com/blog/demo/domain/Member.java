@@ -9,8 +9,7 @@ import javax.persistence.*;
 @Getter @Setter
 public class Member {
     @Id @Column(name="MEMBER_ID")
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-
+    private String id;
     private String name;
+    private String password;
 }
