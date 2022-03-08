@@ -19,15 +19,16 @@ public class AuthApiController {
         Member findMember = memberService.findOne(createLoginRequest.getId());
 
         if (findMember.getPassword().equals(createLoginRequest.getPassword())){
-            return new CreateLoginResponse(findMember.getName(),200);
+            return new CreateLoginResponse(findMember.getId(), findMember.getName(),200);
         }
 
-        return new CreateLoginResponse(findMember.getName(),404);
+        return new CreateLoginResponse(findMember.getId(), findMember.getName(),404);
     }
 
     @Data
     @AllArgsConstructor
     static class CreateLoginResponse {
+        private String id;
         private String name;
         private int status;
     }
