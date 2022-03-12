@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 import java.util.List;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 @RestController
 @RequiredArgsConstructor
@@ -24,22 +25,27 @@ public class PostApiController {
     private final PostTagService postTagService;
 
     @GetMapping("/api/v1/posts")
-    public Result getPosts(@RequestParam(value = "id",required = false) String userId){
+    public Result getPosts(@RequestParam(value = "id",required = false) String userId,
+                           @RequestParam(value = "categoryId",required = false) Long categoryId){
         List<Post> posts = postService.findPosts();
 
-        if(userId == null){
-            List<PostDto> postDtos = posts.stream()
-                    .map(p -> new PostDto(p.getId(),p.getTitle(), p.getContent()))
-                    .collect(Collectors.toList());
-            return new Result(postDtos.size(), postDtos);
-        }else{
+        Stream<Post> postStream = posts.stream();
+
+        if(userId != null){
             Member findMember = memberService.findOne(userId);
-            List<PostDto> postDtos = posts.stream()
-                    .filter(p -> p.getMember() == findMember)
-                    .map(p -> new PostDto(p.getId(),p.getTitle(), p.getContent()))
-                    .collect(Collectors.toList());
-            return new Result(postDtos.size(), postDtos);
+            postStream = postStream.filter(p -> p.getMember() == findMember);
         }
+        if(categoryId != null){
+            Category findCategory = categoryService.findOne(categoryId);
+            postStream = postStream.filter(p -> p.getCategory() == findCategory);
+        }
+
+        List<PostDto> postDtos = postStream
+                .map(p -> new PostDto(p.getId(),p.getTitle(), p.getContent()))
+                .collect(Collectors.toList());
+
+        return new Result(postDtos.size(), postDtos);
+
     }
 
     @PostMapping("/api/v1/posts")
