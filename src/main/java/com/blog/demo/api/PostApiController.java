@@ -24,16 +24,16 @@ public class PostApiController {
     private final PostTagService postTagService;
 
     @GetMapping("/api/v1/posts")
-    public Result getPosts(@RequestParam(value = "id",required = false) String user_id){
+    public Result getPosts(@RequestParam(value = "id",required = false) String userId){
         List<Post> posts = postService.findPosts();
 
-        if(user_id == null){
+        if(userId == null){
             List<PostDto> postDtos = posts.stream()
                     .map(p -> new PostDto(p.getId(),p.getTitle(), p.getContent()))
                     .collect(Collectors.toList());
             return new Result(postDtos.size(), postDtos);
         }else{
-            Member findMember = memberService.findOne(user_id);
+            Member findMember = memberService.findOne(userId);
             List<PostDto> postDtos = posts.stream()
                     .filter(p -> p.getMember() == findMember)
                     .map(p -> new PostDto(p.getId(),p.getTitle(), p.getContent()))
