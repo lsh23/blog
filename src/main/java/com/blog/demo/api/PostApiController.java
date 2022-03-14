@@ -35,9 +35,10 @@ public class PostApiController {
             Member findMember = memberService.findOne(userId);
             postStream = postStream.filter(p -> p.getMember() == findMember);
         }
+
         if(categoryId != null){
             Category findCategory = categoryService.findOne(categoryId);
-            postStream = postStream.filter(p -> p.getCategory() == findCategory);
+            postStream = postStream.filter(p -> (p.getCategory() == findCategory || findCategory.getChild().contains(p.getCategory())));
         }
 
         List<PostDto> postDtos = postStream
