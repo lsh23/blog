@@ -49,6 +49,12 @@ public class PostApiController {
 
     }
 
+    @GetMapping("/api/v1/posts/{id}")
+    public PostDto getPost(@PathVariable("id") Long id){
+        Post findPost = postService.findOne(id);
+        return new PostDto(findPost.getId(), findPost.getTitle(), findPost.getContent());
+    }
+    
     @PostMapping("/api/v1/posts")
     public CreatePostResponse create(@RequestBody @Valid CreatePostRequest createPostRequest){
         Post post = new Post();
