@@ -11,6 +11,7 @@ public class Post {
     @Id @Column(name="POST_ID")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    private String title;
     private String content;
 
     @ManyToOne
