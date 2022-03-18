@@ -1,9 +1,6 @@
 package com.blog.demo.api;
 
-import com.blog.demo.domain.Category;
-import com.blog.demo.domain.Member;
-import com.blog.demo.domain.Post;
-import com.blog.demo.domain.PostTag;
+import com.blog.demo.domain.*;
 import com.blog.demo.service.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -11,6 +8,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -20,9 +18,10 @@ import java.util.stream.Stream;
 public class PostApiController {
 
     private final PostService postService;
+    private final PostTagService postTagService;
     private final MemberService memberService;
     private final CategoryService categoryService;
-    private final PostTagService postTagService;
+    private final TagService tagService;
 
     @GetMapping("/api/v1/posts")
     public Result getPosts(@RequestParam(value = "id",required = false) String userId,
@@ -67,12 +66,19 @@ public class PostApiController {
         Category findCategory = categoryService.findOne(createPostRequest.getCategoryId());
         post.setCategory(findCategory);
 
-        if (createPostRequest.getPostTagId() != null) {
-            PostTag findPostTag = postTagService.findOne(createPostRequest.getPostTagId());
-            post.setPostTag(findPostTag);
-        }
-
         postService.join(post);
+
+        if (createPostRequest.getTagIds() != null) {
+            List<Long> tagIds = createPostRequest.getTagIds();
+            for (Long tagId: tagIds) {
+                Tag findTag = tagService.findOne(tagId);
+                PostTag postTag = new PostTag();
+                postTag.setPost(post);
+                postTag.setTag(findTag);
+                postTagService.join(postTag);
+            }
+
+        }
         return new CreatePostResponse(post.getId(), post.getTitle());
     }
 
@@ -104,6 +110,6 @@ public class PostApiController {
         private String title;
         private String contents;
         private Long categoryId;
-        private Long postTagId;
+        private List<Long> tagIds = new ArrayList<>();
     }
 }
