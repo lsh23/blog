@@ -12,17 +12,18 @@ import java.util.List;
 @Transactional
 public class PostTagService {
     @Autowired
-    private PostTagRepository PostTagRepository;
+    private PostTagRepository postTagRepository;
 
     public Long join(PostTag postTag){
-        PostTagRepository.save(postTag);
+        postTagRepository.save(postTag);
         return postTag.getId();
     }
 
     public PostTag findOne(long id) {
-        return PostTagRepository.findOne(id);
+        return postTagRepository.findOne(id);
     }
-    public List<PostTag> findCategories() {
-        return PostTagRepository.findAll();
+    public List<PostTag> findPostTags() {
+        return postTagRepository.findAll();
     }
+
 }
