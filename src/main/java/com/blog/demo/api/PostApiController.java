@@ -8,6 +8,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -41,7 +42,7 @@ public class PostApiController {
         }
 
         List<PostDto> postDtos = postStream
-                .map(p -> new PostDto(p.getId(),p.getTitle(), p.getContent()))
+                .map(p -> new PostDto(p.getId(),p.getTitle(), p.getContent(), p.getCreatedAt(), p.getUpdatedAt()))
                 .collect(Collectors.toList());
 
         return new Result(postDtos.size(), postDtos);
@@ -51,7 +52,7 @@ public class PostApiController {
     @GetMapping("/api/v1/posts/{id}")
     public PostDto getPost(@PathVariable("id") Long id){
         Post findPost = postService.findOne(id);
-        return new PostDto(findPost.getId(), findPost.getTitle(), findPost.getContent());
+        return new PostDto(findPost.getId(), findPost.getTitle(), findPost.getContent(),findPost.getCreatedAt(), findPost.getUpdatedAt());
     }
     
     @PostMapping("/api/v1/posts")
@@ -95,6 +96,8 @@ public class PostApiController {
         private Long id;
         private String title;
         private String content;
+        private LocalDateTime createdAt;
+        private LocalDateTime modifiedAt;
     }
 
     @Data

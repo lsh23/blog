@@ -9,7 +9,7 @@ import java.util.List;
 
 @Entity
 @Getter @Setter
-public class Post {
+public class Post extends BaseTimeEntity {
     @Id @Column(name="POST_ID")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
