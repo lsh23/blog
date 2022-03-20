@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import javax.validation.constraints.NotEmpty;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -80,11 +81,13 @@ public class CommentApiController {
     @AllArgsConstructor
     static class CommentDto{
 
-        public CommentDto(Long id, String text, String memberId, Long parentId) {
+        public CommentDto(Long id, String text, String memberId, Long parentId, LocalDateTime createdAt, LocalDateTime updatedAt) {
             this.id = id;
             this.text = text;
             this.memberId = memberId;
             this.parentId = parentId;
+            this.createdAt = createdAt;
+            this.updatedAt = updatedAt;
         }
 
         public CommentDto(Comment comment) {
@@ -92,8 +95,10 @@ public class CommentApiController {
             this.text = comment.getText();
             this.memberId = comment.getMember().getId();
             this.child = comment.getChild().stream()
-                    .map(c -> new CommentDto(c.getId(), c.getText(), c.getMember().getId(), c.getParent().getId()))
+                    .map(c -> new CommentDto(c.getId(), c.getText(), c.getMember().getId(), c.getParent().getId(), c.getCreatedAt(), c.getUpdatedAt()))
                     .collect(Collectors.toList());
+            this.createdAt = comment.getCreatedAt();
+            this.updatedAt = comment.getUpdatedAt();
         }
 
         private Long id;
@@ -101,6 +106,8 @@ public class CommentApiController {
         private String memberId;
         private Long parentId;
         private List<CommentDto> child;
+        private LocalDateTime createdAt;
+        private LocalDateTime updatedAt;
     }
 
     @Data

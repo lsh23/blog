@@ -9,7 +9,7 @@ import java.util.List;
 
 @Entity
 @Getter @Setter
-public class Comment {
+public class Comment extends BaseTimeEntity {
     @Id @Column(name="COMMENT_ID")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
