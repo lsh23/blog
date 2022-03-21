@@ -3,6 +3,7 @@ package com.blog.demo.api;
 
 import com.blog.demo.domain.Category;
 import com.blog.demo.domain.Member;
+import com.blog.demo.domain.Post;
 import com.blog.demo.service.CategoryService;
 import com.blog.demo.service.MemberService;
 import lombok.AllArgsConstructor;
@@ -67,6 +68,29 @@ public class CategoryApiController {
         return new CreateCategoryResponse(category.getId(),category.getName());
     }
 
+    @PatchMapping("/api/v1/categories/{id}")
+    public UpdateCategoryResponse create(@RequestBody @Valid UpdateCategoryRequest updateCategoryRequest, @PathVariable("id") Long id){
+        Category category = categoryService.findOne(id);
+
+        Member findMember = memberService.findOne(updateCategoryRequest.getUser_id());
+        category.setMember(findMember);
+
+        if(updateCategoryRequest.getParent_id() != null){
+            Category findCategory = categoryService.findOne(updateCategoryRequest.getParent_id());
+            category.setParent(findCategory);
+        }
+
+        category.setName(updateCategoryRequest.getName());
+        return new UpdateCategoryResponse(category.getId(),category.getName());
+    }
+
+    @DeleteMapping("/api/v1/categories/{id}")
+    public DeleteCategoryResponse updatePost(@PathVariable("id") Long id){
+        Category category = categoryService.findOne(id);
+        categoryService.deleteOne(id);
+        return new DeleteCategoryResponse(category.getId(), category.getName());
+    }
+
     @Data
     static class CreateCategoryRequest {
         @NotEmpty
@@ -112,5 +136,27 @@ public class CategoryApiController {
         private List<CategoryDto> child;
     }
 
+    @Data
+    @AllArgsConstructor
+    static class UpdateCategoryResponse {
+        private Long id;
+        private String name;
+    }
 
+    @Data
+    @AllArgsConstructor
+    static class UpdateCategoryRequest {
+        @NotEmpty
+        private String user_id;
+        private Long parent_id;
+        @NotEmpty
+        private String name;
+    }
+
+    @Data
+    @AllArgsConstructor
+    static class DeleteCategoryResponse {
+        private Long id;
+        private String name;
+    }
 }

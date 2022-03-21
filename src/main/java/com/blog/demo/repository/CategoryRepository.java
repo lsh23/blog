@@ -25,4 +25,8 @@ public class CategoryRepository {
         return em.find(Category.class, id);
     }
 
+    public void deleteOne(Long id) {
+        Category deletedOne = findOne(id);
+        em.remove(deletedOne);
+    }
 }
