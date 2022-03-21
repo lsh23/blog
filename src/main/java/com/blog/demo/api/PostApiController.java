@@ -83,6 +83,46 @@ public class PostApiController {
         return new CreatePostResponse(post.getId(), post.getTitle());
     }
 
+    @PatchMapping("/api/v1/posts/{id}")
+    public UpdatePostResponse updatePost(@RequestBody @Valid UpdatePostRequest updatePostRequest, @PathVariable("id") Long id){
+        Post post = postService.findOne(id);
+
+        post.setTitle(updatePostRequest.getTitle());
+        post.setContent(updatePostRequest.getContents());
+
+        Member findMember = memberService.findOne(updatePostRequest.getUserId());
+        post.setMember(findMember);
+
+        Category findCategory = categoryService.findOne(updatePostRequest.getCategoryId());
+        post.setCategory(findCategory);
+
+        if (updatePostRequest.getTagIds() != null) {
+
+            List<PostTag> postTagsByPostId = postTagService.findPostTagsByPostId(id);
+            for (PostTag postTag: postTagsByPostId) {
+                postTagService.deleteOne(postTag.getId());
+            }
+
+            List<Long> tagIds = updatePostRequest.getTagIds();
+            for (Long tagId: tagIds) {
+                Tag findTag = tagService.findOne(tagId);
+                PostTag postTag = new PostTag();
+                postTag.setTag(findTag);
+                postTag.setPost(post);
+                postTagService.join(postTag);
+            }
+        }
+
+        return new UpdatePostResponse(post.getId(), post.getTitle());
+    }
+
+    @DeleteMapping("/api/v1/posts/{id}")
+    public DeletePostResponse updatePost(@PathVariable("id") Long id){
+        Post post = postService.findOne(id);
+        postService.deleteOne(id);
+        return new DeletePostResponse(post.getId(), post.getTitle());
+    }
+
     @Data
     @AllArgsConstructor
     static class Result<T> {
@@ -114,5 +154,28 @@ public class PostApiController {
         private String contents;
         private Long categoryId;
         private List<Long> tagIds = new ArrayList<>();
+    }
+
+    @Data
+    @AllArgsConstructor
+    static class UpdatePostResponse {
+        private Long id;
+        private String title;
+    }
+
+    @Data
+    static class UpdatePostRequest {
+        private String userId;
+        private String title;
+        private String contents;
+        private Long categoryId;
+        private List<Long> tagIds = new ArrayList<>();
+    }
+
+    @Data
+    @AllArgsConstructor
+    static class DeletePostResponse {
+        private Long id;
+        private String title;
     }
 }

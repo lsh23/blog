@@ -1,5 +1,6 @@
 package com.blog.demo.repository;
 
+import com.blog.demo.domain.Post;
 import com.blog.demo.domain.PostTag;
 import org.springframework.stereotype.Repository;
 
@@ -23,5 +24,16 @@ public class PostTagRepository {
 
     public PostTag findOne(Long id){
         return em.find(PostTag.class, id);
+    }
+
+    public List<PostTag> findPostTagsByPostId(Long postId) {
+        return em.createQuery("select pt from PostTag pt where pt.post.id =: postId", PostTag.class)
+                .setParameter("postId", postId)
+                .getResultList();
+    }
+
+    public void deleteOne(Long id) {
+        PostTag removedOne = findOne(id);
+        em.remove(removedOne);
     }
 }

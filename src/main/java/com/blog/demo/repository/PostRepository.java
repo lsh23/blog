@@ -24,4 +24,9 @@ public class PostRepository {
     public Post findOne(Long id){
         return em.find(Post.class, id);
     }
+
+    public void deleteOne(Long id) {
+        Post removedOne = findOne(id);
+        em.remove(removedOne);
+    }
 }
