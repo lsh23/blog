@@ -19,7 +19,7 @@ public class Tag {
     @JoinColumn(name="MEMBER_ID")
     private Member member;
 
-    @OneToMany(mappedBy = "tag")
+    @OneToMany(mappedBy = "tag", cascade = CascadeType.ALL)
     private List<PostTag> postTags = new ArrayList<>();
 
 }
