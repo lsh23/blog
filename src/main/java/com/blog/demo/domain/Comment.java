@@ -27,7 +27,7 @@ public class Comment extends BaseTimeEntity {
     @JoinColumn(name="PARENT_ID")
     private Comment parent;
 
-    @OneToMany(mappedBy = "parent")
+    @OneToMany(mappedBy = "parent", cascade = CascadeType.ALL)
     private List<Comment> child = new ArrayList<>();
 
 }
