@@ -19,11 +19,13 @@ public class PostTagService {
         return postTag.getId();
     }
 
-    public PostTag findOne(long id) {
+    public PostTag findOne(Long id) {
         return postTagRepository.findOne(id);
     }
+    public List<PostTag> findPostTagsByPostId(Long postId){ return postTagRepository.findPostTagsByPostId(postId); }
     public List<PostTag> findPostTags() {
         return postTagRepository.findAll();
     }
+    public void deleteOne(long id) { postTagRepository.deleteOne(id); }
 
 }
