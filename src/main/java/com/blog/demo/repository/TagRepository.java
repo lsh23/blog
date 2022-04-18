@@ -25,8 +25,8 @@ public class TagRepository {
         return em.find(Tag.class, id);
     }
 
-    public List<Tag> findByPostId(Long postId) {
-        return em.createQuery("select t from Tag t where PostTag.id =", Tag.class)
-                .getResultList();
+    public void deleteOne(Long id) {
+        Tag deletedOne = findOne(id);
+        em.remove(deletedOne);
     }
 }
