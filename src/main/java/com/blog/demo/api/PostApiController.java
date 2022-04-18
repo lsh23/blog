@@ -52,7 +52,7 @@ public class PostApiController {
     @GetMapping("/api/v1/posts/{id}")
     public PostDto getPost(@PathVariable("id") Long id){
         Post findPost = postService.findOne(id);
-        return new PostDto(findPost.getId(), findPost.getTitle(), findPost.getContent(),findPost.getCreatedAt(), findPost.getUpdatedAt());
+        return new PostDto(findPost.getId(), findPost.getTitle(), findPost.getContent(),findPost.getCreatedAt(), findPost.getUpdatedAt(), findPost.getPostTags());
     }
     
     @PostMapping("/api/v1/posts")
@@ -131,13 +131,43 @@ public class PostApiController {
     }
 
     @Data
-    @AllArgsConstructor
     static class PostDto{
         private Long id;
         private String title;
         private String content;
         private LocalDateTime createdAt;
         private LocalDateTime modifiedAt;
+        private List<PostTagDto> postTags;
+
+        public PostDto(Long id, String title, String content, LocalDateTime createdAt, LocalDateTime modifiedAt) {
+            this.id = id;
+            this.title = title;
+            this.content = content;
+            this.createdAt = createdAt;
+            this.modifiedAt = modifiedAt;
+        }
+
+        public PostDto(Long id, String title, String content, LocalDateTime createdAt, LocalDateTime modifiedAt, List<PostTag> postTags) {
+            this.id = id;
+            this.title = title;
+            this.content = content;
+            this.createdAt = createdAt;
+            this.modifiedAt = modifiedAt;
+            this.postTags = postTags.stream().map(pt->new PostTagDto(pt)).collect(Collectors.toList());
+        }
+    }
+
+    @Data
+    static class PostTagDto{
+
+        private Long id;
+        private String name;
+
+        public PostTagDto(PostTag postTag){
+            this.id = postTag.getId();
+            this.name = postTag.getTag().getName();
+        }
+
     }
 
     @Data
