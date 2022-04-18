@@ -23,38 +23,30 @@ public class CategoryApiController {
     private final MemberService memberService;
 
     @GetMapping("/api/v1/categories")
-    public Result getCategories(@RequestParam("id") String id){
-        List<Category> categories = categoryService.findCategories();
+    public Result getCategory(@RequestParam(required = false, value = "id") String memberId){
 
-        if(id == null){
+        if (memberId == null){
+            List<Category> categories = categoryService.findAllRootCategories();
             List<CategoryDto> categoryDtos = categories.stream()
-                    .filter(c -> c.getParent() == null)
                     .map(c -> new CategoryDto(c))
                     .collect(Collectors.toList());
             return new Result(categoryDtos.size(), categoryDtos);
         }
 
-        else{
-            Member findMember = memberService.findOne(id);
-            List<CategoryDto> categoryDtos = categories.stream()
-                    .filter(c -> c.getMember() == findMember)
-                    .filter(c -> c.getParent() == null)
-                    .map(c -> new CategoryDto(c))
-                    .collect(Collectors.toList());
-            return new Result(categoryDtos.size(), categoryDtos);
-        }
-
+        List<Category> categories = categoryService.findCategoriesWithMember(memberId);
+        List<CategoryDto> categoryDtos = categories.stream()
+                .filter(c -> c.getParent() == null)
+                .map(c -> new CategoryDto(c))
+                .collect(Collectors.toList());
+        return new Result(categoryDtos.size(), categoryDtos);
     }
-
 
     @PostMapping("/api/v1/categories")
     public CreateCategoryResponse create(@RequestBody @Valid CreateCategoryRequest createCategoryRequest){
         Category category = new Category();
 
-
         Member findMember = memberService.findOne(createCategoryRequest.getUser_id());
         category.setMember(findMember);
-
 
         if(createCategoryRequest.getParent_id() != null){
             Category findCategory = categoryService.findOne(createCategoryRequest.getParent_id());

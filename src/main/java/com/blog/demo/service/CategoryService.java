@@ -23,10 +23,12 @@ public class CategoryService {
     public Category findOne(long id) {
         return categoryRepository.findOne(id);
     }
-    public List<Category> findCategories() {
+    public List<Category> findAll() {
         return categoryRepository.findAll();
     }
+    public List<Category> findAllRootCategories() {return categoryRepository.findAllRootCategories();}
 
+    public List<Category> findCategoriesWithMember(String MemberId){ return categoryRepository.findCategoriesWithMember(MemberId);}
 
     public void deleteOne(Long id) { categoryRepository.deleteOne(id);}
 }
