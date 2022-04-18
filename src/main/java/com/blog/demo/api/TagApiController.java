@@ -5,6 +5,7 @@ import com.blog.demo.domain.PostTag;
 import com.blog.demo.domain.Tag;
 import com.blog.demo.service.MemberService;
 import com.blog.demo.service.PostService;
+import com.blog.demo.service.PostTagService;
 import com.blog.demo.service.TagService;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -19,8 +20,7 @@ import java.util.stream.Stream;
 @RestController
 @RequiredArgsConstructor
 public class TagApiController {
-    private final TagService TagService;
-    private final PostService postService;
+    private final TagService tagService;
     private final MemberService memberService;
 
     @GetMapping("/api/v1/tags")
@@ -28,7 +28,7 @@ public class TagApiController {
             @RequestParam(value = "memberId", required = false) Long memberId,
             @RequestParam(value = "postId", required = false) Long postId){
 
-        Stream<Tag> tagStream = TagService.findTags().stream();
+        Stream<Tag> tagStream = tagService.findTags().stream();
 
         if (memberId != null){
             tagStream = tagStream.filter(t -> t.getMember().getId().equals(memberId));
@@ -53,10 +53,27 @@ public class TagApiController {
         Member findMember = memberService.findOne(memberId);
         tag.setName(name);
         tag.setMember(findMember);
-        TagService.join(tag);
+        tagService.join(tag);
         return new CreateTagResponse(tag.getId(), tag.getName());
     }
 
+    @PatchMapping("/api/v1/tags/{id}")
+    public UpdateTagResponse updateTag(@RequestBody @Valid UpdateTagRequest updateTagRequest, @PathVariable("id") Long id){
+        Tag tag = tagService.findOne(id);
+        String name = updateTagRequest.getName();
+        String memberId = updateTagRequest.getMemberId();
+        Member findMember = memberService.findOne(memberId);
+        tag.setName(name);
+        tag.setMember(findMember);
+        return new UpdateTagResponse(tag.getId(), tag.getName());
+    }
+
+    @DeleteMapping("/api/v1/tags/{id}")
+    public DeleteTagResponse deleteTag(@PathVariable("id") Long id){
+        Tag tag = tagService.findOne(id);
+        tagService.deleteOne(id);
+        return new DeleteTagResponse(tag.getId(), tag.getName());
+    }
 
     @Data
     @AllArgsConstructor
@@ -86,5 +103,25 @@ public class TagApiController {
         String name;
     }
 
+    @Data
+    @AllArgsConstructor
+    static class UpdateTagResponse {
+        private Long id;
+        private String name;
+    }
+
+    @Data
+    @AllArgsConstructor
+    static class UpdateTagRequest {
+        String memberId;
+        String name;
+    }
+
+    @Data
+    @AllArgsConstructor
+    static class DeleteTagResponse {
+        private Long id;
+        private String name;
+    }
 }
 
