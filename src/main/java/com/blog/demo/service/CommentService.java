@@ -23,8 +23,11 @@ public class CommentService {
     public Comment findOne(long id) {
         return commentRepository.findOne(id);
     }
-    public List<Comment> findComments() {
+    public List<Comment> findAll() {
         return commentRepository.findAll();
     }
 
+    public List<Comment> findAllByPostId(Long postId) {
+        return commentRepository.findAllByPostId(postId);
+    }
 }
