@@ -20,13 +20,17 @@ public class CommentService {
         return comment.getId();
     }
 
+    @Transactional(readOnly = true)
     public Comment findOne(long id) {
         return commentRepository.findOne(id);
     }
+
+    @Transactional(readOnly = true)
     public List<Comment> findAll() {
         return commentRepository.findAll();
     }
 
+    @Transactional(readOnly = true)
     public List<Comment> findAllByPostId(Long postId) {
         return commentRepository.findAllByPostId(postId);
     }
