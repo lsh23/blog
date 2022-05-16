@@ -32,13 +32,11 @@ public class PostApiController {
         Stream<Post> postStream = posts.stream();
 
         if(userId != null){
-            Member findMember = memberService.findOne(userId);
-            postStream = postStream.filter(p -> p.getMember() == findMember);
+            postStream = postStream.filter(p -> p.getMember().getId().equals(userId));
         }
 
         if(categoryId != null){
-            Category findCategory = categoryService.findOne(categoryId);
-            postStream = postStream.filter(p -> (p.getCategory() == findCategory || findCategory.getChild().contains(p.getCategory())));
+            postStream = postStream.filter(p -> (p.getCategory().getId() == categoryId || p.getCategory().getParent().getId() == categoryId));
         }
 
         List<PostDto> postDtos = postStream
