@@ -22,7 +22,7 @@ public class CategoryRepository {
     }
 
     public List<Category> findAllRootCategories(){
-        return em.createQuery("select c from Category c join fetch c.child where c.parent Is null", Category.class)
+        return em.createQuery("select c from Category c where c.parent is null ", Category.class)
                 .getResultList();
     }
 
@@ -39,7 +39,6 @@ public class CategoryRepository {
         return em.createQuery(
                 "select c from Category c" +
                             " join fetch c.member m "+
-                            " join fetch c.child " +
                             " where m.id =:memberId", Category.class)
                 .setParameter("memberId",memberId)
                 .getResultList();
