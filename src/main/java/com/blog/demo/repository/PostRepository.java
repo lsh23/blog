@@ -17,7 +17,7 @@ public class PostRepository {
     }
 
     public List<Post> findAll(){
-        return em.createQuery("select p from Post p", Post.class)
+        return em.createQuery("select p from Post p join fetch p.member join fetch p.category", Post.class)
                 .getResultList();
     }
 

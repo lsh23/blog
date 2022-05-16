@@ -16,11 +16,11 @@ public class Post extends BaseTimeEntity {
     private String title;
     private String content;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name="MEMBER_ID")
     private Member member;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name="CATEGORY_ID")
     private Category category;
 
