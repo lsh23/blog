@@ -21,6 +21,11 @@ public class CategoryRepository {
                 .getResultList();
     }
 
+    public List<Category> findAllRootCategories(){
+        return em.createQuery("select c from Category c where c.parent is null ", Category.class)
+                .getResultList();
+    }
+
     public Category findOne(Long id){
         return em.find(Category.class, id);
     }
@@ -28,5 +33,14 @@ public class CategoryRepository {
     public void deleteOne(Long id) {
         Category deletedOne = findOne(id);
         em.remove(deletedOne);
+    }
+
+    public List<Category> findCategoriesWithMember(String memberId) {
+        return em.createQuery(
+                "select c from Category c" +
+                            " join fetch c.member m "+
+                            " where m.id =:memberId", Category.class)
+                .setParameter("memberId",memberId)
+                .getResultList();
     }
 }

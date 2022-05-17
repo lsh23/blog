@@ -20,13 +20,21 @@ public class CategoryService {
         return category.getId();
     }
 
+    @Transactional(readOnly = true)
     public Category findOne(long id) {
         return categoryRepository.findOne(id);
     }
-    public List<Category> findCategories() {
+
+    @Transactional(readOnly = true)
+    public List<Category> findAll() {
         return categoryRepository.findAll();
     }
 
+    @Transactional(readOnly = true)
+    public List<Category> findAllRootCategories() {return categoryRepository.findAllRootCategories(); }
+
+    @Transactional(readOnly = true)
+    public List<Category> findCategoriesWithMember(String MemberId){ return categoryRepository.findCategoriesWithMember(MemberId);}
 
     public void deleteOne(Long id) { categoryRepository.deleteOne(id);}
 }

@@ -27,19 +27,18 @@ public class CommentApiController {
 
     @GetMapping("/api/v1/comments")
     public Result getComments(@RequestParam(value="postId", required = false) Long postId){
-        List<Comment> comments = commentService.findComments();
 
-        Stream<Comment> commentStream = comments.stream();
-
+        List<Comment> comments;
         if (postId != null){
-            commentStream = commentStream.filter(c -> c.getPost().getId() == postId);
+            comments = commentService.findAllByPostId(postId);
         }
-
-        commentStream = commentStream.filter(c -> c.getParent() == null );
-
+        else{
+            comments = commentService.findAll();
+        }
+        Stream<Comment> commentStream = comments.stream().filter(c -> c.getParent() == null);
         List<CommentDto> commentDtos = commentStream.map(c -> new CommentDto(c)).collect(Collectors.toList());
-
         Integer totalCommentCount = commentDtos.stream().map(c -> c.getChild().size()).reduce(commentDtos.size(), Integer::sum);
+
         return new Result(totalCommentCount, commentDtos);
     }
 
