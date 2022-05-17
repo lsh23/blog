@@ -19,8 +19,10 @@ spring:
       ddl-auto: none
     properties:
       hibernate:
-        show_sql: true
-  #        format_sql: true
+        show_sql: false
+        default_batch_fetch_size: 100
+        format_sql: true
+    open-in-view: true
 
   logging:
     level:
