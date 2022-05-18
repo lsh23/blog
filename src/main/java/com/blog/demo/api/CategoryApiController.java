@@ -18,11 +18,12 @@ import java.util.stream.Collectors;
 
 @RestController
 @RequiredArgsConstructor
+@RequestMapping("api/v1/categories")
 public class CategoryApiController {
     private final CategoryService categoryService;
     private final MemberService memberService;
 
-    @GetMapping("/api/v1/categories")
+    @GetMapping
     public Result getCategory(@RequestParam(required = false, value = "id") String memberId){
 
         if (memberId == null){
@@ -41,8 +42,8 @@ public class CategoryApiController {
         return new Result(categoryDtos.size(), categoryDtos);
     }
 
-    @PostMapping("/api/v1/categories")
-    public CreateCategoryResponse create(@RequestBody @Valid CreateCategoryRequest createCategoryRequest){
+    @PostMapping
+    public CreateCategoryResponse createCategory(@RequestBody @Valid CreateCategoryRequest createCategoryRequest){
         Category category = new Category();
 
         Member findMember = memberService.findOne(createCategoryRequest.getUser_id());
@@ -60,8 +61,8 @@ public class CategoryApiController {
         return new CreateCategoryResponse(category.getId(),category.getName());
     }
 
-    @PatchMapping("/api/v1/categories/{id}")
-    public UpdateCategoryResponse create(@RequestBody @Valid UpdateCategoryRequest updateCategoryRequest, @PathVariable("id") Long id){
+    @PatchMapping("/{id}")
+    public UpdateCategoryResponse updateCategory(@RequestBody @Valid UpdateCategoryRequest updateCategoryRequest, @PathVariable("id") Long id){
         Category category = categoryService.findOne(id);
 
         Member findMember = memberService.findOne(updateCategoryRequest.getUser_id());
@@ -76,8 +77,8 @@ public class CategoryApiController {
         return new UpdateCategoryResponse(category.getId(),category.getName());
     }
 
-    @DeleteMapping("/api/v1/categories/{id}")
-    public DeleteCategoryResponse updatePost(@PathVariable("id") Long id){
+    @DeleteMapping("/{id}")
+    public DeleteCategoryResponse deleteCategory(@PathVariable("id") Long id){
         Category category = categoryService.findOne(id);
         categoryService.deleteOne(id);
         return new DeleteCategoryResponse(category.getId(), category.getName());

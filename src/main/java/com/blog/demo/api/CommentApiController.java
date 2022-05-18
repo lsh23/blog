@@ -20,12 +20,13 @@ import java.util.stream.Stream;
 
 @RestController
 @RequiredArgsConstructor
+@RequestMapping("/api/v1/comments")
 public class CommentApiController {
     private final CommentService commentService;
     private final PostService postService;
     private final MemberService memberService;
 
-    @GetMapping("/api/v1/comments")
+    @GetMapping
     public Result getComments(@RequestParam(value="postId", required = false) Long postId){
 
         List<Comment> comments;
@@ -42,7 +43,7 @@ public class CommentApiController {
         return new Result(totalCommentCount, commentDtos);
     }
 
-    @PostMapping("/api/v1/comments")
+    @PostMapping
     public CreateCommentResponse createComment(@RequestBody @Valid CreateCommentRequest createCommentRequest){
         Comment comment = new Comment();
 

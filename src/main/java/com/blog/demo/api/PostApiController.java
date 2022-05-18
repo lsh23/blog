@@ -16,6 +16,7 @@ import java.util.stream.Stream;
 
 @RestController
 @RequiredArgsConstructor
+@RequestMapping("/api/v1/posts")
 public class PostApiController {
 
     private final PostService postService;
@@ -24,7 +25,7 @@ public class PostApiController {
     private final CategoryService categoryService;
     private final TagService tagService;
 
-    @GetMapping("/api/v1/posts")
+    @GetMapping
     public Result getPosts(@RequestParam(value = "id",required = false) String userId,
                            @RequestParam(value = "categoryId",required = false) Long categoryId){
         List<Post> posts = postService.findPosts();
@@ -47,14 +48,14 @@ public class PostApiController {
 
     }
 
-    @GetMapping("/api/v1/posts/{id}")
+    @GetMapping("/{id}")
     public PostDto getPost(@PathVariable("id") Long id){
         Post findPost = postService.findOne(id);
         return new PostDto(findPost.getId(), findPost.getTitle(), findPost.getContent(),findPost.getCreatedAt(), findPost.getUpdatedAt(), findPost.getPostTags());
     }
     
-    @PostMapping("/api/v1/posts")
-    public CreatePostResponse create(@RequestBody @Valid CreatePostRequest createPostRequest){
+    @PostMapping
+    public CreatePostResponse createPost(@RequestBody @Valid CreatePostRequest createPostRequest){
         Post post = new Post();
         post.setTitle(createPostRequest.getTitle());
         post.setContent(createPostRequest.getContents());
@@ -81,7 +82,7 @@ public class PostApiController {
         return new CreatePostResponse(post.getId(), post.getTitle());
     }
 
-    @PatchMapping("/api/v1/posts/{id}")
+    @PatchMapping("/{id}")
     public UpdatePostResponse updatePost(@RequestBody @Valid UpdatePostRequest updatePostRequest, @PathVariable("id") Long id){
         Post post = postService.findOne(id);
 
@@ -114,8 +115,8 @@ public class PostApiController {
         return new UpdatePostResponse(post.getId(), post.getTitle());
     }
 
-    @DeleteMapping("/api/v1/posts/{id}")
-    public DeletePostResponse updatePost(@PathVariable("id") Long id){
+    @DeleteMapping("/{id}")
+    public DeletePostResponse deletePost(@PathVariable("id") Long id){
         Post post = postService.findOne(id);
         postService.deleteOne(id);
         return new DeletePostResponse(post.getId(), post.getTitle());

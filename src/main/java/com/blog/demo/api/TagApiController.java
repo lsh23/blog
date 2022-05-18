@@ -19,11 +19,12 @@ import java.util.stream.Stream;
 
 @RestController
 @RequiredArgsConstructor
+@RequestMapping("/api/v1/tags")
 public class TagApiController {
     private final TagService tagService;
     private final MemberService memberService;
 
-    @GetMapping("/api/v1/tags")
+    @GetMapping
     public Result getPostags(
             @RequestParam(value = "memberId", required = false) Long memberId,
             @RequestParam(value = "postId", required = false) Long postId){
@@ -45,7 +46,7 @@ public class TagApiController {
         return new Result(tagDtos.size(), tagDtos);
     }
 
-    @PostMapping("/api/v1/tags")
+    @PostMapping
     public CreateTagResponse createTag(@RequestBody @Valid CreateTagRequest createTagRequest){
         Tag tag = new Tag();
         String name = createTagRequest.getName();
@@ -57,7 +58,7 @@ public class TagApiController {
         return new CreateTagResponse(tag.getId(), tag.getName());
     }
 
-    @PatchMapping("/api/v1/tags/{id}")
+    @PatchMapping("/{id}")
     public UpdateTagResponse updateTag(@RequestBody @Valid UpdateTagRequest updateTagRequest, @PathVariable("id") Long id){
         Tag tag = tagService.findOne(id);
         String name = updateTagRequest.getName();
@@ -68,7 +69,7 @@ public class TagApiController {
         return new UpdateTagResponse(tag.getId(), tag.getName());
     }
 
-    @DeleteMapping("/api/v1/tags/{id}")
+    @DeleteMapping("/{id}")
     public DeleteTagResponse deleteTag(@PathVariable("id") Long id){
         Tag tag = tagService.findOne(id);
         tagService.deleteOne(id);
