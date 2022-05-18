@@ -1,6 +1,7 @@
 package com.blog.demo.api;
 
 import com.blog.demo.domain.*;
+import com.blog.demo.repository.PostSearch;
 import com.blog.demo.service.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -28,17 +29,13 @@ public class PostApiController {
     @GetMapping
     public Result getPosts(@RequestParam(value = "id",required = false) String userId,
                            @RequestParam(value = "categoryId",required = false) Long categoryId){
-        List<Post> posts = postService.findPosts();
+
+        PostSearch postSearch = new PostSearch();
+        postSearch.setMemberId(userId);
+        postSearch.setCategoryId(categoryId);
+        List<Post> posts = postService.findPosts(postSearch);
 
         Stream<Post> postStream = posts.stream();
-
-        if(userId != null){
-            postStream = postStream.filter(p -> p.getMember().getId().equals(userId));
-        }
-
-        if(categoryId != null){
-            postStream = postStream.filter(p -> (p.getCategory().getId() == categoryId || p.getCategory().getParent().getId() == categoryId));
-        }
 
         List<PostDto> postDtos = postStream
                 .map(p -> new PostDto(p.getId(),p.getTitle(), p.getContent(), p.getCreatedAt(), p.getUpdatedAt()))
