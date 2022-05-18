@@ -1,11 +1,8 @@
 package com.blog.demo.api;
 
 import com.blog.demo.domain.Member;
-import com.blog.demo.domain.PostTag;
 import com.blog.demo.domain.Tag;
 import com.blog.demo.service.MemberService;
-import com.blog.demo.service.PostService;
-import com.blog.demo.service.PostTagService;
 import com.blog.demo.service.TagService;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -26,20 +23,15 @@ public class TagApiController {
 
     @GetMapping
     public Result getPostags(
-            @RequestParam(value = "memberId", required = false) Long memberId,
-            @RequestParam(value = "postId", required = false) Long postId){
+            @RequestParam(value = "memberId", required = false) String memberId){
 
-        Stream<Tag> tagStream = tagService.findTags().stream();
+        Stream<Tag> tagStream;
 
         if (memberId != null){
-            tagStream = tagStream.filter(t -> t.getMember().getId().equals(memberId));
+            tagStream = tagService.findAllByMemberId(memberId).stream();
         }
-
-        if (postId != null){
-            tagStream = tagStream.filter(t -> t.getPostTags().stream()
-                                    .filter(pt -> pt.getPost().getId() == postId)
-                                    .collect(Collectors.toList()).size() > 0
-            );
+        else{
+            tagStream = tagService.findAll().stream();
         }
 
         List<TagDto> tagDtos = tagStream.map(t -> new TagDto(t.getId(), t.getName())).collect(Collectors.toList());

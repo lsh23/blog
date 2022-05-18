@@ -1,6 +1,5 @@
 package com.blog.demo.service;
 
-import com.blog.demo.domain.PostTag;
 import com.blog.demo.domain.Tag;
 import com.blog.demo.repository.TagRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,9 +22,13 @@ public class TagService {
     public Tag findOne(long id) {
         return TagRepository.findOne(id);
     }
-    public List<Tag> findTags() {
+    public List<Tag> findAll() {
         return TagRepository.findAll();
     }
 
     public void deleteOne(Long id) { TagRepository.deleteOne(id);}
+
+    public List<Tag> findAllByMemberId(String memberId) {
+        return TagRepository.findAllByMemberId(memberId);
+    }
 }
