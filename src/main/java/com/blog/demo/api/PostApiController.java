@@ -53,61 +53,30 @@ public class PostApiController {
     
     @PostMapping
     public CreatePostResponse createPost(@RequestBody @Valid CreatePostRequest createPostRequest){
-        Post post = new Post();
-        post.setTitle(createPostRequest.getTitle());
-        post.setContent(createPostRequest.getContents());
+        String title = createPostRequest.getTitle();
+        String contents = createPostRequest.getContents();
 
-        Member findMember = memberService.findOne(createPostRequest.getUserId());
-        post.setMember(findMember);
+        String memberId = createPostRequest.getUserId();
+        Long categoryId = createPostRequest.getCategoryId();
 
-        Category findCategory = categoryService.findOne(createPostRequest.getCategoryId());
-        post.setCategory(findCategory);
+        List<TagDto> tags = createPostRequest.getTags();
 
-        postService.join(post);
+        Post post = postService.writePost(title, contents, memberId, categoryId, tags);
 
-        if (createPostRequest.getTagIds() != null) {
-            List<Long> tagIds = createPostRequest.getTagIds();
-            for (Long tagId: tagIds) {
-                Tag findTag = tagService.findOne(tagId);
-                PostTag postTag = new PostTag();
-                postTag.setPost(post);
-                postTag.setTag(findTag);
-                postTagService.join(postTag);
-            }
-
-        }
         return new CreatePostResponse(post.getId(), post.getTitle());
     }
 
     @PatchMapping("/{id}")
     public UpdatePostResponse updatePost(@RequestBody @Valid UpdatePostRequest updatePostRequest, @PathVariable("id") Long id){
-        Post post = postService.findOne(id);
+        String title = updatePostRequest.getTitle();
+        String contents = updatePostRequest.getContents();
 
-        post.setTitle(updatePostRequest.getTitle());
-        post.setContent(updatePostRequest.getContents());
+        String memberId = updatePostRequest.getUserId();
+        Long categoryId = updatePostRequest.getCategoryId();
 
-        Member findMember = memberService.findOne(updatePostRequest.getUserId());
-        post.setMember(findMember);
+        List<TagDto> tags = updatePostRequest.getTags();
 
-        Category findCategory = categoryService.findOne(updatePostRequest.getCategoryId());
-        post.setCategory(findCategory);
-
-        if (updatePostRequest.getTagIds() != null) {
-
-            List<PostTag> postTagsByPostId = postTagService.findPostTagsByPostId(id);
-            for (PostTag postTag: postTagsByPostId) {
-                postTagService.deleteOne(postTag.getId());
-            }
-
-            List<Long> tagIds = updatePostRequest.getTagIds();
-            for (Long tagId: tagIds) {
-                Tag findTag = tagService.findOne(tagId);
-                PostTag postTag = new PostTag();
-                postTag.setTag(findTag);
-                postTag.setPost(post);
-                postTagService.join(postTag);
-            }
-        }
+        Post post = postService.updatePost(id,title, contents, memberId, categoryId, tags);
 
         return new UpdatePostResponse(post.getId(), post.getTitle());
     }
