@@ -11,7 +11,6 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -22,10 +21,6 @@ import java.util.stream.Stream;
 public class PostApiController {
 
     private final PostService postService;
-    private final PostTagService postTagService;
-    private final MemberService memberService;
-    private final CategoryService categoryService;
-    private final TagService tagService;
 
     @GetMapping
     public Result getPosts(@RequestParam(value = "id",required = false) String userId,
@@ -38,18 +33,18 @@ public class PostApiController {
 
         Stream<Post> postStream = posts.stream();
 
-        List<PostDto> postDtos = postStream
-                .map(p -> new PostDto(p.getId(),p.getTitle(), p.getContent(), p.getCreatedAt(), p.getUpdatedAt(), p.getCategory().getName(), p.getPostTags()))
+        List<PostListDto> postListDtos = postStream
+                .map(p -> new PostListDto(p.getId(),p.getTitle(), p.getContent(), p.getCreatedAt(), p.getUpdatedAt(), p.getCategory().getName(), p.getPostTags()))
                 .collect(Collectors.toList());
 
-        return new Result(postDtos.size(), postDtos);
+        return new Result(postListDtos.size(), postListDtos);
 
     }
 
     @GetMapping("/{id}")
     public PostDto getPost(@PathVariable("id") Long id){
         Post findPost = postService.findOne(id);
-        return new PostDto(findPost.getId(), findPost.getTitle(), findPost.getContent(),findPost.getCreatedAt(), findPost.getUpdatedAt(), findPost.getCategory().getName(), findPost.getPostTags());
+        return new PostDto(findPost.getId(), findPost.getTitle(), findPost.getContent(),findPost.getCreatedAt(), findPost.getUpdatedAt(), findPost.getCategory(), findPost.getPostTags());
     }
     
     @PostMapping
@@ -103,10 +98,31 @@ public class PostApiController {
         private String content;
         private LocalDateTime createdAt;
         private LocalDateTime modifiedAt;
+        private CategoryDto category;
+        private List<PostTagDto> postTags;
+
+        public PostDto(Long id, String title, String content, LocalDateTime createdAt, LocalDateTime modifiedAt, Category category, List<PostTag> postTags) {
+            this.id = id;
+            this.title = title;
+            this.content = content;
+            this.createdAt = createdAt;
+            this.modifiedAt = modifiedAt;
+            this.category = new CategoryDto(category);
+            this.postTags = postTags.stream().map(pt->new PostTagDto(pt)).collect(Collectors.toList());
+        }
+    }
+
+    @Data
+    static class PostListDto{
+        private Long id;
+        private String title;
+        private String content;
+        private LocalDateTime createdAt;
+        private LocalDateTime modifiedAt;
         private String categoryName;
         private List<PostTagDto> postTags;
 
-        public PostDto(Long id, String title, String content, LocalDateTime createdAt, LocalDateTime modifiedAt, String categoryName, List<PostTag> postTags) {
+        public PostListDto(Long id, String title, String content, LocalDateTime createdAt, LocalDateTime modifiedAt, String categoryName, List<PostTag> postTags) {
             this.id = id;
             this.title = title;
             this.content = content;
