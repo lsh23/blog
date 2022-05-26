@@ -1,5 +1,6 @@
 package com.blog.demo.api;
 
+import com.blog.demo.api.dto.TagDto;
 import com.blog.demo.domain.*;
 import com.blog.demo.repository.PostSearch;
 import com.blog.demo.service.*;
@@ -142,7 +143,7 @@ public class PostApiController {
         private String title;
         private String contents;
         private Long categoryId;
-        private List<Long> tagIds = new ArrayList<>();
+        private List<TagDto> tags;
     }
 
     @Data
@@ -158,7 +159,7 @@ public class PostApiController {
         private String title;
         private String contents;
         private Long categoryId;
-        private List<Long> tagIds = new ArrayList<>();
+        private List<TagDto> tags;
     }
 
     @Data
