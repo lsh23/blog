@@ -147,6 +147,19 @@ public class PostApiController {
     }
 
     @Data
+    static class CategoryDto{
+
+        private Long id;
+        private String name;
+
+        public CategoryDto(Category category){
+            this.id = category.getId();
+            this.name = category.getName();
+        }
+
+    }
+
+    @Data
     @AllArgsConstructor
     static class CreatePostResponse {
         private Long id;
