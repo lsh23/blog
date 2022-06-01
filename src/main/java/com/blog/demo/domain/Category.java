@@ -1,14 +1,14 @@
 package com.blog.demo.domain;
 
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
 
 @Entity
-@Getter @Setter
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@Getter
 public class Category {
     @Id @Column(name="CATEGORY_ID")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -26,4 +26,22 @@ public class Category {
     @OneToMany(mappedBy = "parent", cascade = CascadeType.ALL)
     private List<Category> child = new ArrayList<>();
 
+    @Builder
+    public Category(String name, Member member, Category parent){
+        this.name = name;
+        this.member = member;
+        this.parent = parent;
+    }
+
+    public void updateName(String name) {
+        this.name = name;
+    }
+
+    public void updateMember(Member member) {
+        this.member = member;
+    }
+
+    public void updateParent(Category parent) {
+        this.parent = parent;
+    }
 }

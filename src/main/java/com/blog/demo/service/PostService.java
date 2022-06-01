@@ -49,7 +49,14 @@ public class PostService {
         List<Tag> tags = tagService.bulkSearchAndIfNoneCreate(tagDtos, member);
         List<PostTag> postTags = postTagService.saveByTags(tags);
 
-        Post post = Post.createPost(title, contents, member, category, postTags);
+        Post post = Post.builder()
+                .title(title)
+                .content(contents)
+                .member(member)
+                .category(category)
+                .postTags(postTags)
+                .build();
+
         postRepository.save(post);
 
         return post;
@@ -63,10 +70,7 @@ public class PostService {
         List<Tag> tags = tagService.bulkSearchAndIfNoneCreate(tagDtos, member);
         List<PostTag> postTags = postTagService.updatePostTag(post,tags);
 
-        post.setTitle(title);
-        post.setContent(contents);
-        post.setMember(member);
-        post.setCategory(category);
+        post.updateAll(title, contents, member, category, postTags);
 
         return post;
     }

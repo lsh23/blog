@@ -1,14 +1,14 @@
 package com.blog.demo.domain;
 
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
 
 @Entity
-@Getter @Setter
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@Getter
 public class Tag {
     @Id @Column(name="TAG_ID")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -21,5 +21,15 @@ public class Tag {
 
     @OneToMany(mappedBy = "tag", cascade = CascadeType.ALL)
     private List<PostTag> postTags = new ArrayList<>();
+
+    @Builder
+    public Tag(String name, Member member) {
+        this.name = name;
+        this.member = member;
+    }
+
+    public void updateName(String name) {
+        this.name = name;
+    }
 
 }

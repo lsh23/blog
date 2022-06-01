@@ -40,12 +40,14 @@ public class TagApiController {
 
     @PostMapping
     public CreateTagResponse createTag(@RequestBody @Valid CreateTagRequest createTagRequest){
-        Tag tag = new Tag();
+
         String name = createTagRequest.getName();
         String memberId = createTagRequest.getMemberId();
         Member findMember = memberService.findOne(memberId);
-        tag.setName(name);
-        tag.setMember(findMember);
+        Tag tag = Tag.builder()
+                .name(name)
+                .member(findMember)
+                .build();
         tagService.save(tag);
         return new CreateTagResponse(tag.getId(), tag.getName());
     }
@@ -54,10 +56,7 @@ public class TagApiController {
     public UpdateTagResponse updateTag(@RequestBody @Valid UpdateTagRequest updateTagRequest, @PathVariable("id") Long id){
         Tag tag = tagService.findOne(id);
         String name = updateTagRequest.getName();
-        String memberId = updateTagRequest.getMemberId();
-        Member findMember = memberService.findOne(memberId);
-        tag.setName(name);
-        tag.setMember(findMember);
+        tag.updateName(name);
         return new UpdateTagResponse(tag.getId(), tag.getName());
     }
 

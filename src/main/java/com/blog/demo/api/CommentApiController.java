@@ -45,7 +45,6 @@ public class CommentApiController {
 
     @PostMapping
     public CreateCommentResponse createComment(@RequestBody @Valid CreateCommentRequest createCommentRequest){
-        Comment comment = new Comment();
 
         String memberId = createCommentRequest.getMemberId();
         Member findMember = memberService.findOne(memberId);
@@ -53,14 +52,16 @@ public class CommentApiController {
         Post findPost = postService.findOne(postId);
         String text = createCommentRequest.getText();
 
-        comment.setMember(findMember);
-        comment.setPost(findPost);
-        comment.setText(text);
+        Comment comment = Comment.builder()
+                .member(findMember)
+                .post(findPost)
+                .text(text)
+                .build();
 
         Long parentId = createCommentRequest.getParentId();
         if (parentId != null) {
             Comment findComment = commentService.findOne(parentId);
-            comment.setParent(findComment);
+            comment.assignParent(findComment);
             commentService.save(comment);
             return new CreateCommentResponse(comment.getId(), comment.getPost().getId(), comment.getMember().getId(), comment.getParent().getId());
         }

@@ -44,9 +44,10 @@ public class TagService {
             if (t.getId() != -1){
                 result.add(findOne(t.getId()));
             }else{
-                Tag newOne = new Tag();
-                newOne.setName(t.getName());
-                newOne.setMember(member);
+                Tag newOne = Tag.builder()
+                        .name(t.getName())
+                        .member(member)
+                        .build();
                 save(newOne);
                 result.add(newOne);
             }

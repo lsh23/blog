@@ -44,18 +44,19 @@ public class CategoryApiController {
 
     @PostMapping
     public CreateCategoryResponse createCategory(@RequestBody @Valid CreateCategoryRequest createCategoryRequest){
-        Category category = new Category();
 
         Member findMember = memberService.findOne(createCategoryRequest.getUser_id());
-        category.setMember(findMember);
+
+        Category.CategoryBuilder builder = Category.builder()
+                .member(findMember)
+                .name(createCategoryRequest.getName());
 
         if(createCategoryRequest.getParent_id() != null){
             Category findCategory = categoryService.findOne(createCategoryRequest.getParent_id());
-            category.setParent(findCategory);
+            builder.parent(findCategory);
         }
 
-        category.setName(createCategoryRequest.getName());
-
+        Category category = builder.build();
         categoryService.save(category);
 
         return new CreateCategoryResponse(category.getId(),category.getName());
@@ -66,14 +67,15 @@ public class CategoryApiController {
         Category category = categoryService.findOne(id);
 
         Member findMember = memberService.findOne(updateCategoryRequest.getUser_id());
-        category.setMember(findMember);
+        category.updateMember(findMember);
+
+        category.updateName(updateCategoryRequest.getName());
 
         if(updateCategoryRequest.getParent_id() != null){
             Category findCategory = categoryService.findOne(updateCategoryRequest.getParent_id());
-            category.setParent(findCategory);
+            category.updateParent(findCategory);
         }
 
-        category.setName(updateCategoryRequest.getName());
         return new UpdateCategoryResponse(category.getId(),category.getName());
     }
 

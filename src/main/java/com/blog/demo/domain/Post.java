@@ -1,14 +1,14 @@
 package com.blog.demo.domain;
 
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
 
 @Entity
-@Getter @Setter
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@Getter
 public class Post extends BaseTimeEntity {
     @Id @Column(name="POST_ID")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -31,13 +31,20 @@ public class Post extends BaseTimeEntity {
     @OneToMany(mappedBy = "post", cascade = CascadeType.ALL)
     private List<Comment> comments = new ArrayList<>();
 
-    public static Post createPost(String title, String content, Member member, Category category, List<PostTag> postTags){
-        Post post = new Post();
-        post.setTitle(title);
-        post.setContent(content);
-        post.setMember(member);
-        post.setCategory(category);
-        postTags.forEach(pt->pt.setPost(post));
-        return post;
+    @Builder
+    public Post (String title, String content, Member member, Category category, List<PostTag> postTags){
+        this.title = title;
+        this.content= content;
+        this.member = member;
+        this.category = category;
+        postTags.forEach(pt->pt.assignPost(this));
+    }
+
+    public void updateAll(String title, String content, Member member, Category category, List<PostTag> postTags){
+        this.title = title;
+        this.content= content;
+        this.member = member;
+        this.category = category;
+        postTags.forEach(pt->pt.assignPost(this));
     }
 }

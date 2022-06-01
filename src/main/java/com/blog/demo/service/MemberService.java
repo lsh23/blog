@@ -24,7 +24,7 @@ public class MemberService {
 
     public void update(String id, String name) {
         Member member = memberRepository.findOne(id);
-        member.setName(name);
+        member.updateName(name);
     }
 
     public Member findOne(String id) {

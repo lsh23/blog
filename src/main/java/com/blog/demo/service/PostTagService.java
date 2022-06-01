@@ -37,8 +37,7 @@ public class PostTagService {
     public List<PostTag> saveByTags(List<Tag> tags){
         List<PostTag> result = new ArrayList<>();
         tags.forEach(t->{
-            PostTag newOne = new PostTag();
-            newOne.setTag(t);
+            PostTag newOne = PostTag.builder().tag(t).build();
             save(newOne);
             result.add(newOne);
         });
@@ -55,13 +54,14 @@ public class PostTagService {
         postTags.clear();
 
         tags.forEach(t->{
-            PostTag newOne = new PostTag();
-            newOne.setTag(t);
+            PostTag newOne = PostTag.builder()
+                    .tag(t)
+                    .build();
             save(newOne);
             postTags.add(newOne);
         });
 
-        postTags.forEach(pt->pt.setPost(post));
+        postTags.forEach(pt->pt.assignPost(post));
         return postTags;
     }
 }
