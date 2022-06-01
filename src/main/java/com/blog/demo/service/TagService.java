@@ -4,7 +4,6 @@ import com.blog.demo.api.dto.TagDto;
 import com.blog.demo.domain.Member;
 import com.blog.demo.domain.Tag;
 import com.blog.demo.repository.TagRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -14,8 +13,12 @@ import java.util.List;
 @Service
 @Transactional
 public class TagService {
-    @Autowired
-    private TagRepository TagRepository;
+
+    private final TagRepository TagRepository;
+
+    public TagService(com.blog.demo.repository.TagRepository tagRepository) {
+        TagRepository = tagRepository;
+    }
 
     public Long join(Tag tag){
         TagRepository.save(tag);

@@ -4,7 +4,6 @@ import com.blog.demo.domain.Post;
 import com.blog.demo.domain.PostTag;
 import com.blog.demo.domain.Tag;
 import com.blog.demo.repository.PostTagRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -14,8 +13,12 @@ import java.util.List;
 @Service
 @Transactional
 public class PostTagService {
-    @Autowired
-    private PostTagRepository postTagRepository;
+
+    private final PostTagRepository postTagRepository;
+
+    public PostTagService(PostTagRepository postTagRepository) {
+        this.postTagRepository = postTagRepository;
+    }
 
     public Long join(PostTag postTag){
         postTagRepository.save(postTag);

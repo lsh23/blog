@@ -4,7 +4,6 @@ import com.blog.demo.api.dto.TagDto;
 import com.blog.demo.domain.*;
 import com.blog.demo.repository.PostRepository;
 import com.blog.demo.repository.PostSearch;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -13,16 +12,19 @@ import java.util.List;
 @Service
 @Transactional
 public class PostService {
-    @Autowired
-    private PostRepository postRepository;
-    @Autowired
-    private MemberService memberService;
-    @Autowired
-    private CategoryService categoryService;
-    @Autowired
-    private TagService TagService;
-    @Autowired
-    private PostTagService postTagService;
+    private final PostRepository postRepository;
+    private final MemberService memberService;
+    private final CategoryService categoryService;
+    private final TagService tagService;
+    private final PostTagService postTagService;
+
+    public PostService(PostRepository postRepository, MemberService memberService, CategoryService categoryService, com.blog.demo.service.TagService tagService, PostTagService postTagService) {
+        this.postRepository = postRepository;
+        this.memberService = memberService;
+        this.categoryService = categoryService;
+        this.tagService = tagService;
+        this.postTagService = postTagService;
+    }
 
     public Long join(Post post){
         postRepository.save(post);
@@ -44,7 +46,7 @@ public class PostService {
         Member member = memberService.findOne(memberId);
         Category category = categoryService.findOne(categoryId);
 
-        List<Tag> tags = TagService.bulkSearchAndIfNoneCreate(tagDtos, member);
+        List<Tag> tags = tagService.bulkSearchAndIfNoneCreate(tagDtos, member);
         List<PostTag> postTags = postTagService.joinByTags(tags);
 
         Post post = Post.createPost(title, contents, member, category, postTags);
@@ -58,7 +60,7 @@ public class PostService {
 
         Member member = memberService.findOne(memberId);
         Category category = categoryService.findOne(categoryId);
-        List<Tag> tags = TagService.bulkSearchAndIfNoneCreate(tagDtos, member);
+        List<Tag> tags = tagService.bulkSearchAndIfNoneCreate(tagDtos, member);
         List<PostTag> postTags = postTagService.updatePostTag(post,tags);
 
         post.setTitle(title);
