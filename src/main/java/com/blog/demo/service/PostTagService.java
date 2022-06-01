@@ -20,7 +20,7 @@ public class PostTagService {
         this.postTagRepository = postTagRepository;
     }
 
-    public Long join(PostTag postTag){
+    public Long save(PostTag postTag){
         postTagRepository.save(postTag);
         return postTag.getId();
     }
@@ -34,12 +34,12 @@ public class PostTagService {
     }
     public void deleteOne(long id) { postTagRepository.deleteOne(id); }
 
-    public List<PostTag> joinByTags(List<Tag> tags){
+    public List<PostTag> saveByTags(List<Tag> tags){
         List<PostTag> result = new ArrayList<>();
         tags.forEach(t->{
             PostTag newOne = new PostTag();
             newOne.setTag(t);
-            join(newOne);
+            save(newOne);
             result.add(newOne);
         });
         return result;
@@ -57,7 +57,7 @@ public class PostTagService {
         tags.forEach(t->{
             PostTag newOne = new PostTag();
             newOne.setTag(t);
-            join(newOne);
+            save(newOne);
             postTags.add(newOne);
         });
 

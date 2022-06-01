@@ -56,7 +56,7 @@ public class CategoryApiController {
 
         category.setName(createCategoryRequest.getName());
 
-        categoryService.join(category);
+        categoryService.save(category);
 
         return new CreateCategoryResponse(category.getId(),category.getName());
     }

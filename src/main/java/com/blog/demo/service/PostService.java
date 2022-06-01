@@ -26,7 +26,7 @@ public class PostService {
         this.postTagService = postTagService;
     }
 
-    public Long join(Post post){
+    public Long save(Post post){
         postRepository.save(post);
         return post.getId();
     }
@@ -47,7 +47,7 @@ public class PostService {
         Category category = categoryService.findOne(categoryId);
 
         List<Tag> tags = tagService.bulkSearchAndIfNoneCreate(tagDtos, member);
-        List<PostTag> postTags = postTagService.joinByTags(tags);
+        List<PostTag> postTags = postTagService.saveByTags(tags);
 
         Post post = Post.createPost(title, contents, member, category, postTags);
         postRepository.save(post);

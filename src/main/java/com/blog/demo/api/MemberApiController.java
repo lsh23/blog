@@ -47,7 +47,7 @@ public class MemberApiController {
 
     @PostMapping("/api/v1/members")
     public CreateMemberResponse saveMemberV1(@RequestBody @Valid Member member){
-        String id = memberService.join(member);
+        String id = memberService.save(member);
         return new CreateMemberResponse(id);
     }
 
@@ -57,7 +57,7 @@ public class MemberApiController {
         Member member = new Member();
         member.setName(request.getName());
 
-        String id = memberService.join(member);
+        String id = memberService.save(member);
         return new CreateMemberResponse(id);
     }
 

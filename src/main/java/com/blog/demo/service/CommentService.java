@@ -17,7 +17,7 @@ public class CommentService {
         this.commentRepository = commentRepository;
     }
 
-    public Long join(Comment comment){
+    public Long save(Comment comment){
         commentRepository.save(comment);
         return comment.getId();
     }

@@ -17,7 +17,7 @@ public class CategoryService {
         this.categoryRepository = categoryRepository;
     }
 
-    public Long join(Category category){
+    public Long save(Category category){
         categoryRepository.save(category);
         return category.getId();
     }

@@ -61,11 +61,11 @@ public class CommentApiController {
         if (parentId != null) {
             Comment findComment = commentService.findOne(parentId);
             comment.setParent(findComment);
-            commentService.join(comment);
+            commentService.save(comment);
             return new CreateCommentResponse(comment.getId(), comment.getPost().getId(), comment.getMember().getId(), comment.getParent().getId());
         }
 
-        commentService.join(comment);
+        commentService.save(comment);
         return new CreateCommentResponse(comment.getId(), comment.getPost().getId(), comment.getMember().getId(), null);
         
     }

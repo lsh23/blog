@@ -46,7 +46,7 @@ public class TagApiController {
         Member findMember = memberService.findOne(memberId);
         tag.setName(name);
         tag.setMember(findMember);
-        tagService.join(tag);
+        tagService.save(tag);
         return new CreateTagResponse(tag.getId(), tag.getName());
     }
 

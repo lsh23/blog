@@ -20,7 +20,7 @@ public class TagService {
         TagRepository = tagRepository;
     }
 
-    public Long join(Tag tag){
+    public Long save(Tag tag){
         TagRepository.save(tag);
         return tag.getId();
     }
@@ -47,7 +47,7 @@ public class TagService {
                 Tag newOne = new Tag();
                 newOne.setName(t.getName());
                 newOne.setMember(member);
-                join(newOne);
+                save(newOne);
                 result.add(newOne);
             }
         });

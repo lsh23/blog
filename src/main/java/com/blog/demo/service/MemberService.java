@@ -17,7 +17,7 @@ public class MemberService {
         this.memberRepository = memberRepository;
     }
 
-    public String join(Member member){
+    public String save(Member member){
         memberRepository.save(member);
         return member.getId();
     }
