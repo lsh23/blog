@@ -20,12 +20,13 @@ import java.util.stream.Stream;
 
 @RestController
 @RequiredArgsConstructor
+@RequestMapping("/api/v1/comments")
 public class CommentApiController {
     private final CommentService commentService;
     private final PostService postService;
     private final MemberService memberService;
 
-    @GetMapping("/api/v1/comments")
+    @GetMapping
     public Result getComments(@RequestParam(value="postId", required = false) Long postId){
 
         List<Comment> comments;
@@ -42,9 +43,8 @@ public class CommentApiController {
         return new Result(totalCommentCount, commentDtos);
     }
 
-    @PostMapping("/api/v1/comments")
+    @PostMapping
     public CreateCommentResponse createComment(@RequestBody @Valid CreateCommentRequest createCommentRequest){
-        Comment comment = new Comment();
 
         String memberId = createCommentRequest.getMemberId();
         Member findMember = memberService.findOne(memberId);
@@ -52,19 +52,21 @@ public class CommentApiController {
         Post findPost = postService.findOne(postId);
         String text = createCommentRequest.getText();
 
-        comment.setMember(findMember);
-        comment.setPost(findPost);
-        comment.setText(text);
+        Comment comment = Comment.builder()
+                .member(findMember)
+                .post(findPost)
+                .text(text)
+                .build();
 
         Long parentId = createCommentRequest.getParentId();
         if (parentId != null) {
             Comment findComment = commentService.findOne(parentId);
-            comment.setParent(findComment);
-            commentService.join(comment);
+            comment.assignParent(findComment);
+            commentService.save(comment);
             return new CreateCommentResponse(comment.getId(), comment.getPost().getId(), comment.getMember().getId(), comment.getParent().getId());
         }
 
-        commentService.join(comment);
+        commentService.save(comment);
         return new CreateCommentResponse(comment.getId(), comment.getPost().getId(), comment.getMember().getId(), null);
         
     }

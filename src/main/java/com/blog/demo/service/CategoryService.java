@@ -2,7 +2,6 @@ package com.blog.demo.service;
 
 import com.blog.demo.domain.Category;
 import com.blog.demo.repository.CategoryRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -12,10 +11,13 @@ import java.util.List;
 @Transactional
 public class CategoryService {
 
-    @Autowired
-    private CategoryRepository categoryRepository;
+    private final CategoryRepository categoryRepository;
 
-    public Long join(Category category){
+    public CategoryService(CategoryRepository categoryRepository) {
+        this.categoryRepository = categoryRepository;
+    }
+
+    public Long save(Category category){
         categoryRepository.save(category);
         return category.getId();
     }

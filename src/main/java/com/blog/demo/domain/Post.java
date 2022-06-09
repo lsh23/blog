@@ -1,19 +1,20 @@
 package com.blog.demo.domain;
 
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
 
 @Entity
-@Getter @Setter
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@Getter
 public class Post extends BaseTimeEntity {
     @Id @Column(name="POST_ID")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String title;
+    @Column(columnDefinition = "LONGTEXT")
     private String content;
 
     @ManyToOne(fetch = FetchType.LAZY)
@@ -29,4 +30,21 @@ public class Post extends BaseTimeEntity {
 
     @OneToMany(mappedBy = "post", cascade = CascadeType.ALL)
     private List<Comment> comments = new ArrayList<>();
+
+    @Builder
+    public Post (String title, String content, Member member, Category category, List<PostTag> postTags){
+        this.title = title;
+        this.content= content;
+        this.member = member;
+        this.category = category;
+        postTags.forEach(pt->pt.assignPost(this));
+    }
+
+    public void updateAll(String title, String content, Member member, Category category, List<PostTag> postTags){
+        this.title = title;
+        this.content= content;
+        this.member = member;
+        this.category = category;
+        postTags.forEach(pt->pt.assignPost(this));
+    }
 }

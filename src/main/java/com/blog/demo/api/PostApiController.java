@@ -1,6 +1,8 @@
 package com.blog.demo.api;
 
+import com.blog.demo.api.dto.TagDto;
 import com.blog.demo.domain.*;
+import com.blog.demo.repository.PostSearch;
 import com.blog.demo.service.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -9,113 +11,74 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 @RestController
 @RequiredArgsConstructor
+@RequestMapping("/api/v1/posts")
 public class PostApiController {
 
     private final PostService postService;
-    private final PostTagService postTagService;
-    private final MemberService memberService;
-    private final CategoryService categoryService;
-    private final TagService tagService;
 
-    @GetMapping("/api/v1/posts")
+    @GetMapping
     public Result getPosts(@RequestParam(value = "id",required = false) String userId,
                            @RequestParam(value = "categoryId",required = false) Long categoryId){
-        List<Post> posts = postService.findPosts();
+
+        PostSearch postSearch = new PostSearch();
+        postSearch.setMemberId(userId);
+        postSearch.setCategoryId(categoryId);
+        List<Post> posts = postService.findPosts(postSearch);
 
         Stream<Post> postStream = posts.stream();
 
-        if(userId != null){
-            postStream = postStream.filter(p -> p.getMember().getId().equals(userId));
-        }
-
-        if(categoryId != null){
-            postStream = postStream.filter(p -> (p.getCategory().getId() == categoryId || p.getCategory().getParent().getId() == categoryId));
-        }
-
-        List<PostDto> postDtos = postStream
-                .map(p -> new PostDto(p.getId(),p.getTitle(), p.getContent(), p.getCreatedAt(), p.getUpdatedAt()))
+        List<PostListDto> postListDtos = postStream
+                .map(p -> new PostListDto(p.getId(),p.getTitle(), p.getContent(), p.getCreatedAt(), p.getUpdatedAt(), p.getCategory().getName(), p.getPostTags()))
                 .collect(Collectors.toList());
 
-        return new Result(postDtos.size(), postDtos);
+        return new Result(postListDtos.size(), postListDtos);
 
     }
 
-    @GetMapping("/api/v1/posts/{id}")
+    @GetMapping("/{id}")
     public PostDto getPost(@PathVariable("id") Long id){
         Post findPost = postService.findOne(id);
-        return new PostDto(findPost.getId(), findPost.getTitle(), findPost.getContent(),findPost.getCreatedAt(), findPost.getUpdatedAt(), findPost.getPostTags());
+        return new PostDto(findPost.getId(), findPost.getTitle(), findPost.getContent(),findPost.getCreatedAt(), findPost.getUpdatedAt(), findPost.getCategory(), findPost.getPostTags());
     }
     
-    @PostMapping("/api/v1/posts")
-    public CreatePostResponse create(@RequestBody @Valid CreatePostRequest createPostRequest){
-        Post post = new Post();
-        post.setTitle(createPostRequest.getTitle());
-        post.setContent(createPostRequest.getContents());
+    @PostMapping
+    public CreatePostResponse createPost(@RequestBody @Valid CreatePostRequest createPostRequest){
+        String title = createPostRequest.getTitle();
+        String contents = createPostRequest.getContents();
 
-        Member findMember = memberService.findOne(createPostRequest.getUserId());
-        post.setMember(findMember);
+        String memberId = createPostRequest.getUserId();
+        Long categoryId = createPostRequest.getCategoryId();
 
-        Category findCategory = categoryService.findOne(createPostRequest.getCategoryId());
-        post.setCategory(findCategory);
+        List<TagDto> tags = createPostRequest.getTags();
 
-        postService.join(post);
+        Post post = postService.writePost(title, contents, memberId, categoryId, tags);
 
-        if (createPostRequest.getTagIds() != null) {
-            List<Long> tagIds = createPostRequest.getTagIds();
-            for (Long tagId: tagIds) {
-                Tag findTag = tagService.findOne(tagId);
-                PostTag postTag = new PostTag();
-                postTag.setPost(post);
-                postTag.setTag(findTag);
-                postTagService.join(postTag);
-            }
-
-        }
         return new CreatePostResponse(post.getId(), post.getTitle());
     }
 
-    @PatchMapping("/api/v1/posts/{id}")
+    @PatchMapping("/{id}")
     public UpdatePostResponse updatePost(@RequestBody @Valid UpdatePostRequest updatePostRequest, @PathVariable("id") Long id){
-        Post post = postService.findOne(id);
+        String title = updatePostRequest.getTitle();
+        String contents = updatePostRequest.getContents();
 
-        post.setTitle(updatePostRequest.getTitle());
-        post.setContent(updatePostRequest.getContents());
+        String memberId = updatePostRequest.getUserId();
+        Long categoryId = updatePostRequest.getCategoryId();
 
-        Member findMember = memberService.findOne(updatePostRequest.getUserId());
-        post.setMember(findMember);
+        List<TagDto> tags = updatePostRequest.getTags();
 
-        Category findCategory = categoryService.findOne(updatePostRequest.getCategoryId());
-        post.setCategory(findCategory);
-
-        if (updatePostRequest.getTagIds() != null) {
-
-            List<PostTag> postTagsByPostId = postTagService.findPostTagsByPostId(id);
-            for (PostTag postTag: postTagsByPostId) {
-                postTagService.deleteOne(postTag.getId());
-            }
-
-            List<Long> tagIds = updatePostRequest.getTagIds();
-            for (Long tagId: tagIds) {
-                Tag findTag = tagService.findOne(tagId);
-                PostTag postTag = new PostTag();
-                postTag.setTag(findTag);
-                postTag.setPost(post);
-                postTagService.join(postTag);
-            }
-        }
+        Post post = postService.updatePost(id,title, contents, memberId, categoryId, tags);
 
         return new UpdatePostResponse(post.getId(), post.getTitle());
     }
 
-    @DeleteMapping("/api/v1/posts/{id}")
-    public DeletePostResponse updatePost(@PathVariable("id") Long id){
+    @DeleteMapping("/{id}")
+    public DeletePostResponse deletePost(@PathVariable("id") Long id){
         Post post = postService.findOne(id);
         postService.deleteOne(id);
         return new DeletePostResponse(post.getId(), post.getTitle());
@@ -135,22 +98,37 @@ public class PostApiController {
         private String content;
         private LocalDateTime createdAt;
         private LocalDateTime modifiedAt;
+        private CategoryDto category;
         private List<PostTagDto> postTags;
 
-        public PostDto(Long id, String title, String content, LocalDateTime createdAt, LocalDateTime modifiedAt) {
+        public PostDto(Long id, String title, String content, LocalDateTime createdAt, LocalDateTime modifiedAt, Category category, List<PostTag> postTags) {
             this.id = id;
             this.title = title;
             this.content = content;
             this.createdAt = createdAt;
             this.modifiedAt = modifiedAt;
+            this.category = new CategoryDto(category);
+            this.postTags = postTags.stream().map(pt->new PostTagDto(pt)).collect(Collectors.toList());
         }
+    }
 
-        public PostDto(Long id, String title, String content, LocalDateTime createdAt, LocalDateTime modifiedAt, List<PostTag> postTags) {
+    @Data
+    static class PostListDto{
+        private Long id;
+        private String title;
+        private String content;
+        private LocalDateTime createdAt;
+        private LocalDateTime modifiedAt;
+        private String categoryName;
+        private List<PostTagDto> postTags;
+
+        public PostListDto(Long id, String title, String content, LocalDateTime createdAt, LocalDateTime modifiedAt, String categoryName, List<PostTag> postTags) {
             this.id = id;
             this.title = title;
             this.content = content;
             this.createdAt = createdAt;
             this.modifiedAt = modifiedAt;
+            this.categoryName = categoryName;
             this.postTags = postTags.stream().map(pt->new PostTagDto(pt)).collect(Collectors.toList());
         }
     }
@@ -169,6 +147,19 @@ public class PostApiController {
     }
 
     @Data
+    static class CategoryDto{
+
+        private Long id;
+        private String name;
+
+        public CategoryDto(Category category){
+            this.id = category.getId();
+            this.name = category.getName();
+        }
+
+    }
+
+    @Data
     @AllArgsConstructor
     static class CreatePostResponse {
         private Long id;
@@ -181,7 +172,7 @@ public class PostApiController {
         private String title;
         private String contents;
         private Long categoryId;
-        private List<Long> tagIds = new ArrayList<>();
+        private List<TagDto> tags;
     }
 
     @Data
@@ -197,7 +188,7 @@ public class PostApiController {
         private String title;
         private String contents;
         private Long categoryId;
-        private List<Long> tagIds = new ArrayList<>();
+        private List<TagDto> tags;
     }
 
     @Data

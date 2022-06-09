@@ -1,11 +1,8 @@
 package com.blog.demo.api;
 
 import com.blog.demo.domain.Member;
-import com.blog.demo.domain.PostTag;
 import com.blog.demo.domain.Tag;
 import com.blog.demo.service.MemberService;
-import com.blog.demo.service.PostService;
-import com.blog.demo.service.PostTagService;
 import com.blog.demo.service.TagService;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -19,56 +16,51 @@ import java.util.stream.Stream;
 
 @RestController
 @RequiredArgsConstructor
+@RequestMapping("/api/v1/tags")
 public class TagApiController {
     private final TagService tagService;
     private final MemberService memberService;
 
-    @GetMapping("/api/v1/tags")
+    @GetMapping
     public Result getPostags(
-            @RequestParam(value = "memberId", required = false) Long memberId,
-            @RequestParam(value = "postId", required = false) Long postId){
+            @RequestParam(value = "memberId", required = false) String memberId){
 
-        Stream<Tag> tagStream = tagService.findTags().stream();
+        Stream<Tag> tagStream;
 
         if (memberId != null){
-            tagStream = tagStream.filter(t -> t.getMember().getId().equals(memberId));
+            tagStream = tagService.findAllByMemberId(memberId).stream();
         }
-
-        if (postId != null){
-            tagStream = tagStream.filter(t -> t.getPostTags().stream()
-                                    .filter(pt -> pt.getPost().getId() == postId)
-                                    .collect(Collectors.toList()).size() > 0
-            );
+        else{
+            tagStream = tagService.findAll().stream();
         }
 
         List<TagDto> tagDtos = tagStream.map(t -> new TagDto(t.getId(), t.getName())).collect(Collectors.toList());
         return new Result(tagDtos.size(), tagDtos);
     }
 
-    @PostMapping("/api/v1/tags")
+    @PostMapping
     public CreateTagResponse createTag(@RequestBody @Valid CreateTagRequest createTagRequest){
-        Tag tag = new Tag();
+
         String name = createTagRequest.getName();
         String memberId = createTagRequest.getMemberId();
         Member findMember = memberService.findOne(memberId);
-        tag.setName(name);
-        tag.setMember(findMember);
-        tagService.join(tag);
+        Tag tag = Tag.builder()
+                .name(name)
+                .member(findMember)
+                .build();
+        tagService.save(tag);
         return new CreateTagResponse(tag.getId(), tag.getName());
     }
 
-    @PatchMapping("/api/v1/tags/{id}")
+    @PatchMapping("/{id}")
     public UpdateTagResponse updateTag(@RequestBody @Valid UpdateTagRequest updateTagRequest, @PathVariable("id") Long id){
         Tag tag = tagService.findOne(id);
         String name = updateTagRequest.getName();
-        String memberId = updateTagRequest.getMemberId();
-        Member findMember = memberService.findOne(memberId);
-        tag.setName(name);
-        tag.setMember(findMember);
+        tag.updateName(name);
         return new UpdateTagResponse(tag.getId(), tag.getName());
     }
 
-    @DeleteMapping("/api/v1/tags/{id}")
+    @DeleteMapping("/{id}")
     public DeleteTagResponse deleteTag(@PathVariable("id") Long id){
         Tag tag = tagService.findOne(id);
         tagService.deleteOne(id);

@@ -1,21 +1,26 @@
 package com.blog.demo.service;
 
-import com.blog.demo.domain.PostTag;
+import com.blog.demo.api.dto.TagDto;
+import com.blog.demo.domain.Member;
 import com.blog.demo.domain.Tag;
 import com.blog.demo.repository.TagRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
 @Transactional
 public class TagService {
-    @Autowired
-    private TagRepository TagRepository;
 
-    public Long join(Tag tag){
+    private final TagRepository TagRepository;
+
+    public TagService(com.blog.demo.repository.TagRepository tagRepository) {
+        TagRepository = tagRepository;
+    }
+
+    public Long save(Tag tag){
         TagRepository.save(tag);
         return tag.getId();
     }
@@ -23,9 +28,30 @@ public class TagService {
     public Tag findOne(long id) {
         return TagRepository.findOne(id);
     }
-    public List<Tag> findTags() {
+    public List<Tag> findAll() {
         return TagRepository.findAll();
     }
 
     public void deleteOne(Long id) { TagRepository.deleteOne(id);}
+
+    public List<Tag> findAllByMemberId(String memberId) {
+        return TagRepository.findAllByMemberId(memberId);
+    }
+
+    public List<Tag> bulkSearchAndIfNoneCreate(List<TagDto> tags, Member member) {
+        List<Tag> result = new ArrayList<>();
+        tags.stream().forEach(t->{
+            if (t.getId() != -1){
+                result.add(findOne(t.getId()));
+            }else{
+                Tag newOne = Tag.builder()
+                        .name(t.getName())
+                        .member(member)
+                        .build();
+                save(newOne);
+                result.add(newOne);
+            }
+        });
+        return result;
+    }
 }

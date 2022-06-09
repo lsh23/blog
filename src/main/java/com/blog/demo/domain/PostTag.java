@@ -1,12 +1,12 @@
 package com.blog.demo.domain;
 
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 import javax.persistence.*;
 
 @Entity
-@Getter @Setter
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@Getter
 public class PostTag {
     @Id @Column(name="POST_TAG_ID")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -19,4 +19,15 @@ public class PostTag {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name="TAG_ID")
     private Tag tag;
+
+    @Builder
+    public PostTag(Post post, Tag tag) {
+        this.post = post;
+        this.tag = tag;
+    }
+
+    public void assignPost(Post post) {
+        this.post = post;
+    }
 }
+

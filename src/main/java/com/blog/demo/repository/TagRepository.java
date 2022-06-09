@@ -29,4 +29,10 @@ public class TagRepository {
         Tag deletedOne = findOne(id);
         em.remove(deletedOne);
     }
+
+    public List<Tag> findAllByMemberId(String memberId) {
+        return em.createQuery("select t from Tag t where t.member.id =: memberId", Tag.class)
+                .setParameter("memberId", memberId)
+                .getResultList();
+    }
 }
