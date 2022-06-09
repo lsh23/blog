@@ -1,17 +1,14 @@
 package com.blog.demo.api;
 
-import com.blog.demo.api.dto.member.CreateMemberRequest;
-import com.blog.demo.api.dto.member.CreateMemberResponse;
+import com.blog.demo.api.dto.Result;
+import com.blog.demo.api.dto.member.*;
 import com.blog.demo.domain.Member;
 import com.blog.demo.service.MemberService;
-import lombok.AllArgsConstructor;
-import lombok.Data;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import javax.validation.constraints.NotEmpty;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -35,19 +32,6 @@ public class MemberApiController {
         return new Result(memberDtos.size(), memberDtos);
     }
 
-    @Data
-    @AllArgsConstructor
-    static class MemberDto {
-        private String name;
-    }
-
-    @Data
-    @AllArgsConstructor
-    static class Result<T> {
-        private int count;
-        private T data;
-    }
-
     @PostMapping("/api/v1/members")
     public CreateMemberResponse saveMemberV1(@RequestBody @Valid Member member) {
         String id = memberService.save(member);
@@ -67,19 +51,6 @@ public class MemberApiController {
         memberService.update(id, request.getName());
         Member findMember = memberService.findOne(id);
         return new UpdateMemberResponse(findMember.getId(), findMember.getName());
-    }
-
-    @Data
-    @AllArgsConstructor
-    private class UpdateMemberResponse {
-        private String String;
-        private String name;
-    }
-
-    @Data
-    private class UpdateMemberRequest {
-        @NotEmpty
-        private String name;
     }
 
 

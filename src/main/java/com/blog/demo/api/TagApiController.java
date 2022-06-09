@@ -1,11 +1,11 @@
 package com.blog.demo.api;
 
+import com.blog.demo.api.dto.Result;
+import com.blog.demo.api.dto.tag.*;
 import com.blog.demo.domain.Member;
 import com.blog.demo.domain.Tag;
 import com.blog.demo.service.MemberService;
 import com.blog.demo.service.TagService;
-import lombok.AllArgsConstructor;
-import lombok.Data;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
@@ -65,55 +65,6 @@ public class TagApiController {
         Tag tag = tagService.findOne(id);
         tagService.deleteOne(id);
         return new DeleteTagResponse(tag.getId(), tag.getName());
-    }
-
-    @Data
-    @AllArgsConstructor
-    static class Result<T> {
-        private int count;
-        private T data;
-    }
-
-    @Data
-    @AllArgsConstructor
-    static class TagDto{
-        private Long id;
-        private String name;
-    }
-
-    @Data
-    @AllArgsConstructor
-    static class CreateTagResponse {
-        private Long id;
-        private String name;
-    }
-
-    @Data
-    @AllArgsConstructor
-    static class CreateTagRequest{
-        String memberId;
-        String name;
-    }
-
-    @Data
-    @AllArgsConstructor
-    static class UpdateTagResponse {
-        private Long id;
-        private String name;
-    }
-
-    @Data
-    @AllArgsConstructor
-    static class UpdateTagRequest {
-        String memberId;
-        String name;
-    }
-
-    @Data
-    @AllArgsConstructor
-    static class DeleteTagResponse {
-        private Long id;
-        private String name;
     }
 }
 

@@ -1,18 +1,16 @@
 package com.blog.demo.api;
 
 
+import com.blog.demo.api.dto.Result;
+import com.blog.demo.api.dto.category.*;
 import com.blog.demo.domain.Category;
 import com.blog.demo.domain.Member;
-import com.blog.demo.domain.Post;
 import com.blog.demo.service.CategoryService;
 import com.blog.demo.service.MemberService;
-import lombok.AllArgsConstructor;
-import lombok.Data;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import javax.validation.constraints.NotEmpty;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -86,72 +84,4 @@ public class CategoryApiController {
         return new DeleteCategoryResponse(category.getId(), category.getName());
     }
 
-    @Data
-    static class CreateCategoryRequest {
-        @NotEmpty
-        private String user_id;
-        private Long parent_id;
-        @NotEmpty
-        private String name;
-    }
-
-    @Data
-    @AllArgsConstructor
-    static class CreateCategoryResponse {
-        private Long id;
-        private String name;
-    }
-
-    @Data
-    @AllArgsConstructor
-    static class Result<T> {
-        private int count;
-        private T data;
-    }
-
-    @Data
-    @AllArgsConstructor
-    static class CategoryDto{
-
-        public CategoryDto(Long id, String name) {
-            this.id = id;
-            this.name = name;
-        }
-
-        public CategoryDto(Category category) {
-            this.id = category.getId();
-            this.name = category.getName();
-            this.child = category.getChild().stream()
-                    .map(c -> new CategoryDto(c.getId(),c.getName()))
-                    .collect(Collectors.toList());
-        }
-
-        private Long id;
-        private String name;
-        private List<CategoryDto> child;
-    }
-
-    @Data
-    @AllArgsConstructor
-    static class UpdateCategoryResponse {
-        private Long id;
-        private String name;
-    }
-
-    @Data
-    @AllArgsConstructor
-    static class UpdateCategoryRequest {
-        @NotEmpty
-        private String user_id;
-        private Long parent_id;
-        @NotEmpty
-        private String name;
-    }
-
-    @Data
-    @AllArgsConstructor
-    static class DeleteCategoryResponse {
-        private Long id;
-        private String name;
-    }
 }

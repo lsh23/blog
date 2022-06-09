@@ -1,6 +1,6 @@
 package com.blog.demo.service;
 
-import com.blog.demo.api.dto.TagDto;
+import com.blog.demo.api.dto.tag.TagDto;
 import com.blog.demo.domain.*;
 import com.blog.demo.repository.PostRepository;
 import com.blog.demo.repository.PostSearch;

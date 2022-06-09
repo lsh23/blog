@@ -1,6 +1,6 @@
 package com.blog.demo.service;
 
-import com.blog.demo.api.dto.TagDto;
+import com.blog.demo.api.dto.tag.TagDto;
 import com.blog.demo.domain.Member;
 import com.blog.demo.domain.Tag;
 import com.blog.demo.repository.TagRepository;

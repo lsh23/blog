@@ -1,4 +1,4 @@
-package com.blog.demo.api.dto;
+package com.blog.demo.api.dto.tag;
 
 import lombok.Data;
 
