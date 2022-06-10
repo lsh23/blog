@@ -35,7 +35,7 @@ public class CategoryRepository {
         em.remove(deletedOne);
     }
 
-    public List<Category> findCategoriesWithMember(String memberId) {
+    public List<Category> findCategoriesByMember(String memberId) {
         return em.createQuery(
                 "select c from Category c" +
                             " join fetch c.member m "+
