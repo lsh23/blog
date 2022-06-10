@@ -8,8 +8,8 @@ import javax.validation.constraints.NotEmpty;
 public
 class CreateCategoryRequest {
     @NotEmpty
-    private String user_id;
-    private Long parent_id;
+    private String memberId;
+    private Long parentId;
     @NotEmpty
     private String name;
 }

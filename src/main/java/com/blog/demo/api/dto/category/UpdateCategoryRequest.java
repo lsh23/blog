@@ -10,8 +10,9 @@ import javax.validation.constraints.NotEmpty;
 public
 class UpdateCategoryRequest {
     @NotEmpty
-    private String user_id;
-    private Long parent_id;
+    private Long id;
+    private String memberId;
+    private Long parentId;
     @NotEmpty
     private String name;
 }
