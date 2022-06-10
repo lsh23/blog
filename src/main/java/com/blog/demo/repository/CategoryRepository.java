@@ -30,9 +30,10 @@ public class CategoryRepository {
         return em.find(Category.class, id);
     }
 
-    public void deleteOne(Long id) {
+    public Category deleteOne(Long id) {
         Category deletedOne = findOne(id);
         em.remove(deletedOne);
+        return deletedOne;
     }
 
     public List<Category> findCategoriesByMember(String memberId) {
