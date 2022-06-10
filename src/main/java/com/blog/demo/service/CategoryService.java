@@ -1,20 +1,28 @@
 package com.blog.demo.service;
 
+import com.blog.demo.api.dto.category.CategoryDto;
+import com.blog.demo.api.dto.category.CreateCategoryRequest;
+import com.blog.demo.api.dto.category.UpdateCategoryRequest;
 import com.blog.demo.domain.Category;
+import com.blog.demo.domain.Member;
 import com.blog.demo.repository.CategoryRepository;
+import com.blog.demo.repository.MemberRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @Transactional
 public class CategoryService {
 
     private final CategoryRepository categoryRepository;
+    private final MemberRepository memberRepository;
 
-    public CategoryService(CategoryRepository categoryRepository) {
+    public CategoryService(CategoryRepository categoryRepository, MemberRepository memberRepository) {
         this.categoryRepository = categoryRepository;
+        this.memberRepository = memberRepository;
     }
 
     public Long save(Category category){
@@ -33,10 +41,60 @@ public class CategoryService {
     }
 
     @Transactional(readOnly = true)
-    public List<Category> findAllRootCategories() {return categoryRepository.findAllRootCategories(); }
+    public List<CategoryDto> findAllRootCategories() {
+        List<Category> allRootCategories = categoryRepository.findAllRootCategories();
+        List<CategoryDto> categoryDtos = allRootCategories.stream()
+                .map(c -> new CategoryDto(c))
+                .collect(Collectors.toList());
+        return categoryDtos;
+    }
 
     @Transactional(readOnly = true)
-    public List<Category> findCategoriesWithMember(String MemberId){ return categoryRepository.findCategoriesWithMember(MemberId);}
+    public List<CategoryDto> findCategoriesByMember(String MemberId){
+        List<Category> categories = categoryRepository.findCategoriesByMember(MemberId);
+        List<CategoryDto> categoryDtos = categories.stream()
+                .filter(c -> c.getParent() == null)
+                .map(c -> new CategoryDto(c))
+                .collect(Collectors.toList());
+        return categoryDtos;
+    }
 
-    public void deleteOne(Long id) { categoryRepository.deleteOne(id);}
+    public CategoryDto deleteOne(Long id) {
+        Category deleteOne = categoryRepository.deleteOne(id);
+        return new CategoryDto(deleteOne.getId(), deleteOne.getName());
+    }
+
+    public CategoryDto createCategory(CreateCategoryRequest createCategoryRequest) {
+        Member findMember = memberRepository.findOne(createCategoryRequest.getMemberId());
+
+        Category.CategoryBuilder builder = Category.builder()
+                .member(findMember)
+                .name(createCategoryRequest.getName());
+
+        if(createCategoryRequest.getParentId() != null){
+            Category findCategory = findOne(createCategoryRequest.getParentId());
+            builder.parent(findCategory);
+        }
+
+        Category category = builder.build();
+        categoryRepository.save(category);
+
+        return new CategoryDto(category.getId(),category.getName());
+    }
+
+    public CategoryDto updateCategory(UpdateCategoryRequest updateCategoryRequest, Long id) {
+        Category category = findOne(id);
+
+        Member findMember = memberRepository.findOne(updateCategoryRequest.getMemberId());
+        category.updateMember(findMember);
+
+        category.updateName(updateCategoryRequest.getName());
+
+        if(updateCategoryRequest.getParentId() != null){
+            Category findCategory = findOne(updateCategoryRequest.getParentId());
+            category.updateParent(findCategory);
+        }
+
+        return new CategoryDto(category.getId(),category.getName());
+    }
 }
