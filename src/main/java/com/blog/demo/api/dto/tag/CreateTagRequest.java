@@ -5,8 +5,7 @@ import lombok.Data;
 
 @Data
 @AllArgsConstructor
-public
-class CreateTagRequest {
+public class CreateTagRequest {
     String memberId;
     String name;
 }

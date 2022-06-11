@@ -4,8 +4,7 @@ import com.blog.demo.domain.PostTag;
 import lombok.Data;
 
 @Data
-public
-class PostTagDto {
+public class PostTagDto {
 
     private Long id;
     private String name;

@@ -11,8 +11,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Data
-public
-class PostDto {
+public class PostDto {
     private Long id;
     private String title;
     private String content;

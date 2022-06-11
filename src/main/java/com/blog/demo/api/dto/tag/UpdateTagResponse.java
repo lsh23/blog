@@ -5,8 +5,7 @@ import lombok.Data;
 
 @Data
 @AllArgsConstructor
-public
-class UpdateTagResponse {
+public class UpdateTagResponse {
     private Long id;
     private String name;
 }

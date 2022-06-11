@@ -7,8 +7,7 @@ import javax.validation.constraints.NotEmpty;
 
 @Data
 @AllArgsConstructor
-public
-class UpdateCategoryRequest {
+public class UpdateCategoryRequest {
     @NotEmpty
     private Long id;
     private String memberId;

@@ -5,8 +5,7 @@ import lombok.Data;
 
 @Data
 @AllArgsConstructor
-public
-class UpdateTagRequest {
+public class UpdateTagRequest {
     String memberId;
     String name;
 }

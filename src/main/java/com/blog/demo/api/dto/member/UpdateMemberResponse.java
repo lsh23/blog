@@ -5,8 +5,7 @@ import lombok.Data;
 
 @Data
 @AllArgsConstructor
-public
-class UpdateMemberResponse {
+public class UpdateMemberResponse {
     private String String;
     private String name;
 }

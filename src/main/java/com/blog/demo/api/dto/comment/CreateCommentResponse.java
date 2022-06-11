@@ -5,8 +5,7 @@ import lombok.Data;
 
 @Data
 @AllArgsConstructor
-public
-class CreateCommentResponse {
+public class CreateCommentResponse {
     private Long id;
     private Long postId;
     private String memberId;

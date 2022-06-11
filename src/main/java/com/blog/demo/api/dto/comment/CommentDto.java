@@ -11,8 +11,7 @@ import java.util.stream.Collectors;
 
 @Data
 @AllArgsConstructor
-public
-class CommentDto {
+public class CommentDto {
 
     public CommentDto(Long id, String text, String memberId, Long parentId, LocalDateTime createdAt, LocalDateTime updatedAt) {
         this.id = id;

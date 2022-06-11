@@ -10,8 +10,7 @@ import java.util.stream.Collectors;
 
 @Data
 @AllArgsConstructor
-public
-class CategoryDto {
+public class CategoryDto {
 
     public CategoryDto(Long id, String name) {
         this.id = id;

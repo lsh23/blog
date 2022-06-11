@@ -6,8 +6,7 @@ import lombok.Data;
 import java.util.List;
 
 @Data
-public
-class UpdatePostRequest {
+public class UpdatePostRequest {
     private String userId;
     private String title;
     private String contents;

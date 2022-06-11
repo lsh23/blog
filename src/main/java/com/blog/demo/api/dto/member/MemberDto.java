@@ -5,7 +5,6 @@ import lombok.Data;
 
 @Data
 @AllArgsConstructor
-public
-class MemberDto {
+public class MemberDto {
     private String name;
 }

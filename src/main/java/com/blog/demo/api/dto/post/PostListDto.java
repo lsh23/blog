@@ -9,8 +9,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Data
-public
-class PostListDto {
+public class PostListDto {
     private Long id;
     private String title;
     private String content;

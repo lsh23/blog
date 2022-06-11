@@ -5,8 +5,7 @@ import lombok.Data;
 
 @Data
 @AllArgsConstructor
-public
-class DeleteTagResponse {
+public class DeleteTagResponse {
     private Long id;
     private String name;
 }
