@@ -124,7 +124,7 @@ class CategoryServiceTest {
         categoryService.save(category2);
 
         // when
-        List<CategoryDto> categoriesByMember = categoryService.findCategoriesByMember(member.getId());
+        List<CategoryDto> categoriesByMember = categoryService.findAllRootCategories(member.getId());
 
         // then
         assertThat(categoriesByMember.size()).isEqualTo(2);

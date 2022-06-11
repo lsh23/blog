@@ -50,10 +50,10 @@ public class CategoryService {
     }
 
     @Transactional(readOnly = true)
-    public List<CategoryDto> findCategoriesByMember(String MemberId){
-        List<Category> categories = categoryRepository.findCategoriesByMember(MemberId);
-        List<CategoryDto> categoryDtos = categories.stream()
-                .filter(c -> c.getParent() == null)
+    public List<CategoryDto> findAllRootCategories(String memberId) {
+        List<Category> allRootCategories;
+        allRootCategories = categoryRepository.findAllRootCategoriesByMember(memberId);
+        List<CategoryDto> categoryDtos = allRootCategories.stream()
                 .map(c -> new CategoryDto(c))
                 .collect(Collectors.toList());
         return categoryDtos;
