@@ -91,8 +91,8 @@ class CategoryServiceTest {
                 .name("child2")
                 .build();
 
-        childCategory1.updateParent(parentCategory1);
-        childCategory2.updateParent(parentCategory2);
+        childCategory1.assignParent(parentCategory1);
+        childCategory2.assignParent(parentCategory2);
 
         categoryService.save(parentCategory1);
         categoryService.save(parentCategory2);

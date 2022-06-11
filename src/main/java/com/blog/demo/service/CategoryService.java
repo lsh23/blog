@@ -67,16 +67,16 @@ public class CategoryService {
     public CategoryDto createCategory(CreateCategoryRequest createCategoryRequest) {
         Member findMember = memberRepository.findOne(createCategoryRequest.getMemberId());
 
-        Category.CategoryBuilder builder = Category.builder()
+        Category category = Category.builder()
                 .member(findMember)
-                .name(createCategoryRequest.getName());
+                .name(createCategoryRequest.getName())
+                .build();
 
         if(createCategoryRequest.getParentId() != null){
             Category findCategory = findOne(createCategoryRequest.getParentId());
-            builder.parent(findCategory);
+            category.assignParent(findCategory);
         }
 
-        Category category = builder.build();
         categoryRepository.save(category);
 
         return new CategoryDto(category.getId(),category.getName());
@@ -92,7 +92,7 @@ public class CategoryService {
 
         if(updateCategoryRequest.getParentId() != null){
             Category findCategory = findOne(updateCategoryRequest.getParentId());
-            category.updateParent(findCategory);
+            category.assignParent(findCategory);
         }
 
         return new CategoryDto(category.getId(),category.getName());
