@@ -23,7 +23,7 @@ public class CommentApiController {
 
     @GetMapping
     public Result getComments(@RequestParam(value="postId", required = false) Long postId){
-        List<CommentDto> commentDtos = commentService.findAll(postId);
+        List<CommentDto> commentDtos = commentService.findAllRootComment(postId);
         Integer totalCommentCount = commentDtos.stream().map(c -> c.getChild().size()).reduce(commentDtos.size(), Integer::sum);
         return new Result(totalCommentCount, commentDtos);
     }

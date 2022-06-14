@@ -39,18 +39,18 @@ public class CommentService {
     }
 
     @Transactional(readOnly = true)
-    public List<CommentDto> findAll(Long postId) {
-        return getAllComment(postId).stream()
+    public List<CommentDto> findAllRootComment(Long postId) {
+        return getAllRootComment(postId).stream()
                 .map(CommentDto::new)
                 .collect(Collectors.toList());
     }
 
-    private List<Comment> getAllComment(Long postId){
+    private List<Comment> getAllRootComment(Long postId){
 
         if (postId == null) {
-            return commentRepository.findAll();
+            return commentRepository.findAllRootComment();
         }
-        return commentRepository.findAllByPostId(postId);
+        return commentRepository.findAllRootCommentByPostId(postId);
     }
 
     public CommentDto createComment(CreateCommentRequest createCommentRequest) {
