@@ -41,22 +41,17 @@ public class CategoryService {
     }
 
     @Transactional(readOnly = true)
-    public List<CategoryDto> findAllRootCategories() {
-        List<Category> allRootCategories = categoryRepository.findAllRootCategories();
-        List<CategoryDto> categoryDtos = allRootCategories.stream()
+    public List<CategoryDto> findAllRootCategories(String memberId) {
+        return getRootCategories(memberId).stream()
                 .map(c -> new CategoryDto(c))
                 .collect(Collectors.toList());
-        return categoryDtos;
     }
 
-    @Transactional(readOnly = true)
-    public List<CategoryDto> findAllRootCategories(String memberId) {
-        List<Category> allRootCategories;
-        allRootCategories = categoryRepository.findAllRootCategoriesByMember(memberId);
-        List<CategoryDto> categoryDtos = allRootCategories.stream()
-                .map(c -> new CategoryDto(c))
-                .collect(Collectors.toList());
-        return categoryDtos;
+    private List<Category> getRootCategories(String memberId) {
+        if (memberId == null) {
+            return categoryRepository.findAllRootCategories();
+        }
+        return categoryRepository.findAllRootCategoriesByMember(memberId);
     }
 
     public CategoryDto deleteOne(Long id) {
