@@ -13,6 +13,14 @@ import java.util.stream.Collectors;
 @AllArgsConstructor
 public class CommentDto {
 
+    private Long id;
+    private String text;
+    private String memberId;
+    private Long parentId;
+    private LocalDateTime createdAt;
+    private LocalDateTime updatedAt;
+    private List<CommentDto> child;
+
     public CommentDto(Long id, String text, String memberId, Long parentId, LocalDateTime createdAt, LocalDateTime updatedAt) {
         this.id = id;
         this.text = text;
@@ -26,18 +34,11 @@ public class CommentDto {
         this.id = comment.getId();
         this.text = comment.getText();
         this.memberId = comment.getMember().getId();
+        this.createdAt = comment.getCreatedAt();
+        this.updatedAt = comment.getUpdatedAt();
         this.child = comment.getChild().stream()
                 .map(c -> new CommentDto(c.getId(), c.getText(), c.getMember().getId(), c.getParent().getId(), c.getCreatedAt(), c.getUpdatedAt()))
                 .collect(Collectors.toList());
-        this.createdAt = comment.getCreatedAt();
-        this.updatedAt = comment.getUpdatedAt();
     }
 
-    private Long id;
-    private String text;
-    private String memberId;
-    private Long parentId;
-    private List<CommentDto> child;
-    private LocalDateTime createdAt;
-    private LocalDateTime updatedAt;
 }
