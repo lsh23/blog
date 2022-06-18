@@ -1,12 +1,12 @@
 package com.blog.demo.api.dto.post;
 
 import com.blog.demo.api.dto.posttag.PostTagDto;
-import com.blog.demo.domain.PostTag;
+import com.blog.demo.domain.Post;
+
 import lombok.Data;
 
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Data
 public class PostListDto {
@@ -18,13 +18,13 @@ public class PostListDto {
     private String categoryName;
     private List<PostTagDto> postTags;
 
-    public PostListDto(Long id, String title, String content, LocalDateTime createdAt, LocalDateTime modifiedAt, String categoryName, List<PostTag> postTags) {
-        this.id = id;
-        this.title = title;
-        this.content = content;
-        this.createdAt = createdAt;
-        this.modifiedAt = modifiedAt;
-        this.categoryName = categoryName;
-        this.postTags = postTags.stream().map(pt -> new PostTagDto(pt)).collect(Collectors.toList());
+    public PostListDto(Post post) {
+        this.id = post.getId();
+        this.title = post.getTitle();
+        this.content = post.getContent();
+        this.createdAt = post.getCreatedAt();
+        this.modifiedAt = post.getUpdatedAt();
+        this.categoryName = post.getCategory().getName();
+        this.postTags = PostTagDto.toList(post.getPostTags());
     }
 }

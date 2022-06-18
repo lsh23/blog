@@ -1,14 +1,19 @@
 package com.blog.demo.api.dto.tag;
 
+import com.blog.demo.domain.Tag;
 import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 
-@Data
+@Data @Getter @Setter
 public class TagDto {
     private Long id;
     private String name;
 
-    public TagDto(Long id, String name) {
-        this.id = id;
-        this.name = name;
+    public TagDto(){}
+
+    public TagDto(Tag tag) {
+        this.id = tag.getId();
+        this.name = tag.getName();
     }
 }
