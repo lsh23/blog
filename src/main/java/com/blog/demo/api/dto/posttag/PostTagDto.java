@@ -10,10 +10,12 @@ import java.util.stream.Collectors;
 public class PostTagDto {
 
     private Long id;
+    private Long tagId;
     private String name;
 
     public PostTagDto(PostTag postTag) {
         this.id = postTag.getId();
+        this.tagId = postTag.getTag().getId();
         this.name = postTag.getTag().getName();
     }
 
