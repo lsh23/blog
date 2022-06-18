@@ -21,7 +21,7 @@ public class CategoryDto {
         this.id = category.getId();
         this.name = category.getName();
         this.child = category.getChild().stream()
-                .map(c -> new CategoryDto(c.getId(), c.getName()))
+                .map(CategoryDto::new)
                 .collect(Collectors.toList());
     }
 
