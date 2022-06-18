@@ -1,9 +1,9 @@
 package com.blog.demo.api;
 
+import com.blog.demo.api.dto.auth.CreateLoginRequest;
+import com.blog.demo.api.dto.auth.CreateLoginResponse;
 import com.blog.demo.domain.Member;
 import com.blog.demo.service.MemberService;
-import lombok.AllArgsConstructor;
-import lombok.Data;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
@@ -23,19 +23,5 @@ public class AuthApiController {
         }
 
         return new CreateLoginResponse(findMember.getId(), findMember.getName(),404);
-    }
-
-    @Data
-    @AllArgsConstructor
-    static class CreateLoginResponse {
-        private String id;
-        private String name;
-        private int status;
-    }
-    @Data
-    @AllArgsConstructor
-    static class CreateLoginRequest {
-        private String id;
-        private String password;
     }
 }
