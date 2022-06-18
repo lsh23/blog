@@ -26,9 +26,10 @@ public class PostRepository {
         return em.find(Post.class, id);
     }
 
-    public void deleteOne(Long id) {
+    public Post deleteOne(Long id) {
         Post removedOne = findOne(id);
         em.remove(removedOne);
+        return removedOne;
     }
 
     public List<Post> findPosts(PostSearch postSearch) {
