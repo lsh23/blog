@@ -8,7 +8,7 @@ import java.util.List;
 @Data
 public
 class CreatePostRequest {
-    private String userId;
+    private String memberId;
     private String title;
     private String contents;
     private Long categoryId;
