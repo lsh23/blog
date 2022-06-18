@@ -24,47 +24,26 @@ public class TagApiController {
     @GetMapping
     public Result getPostags(
             @RequestParam(value = "memberId", required = false) String memberId){
-
-        Stream<Tag> tagStream;
-
-        if (memberId != null){
-            tagStream = tagService.findAllByMemberId(memberId).stream();
-        }
-        else{
-            tagStream = tagService.findAll().stream();
-        }
-
-        List<TagDto> tagDtos = tagStream.map(t -> new TagDto(t.getId(), t.getName())).collect(Collectors.toList());
+        List<TagDto> tagDtos = tagService.findAll(memberId);
         return new Result(tagDtos.size(), tagDtos);
     }
 
     @PostMapping
     public CreateTagResponse createTag(@RequestBody @Valid CreateTagRequest createTagRequest){
-
-        String name = createTagRequest.getName();
-        String memberId = createTagRequest.getMemberId();
-        Member findMember = memberService.findOne(memberId);
-        Tag tag = Tag.builder()
-                .name(name)
-                .member(findMember)
-                .build();
-        tagService.save(tag);
-        return new CreateTagResponse(tag.getId(), tag.getName());
+        TagDto tagDto = tagService.createTag(createTagRequest);
+        return new CreateTagResponse(tagDto.getId(), tagDto.getName());
     }
 
     @PatchMapping("/{id}")
     public UpdateTagResponse updateTag(@RequestBody @Valid UpdateTagRequest updateTagRequest, @PathVariable("id") Long id){
-        Tag tag = tagService.findOne(id);
-        String name = updateTagRequest.getName();
-        tag.updateName(name);
-        return new UpdateTagResponse(tag.getId(), tag.getName());
+        TagDto tagDto = tagService.updateTag(id, updateTagRequest);
+        return new UpdateTagResponse(tagDto.getId(), tagDto.getName());
     }
 
     @DeleteMapping("/{id}")
     public DeleteTagResponse deleteTag(@PathVariable("id") Long id){
-        Tag tag = tagService.findOne(id);
-        tagService.deleteOne(id);
-        return new DeleteTagResponse(tag.getId(), tag.getName());
+        TagDto deleteOne = tagService.deleteOne(id);
+        return new DeleteTagResponse(deleteOne.getId(), deleteOne.getName());
     }
 }
 
