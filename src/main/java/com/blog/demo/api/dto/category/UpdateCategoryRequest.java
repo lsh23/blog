@@ -4,11 +4,12 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 
 import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 
 @Data
 @AllArgsConstructor
 public class UpdateCategoryRequest {
-    @NotEmpty
+    @NotNull
     private Long id;
     private String memberId;
     private Long parentId;
