@@ -43,7 +43,7 @@ class PostServiceTest {
     @Test
     @DisplayName("Post 단순 저장")
 
-    void save() {
+    void saveTest() {
         //given
         Post post = Post.builder()
                 .title("title")
@@ -59,7 +59,7 @@ class PostServiceTest {
 
     @Test
     @DisplayName("Post 단순 조회")
-    void findOne() {
+    void findOneTest() {
         //given
         Member member = Member.builder().id("member").build();
         memberRepository.save(member);
@@ -83,7 +83,7 @@ class PostServiceTest {
 
     @Test
     @DisplayName("Post 리스트 조회")
-    void findPosts() {
+    void findPostsTest() {
         //given
         Member member = Member.builder().id("member").build();
         memberRepository.save(member);
@@ -116,7 +116,7 @@ class PostServiceTest {
 
     @Test
     @DisplayName("Post 삭제")
-    void deleteOne() {
+    void deleteOneTest() {
         //given
         Post post = Post.builder()
                 .title("title")
@@ -133,7 +133,7 @@ class PostServiceTest {
 
     @Test
     @DisplayName("요청을 통한 Post 생성")
-    void createPost() {
+    void createPostTest() {
         //given
         Member member = Member.builder().id("member").build();
         memberRepository.save(member);
@@ -164,7 +164,7 @@ class PostServiceTest {
 
     @Test
     @DisplayName("요청을 통한 Post 수정")
-    void updatePost() {
+    void updatePostTest() {
         //given
         Member member = Member.builder().id("member").build();
         memberRepository.save(member);

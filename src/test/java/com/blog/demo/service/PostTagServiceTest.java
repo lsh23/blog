@@ -52,7 +52,7 @@ class PostTagServiceTest {
 
     @Test
     @DisplayName("PostTag 단순 조회")
-    void findOne() {
+    void findOneTest() {
         // given
         Tag tag = Tag.builder().name("tag").build();
         tagRepository.save(tag);
@@ -69,7 +69,7 @@ class PostTagServiceTest {
 
     @Test
     @DisplayName("PostTag 리스트 조회")
-    void findPostTags() {
+    void findPostTagsTest() {
         // given
         Post post = Post.builder().build();
         postRepository.save(post);
@@ -96,7 +96,7 @@ class PostTagServiceTest {
 
     @Test
     @DisplayName("PostTag 삭제")
-    void deleteOne() {
+    void deleteOneTest() {
         // given
         Tag tag = Tag.builder().name("tag").build();
         tagRepository.save(tag);
@@ -113,7 +113,7 @@ class PostTagServiceTest {
 
     @Test
     @DisplayName("Tag 리스트를 이용한 PostTag 생성")
-    void saveByTags() {
+    void saveByTagsTest() {
         // given
         Post post = Post.builder().build();
         postRepository.save(post);
@@ -136,7 +136,7 @@ class PostTagServiceTest {
 
     @Test
     @DisplayName("PostTag 갱신")
-    void updatePostTag() {
+    void updatePostTagTest() {
         // given
         // given
         Post post = Post.builder().build();

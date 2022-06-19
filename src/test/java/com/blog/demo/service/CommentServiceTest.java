@@ -36,7 +36,7 @@ class CommentServiceTest {
     PostRepository postRepository;
     @Test
     @DisplayName("comment 저장")
-    void save() {
+    void saveTest() {
         //given
         Comment comment = Comment.builder().text("text").build();
 
@@ -50,7 +50,7 @@ class CommentServiceTest {
 
     @Test
     @DisplayName("comment 단일 조회")
-    void findOne() {
+    void findOneTest() {
         //given
         Comment comment = Comment.builder().text("text").build();
         Long commentId = commentService.save(comment);
@@ -64,7 +64,7 @@ class CommentServiceTest {
 
     @Test
     @DisplayName("comment 리스트 조회")
-    void findAll() {
+    void findAllTest() {
         //given
         Member member = Member.builder().id("member").build();
         memberRepository.save(member);
@@ -83,7 +83,7 @@ class CommentServiceTest {
 
     @Test
     @DisplayName("comment 리스트 조회 by post")
-    void findAllByPostId() {
+    void findAllByPostIdTest() {
         //given
         Member member = Member.builder().id("member").build();
         memberRepository.save(member);
@@ -105,7 +105,7 @@ class CommentServiceTest {
 
     @Test
     @DisplayName("createComment 저장")
-    void createComment() {
+    void createCommentTest() {
         //given
         Member member = Member.builder().id("member").build();
         memberRepository.save(member);

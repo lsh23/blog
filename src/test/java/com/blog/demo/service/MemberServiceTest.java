@@ -29,7 +29,7 @@ class MemberServiceTest {
 
     @Test
     @DisplayName("Member 단순 저장")
-    void save() {
+    void saveTest() {
         // given
         Member member = Member.builder()
                 .id("id")
@@ -46,7 +46,7 @@ class MemberServiceTest {
 
     @Test
     @DisplayName("요청을 통한 Member 생성")
-    void createUser() {
+    void createUserTest() {
         // given
         CreateMemberRequest createMemberRequest = new CreateMemberRequest();
         createMemberRequest.setId("id");
@@ -65,7 +65,7 @@ class MemberServiceTest {
 
     @Test
     @DisplayName("요청을 통한 Member 수정")
-    void update() {
+    void updateTest() {
         // given
         Member member = Member.builder()
                 .id("id")
@@ -84,7 +84,7 @@ class MemberServiceTest {
 
     @Test
     @DisplayName("Member 단순 조회")
-    void findOne() {
+    void findOneTest() {
         // given
         Member member = Member.builder()
                 .id("id")
@@ -101,7 +101,7 @@ class MemberServiceTest {
 
     @Test
     @DisplayName("Member 전체 조회")
-    void findAll() {
+    void findAllTest() {
         // given
         Member member1 = Member.builder()
                 .id("id1")

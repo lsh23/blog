@@ -36,7 +36,7 @@ class TagServiceTest {
 
     @Test
     @DisplayName("Tag 단순 저장")
-    void save() {
+    void saveTest() {
         //given
         Tag tag = Tag.builder().name("tag").build();
 
@@ -50,7 +50,7 @@ class TagServiceTest {
 
     @Test
     @DisplayName("Tag 단순 조회")
-    void findOne() {
+    void findOneTest() {
         //given
         Tag tag = Tag.builder().name("tag").build();
         tagRepository.save(tag);
@@ -64,7 +64,7 @@ class TagServiceTest {
 
     @Test
     @DisplayName("Tag 리스트 조회")
-    void findAll() {
+    void findAllTest() {
         //given
         Tag tag1 = Tag.builder().name("tag1").build();
         Tag tag2 = Tag.builder().name("tag2").build();
@@ -80,7 +80,7 @@ class TagServiceTest {
 
     @Test
     @DisplayName("Tag 삭제")
-    void deleteOne() {
+    void deleteOneTest() {
         //given
         Tag tag = Tag.builder().name("tag").build();
         tagRepository.save(tag);
@@ -94,7 +94,7 @@ class TagServiceTest {
 
     @Test
     @DisplayName("요청에 의한 Tag 생성")
-    void createTag() {
+    void createTagTest() {
         //given
         Member member = Member.builder().id("member").build();
         memberRepository.save(member);
@@ -109,7 +109,7 @@ class TagServiceTest {
 
     @Test
     @DisplayName("Tag 수정")
-    void updateTag() {
+    void updateTagTest() {
         //given
         Member member = Member.builder().id("member").build();
         memberRepository.save(member);
@@ -126,7 +126,7 @@ class TagServiceTest {
 
     @Test
     @DisplayName("Tag bulk update")
-    void bulkSearchAndIfNoneCreate() {
+    void bulkSearchAndIfNoneCreateTest() {
         //given
         Member member = Member.builder().id("member").build();
         memberRepository.save(member);
