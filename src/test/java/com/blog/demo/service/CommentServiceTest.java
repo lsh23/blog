@@ -113,10 +113,12 @@ class CommentServiceTest {
         Post post = Post.builder().title("title").build();
         postRepository.save(post);
 
-        CreateCommentRequest createCommentRequest = new CreateCommentRequest();
-        createCommentRequest.setMemberId(member.getId());
-        createCommentRequest.setPostId(post.getId());
-        createCommentRequest.setText("text");
+        CreateCommentRequest createCommentRequest = CreateCommentRequest
+                .builder()
+                .memberId(member.getId())
+                .postId(post.getId())
+                .text("text")
+                .build();
 
         //when
         CommentDto comment = commentService.createComment(createCommentRequest);

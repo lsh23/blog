@@ -98,7 +98,10 @@ class TagServiceTest {
         //given
         Member member = Member.builder().id("member").build();
         memberRepository.save(member);
-        CreateTagRequest createTagRequest = new CreateTagRequest(member.getId(),"tag");
+        CreateTagRequest createTagRequest = CreateTagRequest.builder()
+                .memberId(member.getId())
+                .name("tag")
+                .build();
 
         //when
         TagDto tag = tagService.createTag(createTagRequest);
@@ -113,11 +116,19 @@ class TagServiceTest {
         //given
         Member member = Member.builder().id("member").build();
         memberRepository.save(member);
-        CreateTagRequest createTagRequest = new CreateTagRequest(member.getId(),"tag");
+        CreateTagRequest createTagRequest = CreateTagRequest.builder()
+                .memberId(member.getId())
+                .name("tag")
+                .build();
         TagDto tag = tagService.createTag(createTagRequest);
 
         //when
-        UpdateTagRequest updateTagRequest = new UpdateTagRequest("member", "tag2");
+        UpdateTagRequest updateTagRequest = UpdateTagRequest
+                .builder()
+                .memberId("member")
+                .name("tag2")
+                .build();
+
         TagDto tagDto = tagService.updateTag(tag.getId(), updateTagRequest);
 
         //then
@@ -131,7 +142,11 @@ class TagServiceTest {
         Member member = Member.builder().id("member").build();
         memberRepository.save(member);
 
-        CreateTagRequest createTagRequest = new CreateTagRequest(member.getId(),"tag");
+        CreateTagRequest createTagRequest = CreateTagRequest.builder()
+                .memberId(member.getId())
+                .name("tag")
+                .build();
+
         TagDto tag1Dto = tagService.createTag(createTagRequest);
 
         //when

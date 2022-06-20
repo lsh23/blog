@@ -141,17 +141,20 @@ class PostServiceTest {
         categoryRepository.save(category);
 
         //when
-        CreatePostRequest createPostRequest = new CreatePostRequest();
-        createPostRequest.setMemberId(member.getId());
-        createPostRequest.setCategoryId(category.getId());
-        createPostRequest.setContents("content");
-        createPostRequest.setTitle("title");
+
         Tag tag = Tag.builder().name("tag").build();
         TagDto tagDto = new TagDto(tag);
         tagDto.setId(-1L);
         List<TagDto> tagDtos = new ArrayList<>();
         tagDtos.add(tagDto);
-        createPostRequest.setTags(tagDtos);
+
+        CreatePostRequest createPostRequest = CreatePostRequest.builder()
+                .memberId(member.getId())
+                .categoryId(category.getId())
+                .contents("content")
+                .title("title")
+                .tags(tagDtos)
+                .build();
 
         PostDto post = postService.createPost(createPostRequest);
 
@@ -171,16 +174,20 @@ class PostServiceTest {
         Category category = Category.builder().member(member).name("category").build();
         categoryRepository.save(category);
 
-        CreatePostRequest createPostRequest = new CreatePostRequest();
-        createPostRequest.setMemberId(member.getId());
-        createPostRequest.setCategoryId(category.getId());
-        createPostRequest.setContents("content");
-        createPostRequest.setTitle("title");
         Tag tag = Tag.builder().name("tag").build();
         TagDto tagDto = new TagDto(tag);
         tagDto.setId(-1L);
         List<TagDto> tagDtos = new ArrayList<>();
         tagDtos.add(tagDto);
+
+        CreatePostRequest createPostRequest = CreatePostRequest.builder()
+                .memberId(member.getId())
+                .categoryId(category.getId())
+                .contents("content")
+                .title("title")
+                .tags(tagDtos)
+                .build();
+
         createPostRequest.setTags(tagDtos);
 
         PostDto post = postService.createPost(createPostRequest);
@@ -199,12 +206,14 @@ class PostServiceTest {
         newTagDtos.add(tag1Dto);
         newTagDtos.add(tag2Dto);
 
-        UpdatePostRequest updatePostRequest = new UpdatePostRequest();
-        updatePostRequest.setMemberId(member.getId());
-        updatePostRequest.setCategoryId(category2.getId());
-        updatePostRequest.setContents("content2");
-        updatePostRequest.setTitle("title2");
-        updatePostRequest.setTags(newTagDtos);
+        UpdatePostRequest updatePostRequest = UpdatePostRequest.builder()
+                .memberId(member.getId())
+                .categoryId(category2.getId())
+                .contents("content2")
+                .title("title2")
+                .tags(newTagDtos)
+                .build();
+
         PostDto postDto = postService.updatePost(post.getId(), updatePostRequest);
 
         //then

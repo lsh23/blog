@@ -1,6 +1,7 @@
 package com.blog.demo.api.dto.post;
 
 import com.blog.demo.api.dto.tag.TagDto;
+import lombok.Builder;
 import lombok.Data;
 
 import javax.validation.constraints.NotEmpty;
@@ -8,6 +9,7 @@ import javax.validation.constraints.NotNull;
 import java.util.List;
 
 @Data
+@Builder
 public class UpdatePostRequest {
     @NotEmpty
     private String memberId;

@@ -178,9 +178,10 @@ class CategoryServiceTest {
         Member member = Member.builder().id("member1").build();
         memberRepository.save(member);
 
-        CreateCategoryRequest createCategoryRequest = new CreateCategoryRequest();
-        createCategoryRequest.setMemberId(member.getId());
-        createCategoryRequest.setName("category");
+        CreateCategoryRequest createCategoryRequest = CreateCategoryRequest.builder()
+                .memberId(member.getId())
+                .name("category")
+                .build();
 
         // when
         CategoryDto category = categoryService.createCategory(createCategoryRequest);
@@ -197,14 +198,21 @@ class CategoryServiceTest {
         Member member = Member.builder().id("member1").build();
         memberRepository.save(member);
 
-        CreateCategoryRequest createCategoryRequest = new CreateCategoryRequest();
-        createCategoryRequest.setMemberId(member.getId());
-        createCategoryRequest.setName("category");
+        CreateCategoryRequest createCategoryRequest = CreateCategoryRequest.builder()
+                .memberId(member.getId())
+                .name("category")
+                .build();
         CategoryDto category = categoryService.createCategory(createCategoryRequest);
 
 
         // when
-        UpdateCategoryRequest updateCategoryRequest = new UpdateCategoryRequest(category.getId(), member.getId(), null, "category2");
+        UpdateCategoryRequest updateCategoryRequest = UpdateCategoryRequest.builder()
+                .id(category.getId())
+                .memberId(member.getId())
+                .parentId(null)
+                .name("category2")
+                .build();
+
         CategoryDto categoryDto = categoryService.updateCategory(updateCategoryRequest,category.getId());
 
         // then

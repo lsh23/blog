@@ -48,10 +48,11 @@ class MemberServiceTest {
     @DisplayName("요청을 통한 Member 생성")
     void createUserTest() {
         // given
-        CreateMemberRequest createMemberRequest = new CreateMemberRequest();
-        createMemberRequest.setId("id");
-        createMemberRequest.setName("name");
-        createMemberRequest.setPassword("password");
+        CreateMemberRequest createMemberRequest = CreateMemberRequest.builder()
+                .id("id")
+                .name("name")
+                .password("password")
+                .build();
 
         // when
         CreateMemberResponse CreateMemberResponse = memberService.createMember(createMemberRequest);
@@ -74,8 +75,10 @@ class MemberServiceTest {
         memberRepository.save(member);
 
         // when
-        UpdateMemberRequest updateMemberRequest = new UpdateMemberRequest();
-        updateMemberRequest.setName("change");
+        UpdateMemberRequest updateMemberRequest = UpdateMemberRequest.builder()
+                .name("change")
+                .build();
+
         memberService.updateMember("id", updateMemberRequest);
 
         // then
