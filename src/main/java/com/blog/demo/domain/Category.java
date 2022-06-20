@@ -41,7 +41,11 @@ public class Category {
         this.member = member;
     }
 
-    public void updateParent(Category parent) {
+    public void assignParent(Category parent) {
+        if (this.parent != null){
+            this.parent.getChild().remove(this);
+        }
         this.parent = parent;
+        parent.getChild().add(this);
     }
 }

@@ -32,19 +32,17 @@ public class Post extends BaseTimeEntity {
     private List<Comment> comments = new ArrayList<>();
 
     @Builder
-    public Post (String title, String content, Member member, Category category, List<PostTag> postTags){
+    public Post (String title, String content, Member member, Category category){
         this.title = title;
         this.content= content;
         this.member = member;
         this.category = category;
-        postTags.forEach(pt->pt.assignPost(this));
     }
 
-    public void updateAll(String title, String content, Member member, Category category, List<PostTag> postTags){
+    public void updateAll(String title, String content, Member member, Category category){
         this.title = title;
         this.content= content;
         this.member = member;
         this.category = category;
-        postTags.forEach(pt->pt.assignPost(this));
     }
 }

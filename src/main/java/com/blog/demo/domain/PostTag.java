@@ -28,6 +28,7 @@ public class PostTag {
 
     public void assignPost(Post post) {
         this.post = post;
+        post.getPostTags().add(this);
     }
 }
 

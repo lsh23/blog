@@ -1,27 +1,35 @@
 package com.blog.demo.service;
 
-import com.blog.demo.api.dto.TagDto;
+import com.blog.demo.api.dto.post.CreatePostRequest;
+import com.blog.demo.api.dto.post.PostDto;
+import com.blog.demo.api.dto.post.PostListDto;
+import com.blog.demo.api.dto.post.UpdatePostRequest;
+import com.blog.demo.api.dto.posttag.PostTagDto;
+import com.blog.demo.api.dto.tag.TagDto;
 import com.blog.demo.domain.*;
+import com.blog.demo.repository.CategoryRepository;
+import com.blog.demo.repository.MemberRepository;
 import com.blog.demo.repository.PostRepository;
 import com.blog.demo.repository.PostSearch;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @Transactional
 public class PostService {
     private final PostRepository postRepository;
-    private final MemberService memberService;
-    private final CategoryService categoryService;
+    private final MemberRepository memberRepository;
+    private final CategoryRepository categoryRepository;
     private final TagService tagService;
     private final PostTagService postTagService;
 
-    public PostService(PostRepository postRepository, MemberService memberService, CategoryService categoryService, com.blog.demo.service.TagService tagService, PostTagService postTagService) {
+    public PostService(PostRepository postRepository, MemberRepository memberRepository, CategoryRepository categoryRepository, com.blog.demo.service.TagService tagService, PostTagService postTagService) {
         this.postRepository = postRepository;
-        this.memberService = memberService;
-        this.categoryService = categoryService;
+        this.memberRepository = memberRepository;
+        this.categoryRepository = categoryRepository;
         this.tagService = tagService;
         this.postTagService = postTagService;
     }
@@ -31,47 +39,73 @@ public class PostService {
         return post.getId();
     }
 
-    public Post findOne(long id) {
-        return postRepository.findOne(id);
+    public PostDto findOne(long id) {
+        Post findOne = postRepository.findOne(id);
+        return new PostDto(findOne);
     }
 
     @Transactional(readOnly = true)
-    public List<Post> findPosts(PostSearch postSearch) {
-        return postRepository.findPosts(postSearch);
+    public List<PostListDto> findPosts(String memberId, Long categoryId) {
+        PostSearch postSearch = new PostSearch();
+        postSearch.setMemberId(memberId);
+        postSearch.setCategoryId(categoryId);
+        return postRepository.findPosts(postSearch).stream()
+                .map(PostListDto::new)
+                .collect(Collectors.toList());
     }
 
-    public void deleteOne(long id) { postRepository.deleteOne(id); }
+    public PostDto deleteOne(long id) {
+        Post post = postRepository.deleteOne(id);
+        return new PostDto(post); }
 
-    public Post writePost(String title, String contents, String memberId, Long categoryId, List<TagDto> tagDtos) {
-        Member member = memberService.findOne(memberId);
-        Category category = categoryService.findOne(categoryId);
+    public PostDto createPost(CreatePostRequest createPostRequest) {
 
-        List<Tag> tags = tagService.bulkSearchAndIfNoneCreate(tagDtos, member);
-        List<PostTag> postTags = postTagService.saveByTags(tags);
+        String title = createPostRequest.getTitle();
+        String contents = createPostRequest.getContents();
+
+        String memberId = createPostRequest.getMemberId();
+        Long categoryId = createPostRequest.getCategoryId();
+
+        Member member = memberRepository.findOne(memberId);
+        Category category = categoryRepository.findOne(categoryId);
 
         Post post = Post.builder()
                 .title(title)
                 .content(contents)
                 .member(member)
                 .category(category)
-                .postTags(postTags)
                 .build();
 
         postRepository.save(post);
 
-        return post;
+        List<TagDto> tagDtos = createPostRequest.getTags();
+        List<TagDto> resultTagDtos = tagService.bulkSearchAndIfNoneCreate(memberId, tagDtos);
+        List<PostTagDto> postTags = postTagService.saveByTags(post.getId() ,resultTagDtos);
+
+
+
+        return new PostDto(post);
     }
 
-    public Post updatePost(Long postId, String title, String contents, String memberId, Long categoryId, List<TagDto> tagDtos) {
+    public PostDto updatePost(Long postId, UpdatePostRequest updatePostRequest) {
+        String title = updatePostRequest.getTitle();
+        String contents = updatePostRequest.getContents();
+
+        String memberId = updatePostRequest.getMemberId();
+        Long categoryId = updatePostRequest.getCategoryId();
+
+        List<TagDto> tagDtos = updatePostRequest.getTags();
+
         Post post = postRepository.findOne(postId);
+        Member member = memberRepository.findOne(memberId);
 
-        Member member = memberService.findOne(memberId);
-        Category category = categoryService.findOne(categoryId);
-        List<Tag> tags = tagService.bulkSearchAndIfNoneCreate(tagDtos, member);
-        List<PostTag> postTags = postTagService.updatePostTag(post,tags);
+        Category category = categoryRepository.findOne(categoryId);
 
-        post.updateAll(title, contents, member, category, postTags);
+        post.updateAll(title, contents, member, category);
 
-        return post;
+        List<TagDto> resultTagDtos = tagService.bulkSearchAndIfNoneCreate(memberId, tagDtos);
+        List<PostTagDto> postTags = postTagService.updatePostTag(postId,resultTagDtos);
+
+        return new PostDto(post);
     }
 }

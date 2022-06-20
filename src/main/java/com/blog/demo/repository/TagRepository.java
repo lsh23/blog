@@ -25,9 +25,10 @@ public class TagRepository {
         return em.find(Tag.class, id);
     }
 
-    public void deleteOne(Long id) {
+    public Tag deleteOne(Long id) {
         Tag deletedOne = findOne(id);
         em.remove(deletedOne);
+        return deletedOne;
     }
 
     public List<Tag> findAllByMemberId(String memberId) {

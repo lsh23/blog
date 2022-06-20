@@ -1,17 +1,17 @@
-package com.blog.demo.api.dto.member;
+package com.blog.demo.api.dto.auth;
 
-import lombok.Builder;
+import lombok.AllArgsConstructor;
 import lombok.Data;
 
 import javax.validation.constraints.NotEmpty;
 
+
 @Data
-@Builder
-public class CreateMemberRequest {
+@AllArgsConstructor
+public class CreateLoginRequest {
+    CreateLoginRequest() {}
     @NotEmpty
     private String id;
-    @NotEmpty
-    private String name;
     @NotEmpty
     private String password;
 }

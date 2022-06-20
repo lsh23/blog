@@ -32,8 +32,9 @@ public class PostTagRepository {
                 .getResultList();
     }
 
-    public void deleteOne(Long id) {
-        PostTag removedOne = findOne(id);
-        em.remove(removedOne);
+    public PostTag deleteOne(Long id) {
+        PostTag deletedOne = findOne(id);
+        em.remove(deletedOne);
+        return deletedOne;
     }
 }

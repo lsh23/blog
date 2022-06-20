@@ -22,7 +22,7 @@ public class CategoryRepository {
     }
 
     public List<Category> findAllRootCategories(){
-        return em.createQuery("select c from Category c where c.parent is null ", Category.class)
+        return em.createQuery("select c from Category c where c.parent is null", Category.class)
                 .getResultList();
     }
 
@@ -30,16 +30,18 @@ public class CategoryRepository {
         return em.find(Category.class, id);
     }
 
-    public void deleteOne(Long id) {
+    public Category deleteOne(Long id) {
         Category deletedOne = findOne(id);
         em.remove(deletedOne);
+        return deletedOne;
     }
 
-    public List<Category> findCategoriesWithMember(String memberId) {
+    public List<Category> findAllRootCategoriesByMember(String memberId) {
         return em.createQuery(
                 "select c from Category c" +
                             " join fetch c.member m "+
-                            " where m.id =:memberId", Category.class)
+                            " where m.id =:memberId" +
+                            " and c.parent is null", Category.class)
                 .setParameter("memberId",memberId)
                 .getResultList();
     }
