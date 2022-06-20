@@ -35,8 +35,8 @@ class TagServiceTest {
     TagService tagService;
 
     @Test
-    @DisplayName("Tag 단순 저장")
-    void saveTest() {
+    @DisplayName("Tag 단순 저장 - 성공")
+    void saveTest_success() {
         //given
         Tag tag = Tag.builder().name("tag").build();
 
@@ -49,8 +49,8 @@ class TagServiceTest {
     }
 
     @Test
-    @DisplayName("Tag 단순 조회")
-    void findOneTest() {
+    @DisplayName("Tag 단순 조회 - 성공")
+    void findOneTest_success() {
         //given
         Tag tag = Tag.builder().name("tag").build();
         tagRepository.save(tag);
@@ -63,8 +63,8 @@ class TagServiceTest {
     }
 
     @Test
-    @DisplayName("Tag 리스트 조회")
-    void findAllTest() {
+    @DisplayName("Tag 리스트 조회 - 성공")
+    void findAllTest_success() {
         //given
         Tag tag1 = Tag.builder().name("tag1").build();
         Tag tag2 = Tag.builder().name("tag2").build();
@@ -79,8 +79,8 @@ class TagServiceTest {
     }
 
     @Test
-    @DisplayName("Tag 삭제")
-    void deleteOneTest() {
+    @DisplayName("Tag 삭제 - 성공")
+    void deleteOneTest_success() {
         //given
         Tag tag = Tag.builder().name("tag").build();
         tagRepository.save(tag);
@@ -93,8 +93,8 @@ class TagServiceTest {
     }
 
     @Test
-    @DisplayName("요청에 의한 Tag 생성")
-    void createTagTest() {
+    @DisplayName("요청에 의한 Tag 생성 - 성공")
+    void createTagTest_success() {
         //given
         Member member = Member.builder().id("member").build();
         memberRepository.save(member);
@@ -111,8 +111,8 @@ class TagServiceTest {
     }
 
     @Test
-    @DisplayName("Tag 수정")
-    void updateTagTest() {
+    @DisplayName("Tag 수정 - 성공")
+    void updateTagTest_success() {
         //given
         Member member = Member.builder().id("member").build();
         memberRepository.save(member);
@@ -136,8 +136,8 @@ class TagServiceTest {
     }
 
     @Test
-    @DisplayName("Tag bulk update")
-    void bulkSearchAndIfNoneCreateTest() {
+    @DisplayName("Tag bulk update - 성공")
+    void bulkSearchAndIfNoneCreateTest_success() {
         //given
         Member member = Member.builder().id("member").build();
         memberRepository.save(member);

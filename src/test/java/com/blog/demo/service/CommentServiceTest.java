@@ -35,8 +35,8 @@ class CommentServiceTest {
     @Autowired
     PostRepository postRepository;
     @Test
-    @DisplayName("comment 저장")
-    void saveTest() {
+    @DisplayName("comment 저장 - 성공")
+    void saveTest_success() {
         //given
         Comment comment = Comment.builder().text("text").build();
 
@@ -49,8 +49,8 @@ class CommentServiceTest {
 
 
     @Test
-    @DisplayName("comment 단일 조회")
-    void findOneTest() {
+    @DisplayName("comment 단일 조회 - 성공")
+    void findOneTest_success() {
         //given
         Comment comment = Comment.builder().text("text").build();
         Long commentId = commentService.save(comment);
@@ -63,8 +63,8 @@ class CommentServiceTest {
     }
 
     @Test
-    @DisplayName("comment 리스트 조회")
-    void findAllTest() {
+    @DisplayName("comment 리스트 조회 - 성공")
+    void findAllTest_success() {
         //given
         Member member = Member.builder().id("member").build();
         memberRepository.save(member);
@@ -82,8 +82,8 @@ class CommentServiceTest {
     }
 
     @Test
-    @DisplayName("comment 리스트 조회 by post")
-    void findAllByPostIdTest() {
+    @DisplayName("comment 리스트 조회 by post - 성공")
+    void findAllByPostIdTest_success() {
         //given
         Member member = Member.builder().id("member").build();
         memberRepository.save(member);
@@ -104,8 +104,8 @@ class CommentServiceTest {
     }
 
     @Test
-    @DisplayName("createComment 저장")
-    void createCommentTest() {
+    @DisplayName("createComment 저장 - 성공")
+    void createCommentTest_success() {
         //given
         Member member = Member.builder().id("member").build();
         memberRepository.save(member);

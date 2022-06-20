@@ -41,9 +41,9 @@ class PostServiceTest {
     CategoryRepository categoryRepository;
 
     @Test
-    @DisplayName("Post 단순 저장")
+    @DisplayName("Post 단순 저장 - 성공")
 
-    void saveTest() {
+    void saveTest_success() {
         //given
         Post post = Post.builder()
                 .title("title")
@@ -58,8 +58,8 @@ class PostServiceTest {
     }
 
     @Test
-    @DisplayName("Post 단순 조회")
-    void findOneTest() {
+    @DisplayName("Post 단순 조회 - 성공")
+    void findOneTest_success() {
         //given
         Member member = Member.builder().id("member").build();
         memberRepository.save(member);
@@ -82,8 +82,8 @@ class PostServiceTest {
     }
 
     @Test
-    @DisplayName("Post 리스트 조회")
-    void findPostsTest() {
+    @DisplayName("Post 리스트 조회 - 성공")
+    void findPostsTest_success() {
         //given
         Member member = Member.builder().id("member").build();
         memberRepository.save(member);
@@ -115,8 +115,8 @@ class PostServiceTest {
     }
 
     @Test
-    @DisplayName("Post 삭제")
-    void deleteOneTest() {
+    @DisplayName("Post 삭제 - 성공")
+    void deleteOneTest_success() {
         //given
         Post post = Post.builder()
                 .title("title")
@@ -132,8 +132,8 @@ class PostServiceTest {
     }
 
     @Test
-    @DisplayName("요청을 통한 Post 생성")
-    void createPostTest() {
+    @DisplayName("요청을 통한 Post 생성 - 성공")
+    void createPostTest_success() {
         //given
         Member member = Member.builder().id("member").build();
         memberRepository.save(member);
@@ -166,8 +166,8 @@ class PostServiceTest {
     }
 
     @Test
-    @DisplayName("요청을 통한 Post 수정")
-    void updatePostTest() {
+    @DisplayName("요청을 통한 Post 수정 - 성공")
+    void updatePostTest_success() {
         //given
         Member member = Member.builder().id("member").build();
         memberRepository.save(member);

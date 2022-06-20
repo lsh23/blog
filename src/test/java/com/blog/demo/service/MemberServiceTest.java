@@ -28,8 +28,8 @@ class MemberServiceTest {
     MemberService memberService;
 
     @Test
-    @DisplayName("Member 단순 저장")
-    void saveTest() {
+    @DisplayName("Member 단순 저장 - 성공")
+    void saveTest_success() {
         // given
         Member member = Member.builder()
                 .id("id")
@@ -45,8 +45,8 @@ class MemberServiceTest {
     }
 
     @Test
-    @DisplayName("요청을 통한 Member 생성")
-    void createUserTest() {
+    @DisplayName("요청을 통한 Member 생성 - 성공")
+    void createUserTest_success() {
         // given
         CreateMemberRequest createMemberRequest = CreateMemberRequest.builder()
                 .id("id")
@@ -65,8 +65,8 @@ class MemberServiceTest {
     }
 
     @Test
-    @DisplayName("요청을 통한 Member 수정")
-    void updateTest() {
+    @DisplayName("요청을 통한 Member 수정 - 성공")
+    void updateTest_success() {
         // given
         Member member = Member.builder()
                 .id("id")
@@ -86,8 +86,8 @@ class MemberServiceTest {
     }
 
     @Test
-    @DisplayName("Member 단순 조회")
-    void findOneTest() {
+    @DisplayName("Member 단순 조회 - 성공")
+    void findOneTest_success() {
         // given
         Member member = Member.builder()
                 .id("id")
@@ -103,8 +103,8 @@ class MemberServiceTest {
     }
 
     @Test
-    @DisplayName("Member 전체 조회")
-    void findAllTest() {
+    @DisplayName("Member 전체 조회 - 성공")
+    void findAllTest_success() {
         // given
         Member member1 = Member.builder()
                 .id("id1")

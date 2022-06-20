@@ -31,8 +31,8 @@ class CategoryServiceTest {
     MemberRepository memberRepository;
 
     @Test
-    @DisplayName("category 저장")
-    void saveTest() throws Exception {
+    @DisplayName("category 저장 - 성공")
+    void saveCategoryTest_success() throws Exception {
 
         // given
         Category category = Category.builder()
@@ -47,8 +47,8 @@ class CategoryServiceTest {
     }
 
     @Test
-    @DisplayName("category 단일 조회")
-    void findOneTest() throws Exception {
+    @DisplayName("category 단일 조회 - 성공")
+    void findOneTest_success() throws Exception {
         // given
         Category category = Category.builder()
                 .name("name")
@@ -64,8 +64,8 @@ class CategoryServiceTest {
     }
 
     @Test
-    @DisplayName("category 모든 리스트 조회")
-    void findAllTest() throws Exception {
+    @DisplayName("category 모든 리스트 조회 - 성공")
+    void findAllTest_success() throws Exception {
         // given
         Category parentCategory1 = Category.builder()
                 .name("parent1")
@@ -96,8 +96,8 @@ class CategoryServiceTest {
     }
 
     @Test
-    @DisplayName("category root 리스트 조회")
-    void findAllRootCategoriesTest() throws Exception {
+    @DisplayName("category root 리스트 조회 - 성공")
+    void findAllRootCategoriesTest_success() throws Exception {
         // given
         Category parentCategory1 = Category.builder()
                 .name("parent1")
@@ -128,8 +128,8 @@ class CategoryServiceTest {
     }
 
     @Test
-    @DisplayName("category root 리스트 by member 조회")
-    void findCategoriesByMemberTest() throws Exception {
+    @DisplayName("category root 리스트 by member 조회 - 성공")
+    void findCategoriesByMemberTest_success() throws Exception {
         // given
         Member member = Member.builder().id("member1").build();
         memberRepository.save(member);
@@ -156,8 +156,8 @@ class CategoryServiceTest {
     }
 
     @Test
-    @DisplayName("category 단일 삭제")
-    void deleteOneTest() throws Exception {
+    @DisplayName("category 단일 삭제 - 성공")
+    void deleteOneTest_success() throws Exception {
         // given
         Category category = Category.builder()
                 .name("name")
@@ -172,8 +172,8 @@ class CategoryServiceTest {
     }
 
     @Test
-    @DisplayName("category 생성")
-    void createCategoryTest() throws Exception {
+    @DisplayName("category 생성 - 성공")
+    void createCategoryTest_success() throws Exception {
         // given
         Member member = Member.builder().id("member1").build();
         memberRepository.save(member);
@@ -192,8 +192,8 @@ class CategoryServiceTest {
 
 
     @Test
-    @DisplayName("category 수정")
-    void updateCategoryTest() throws Exception {
+    @DisplayName("category 수정 - 성공")
+    void updateCategoryTest_success() throws Exception {
         // given
         Member member = Member.builder().id("member1").build();
         memberRepository.save(member);

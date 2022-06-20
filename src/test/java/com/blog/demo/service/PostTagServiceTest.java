@@ -37,8 +37,8 @@ class PostTagServiceTest {
     PostTagService postTagService;
 
     @Test
-    @DisplayName("PostTag 단순 저장")
-    void save() {
+    @DisplayName("PostTag 단순 저장 - 성공")
+    void save_success() {
         // given
         PostTag postTag = PostTag.builder().build();
 
@@ -51,8 +51,8 @@ class PostTagServiceTest {
     }
 
     @Test
-    @DisplayName("PostTag 단순 조회")
-    void findOneTest() {
+    @DisplayName("PostTag 단순 조회 - 성공")
+    void findOneTest_success() {
         // given
         Tag tag = Tag.builder().name("tag").build();
         tagRepository.save(tag);
@@ -68,8 +68,8 @@ class PostTagServiceTest {
     }
 
     @Test
-    @DisplayName("PostTag 리스트 조회")
-    void findPostTagsTest() {
+    @DisplayName("PostTag 리스트 조회 - 성공")
+    void findPostTagsTest_success() {
         // given
         Post post = Post.builder().build();
         postRepository.save(post);
@@ -95,8 +95,8 @@ class PostTagServiceTest {
     }
 
     @Test
-    @DisplayName("PostTag 삭제")
-    void deleteOneTest() {
+    @DisplayName("PostTag 삭제 - 성공")
+    void deleteOneTest_success() {
         // given
         Tag tag = Tag.builder().name("tag").build();
         tagRepository.save(tag);
@@ -112,8 +112,8 @@ class PostTagServiceTest {
     }
 
     @Test
-    @DisplayName("Tag 리스트를 이용한 PostTag 생성")
-    void saveByTagsTest() {
+    @DisplayName("Tag 리스트를 이용한 PostTag 생성 - 성공")
+    void saveByTagsTest_success() {
         // given
         Post post = Post.builder().build();
         postRepository.save(post);
@@ -135,8 +135,8 @@ class PostTagServiceTest {
     }
 
     @Test
-    @DisplayName("PostTag 갱신")
-    void updatePostTagTest() {
+    @DisplayName("PostTag 갱신 - 성공")
+    void updatePostTagTest_success() {
         // given
         // given
         Post post = Post.builder().build();
