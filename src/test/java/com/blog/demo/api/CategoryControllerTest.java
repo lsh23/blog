@@ -3,7 +3,7 @@ package com.blog.demo.api;
 import com.blog.demo.api.dto.category.CategoryDto;
 import com.blog.demo.api.dto.category.CreateCategoryRequest;
 import com.blog.demo.api.dto.category.CreateCategoryResponse;
-import com.blog.demo.api.integration.PreprocessController;
+import com.blog.demo.api.unit.PreprocessController;
 import com.fasterxml.jackson.core.type.TypeReference;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;

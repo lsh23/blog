@@ -1,4 +1,4 @@
-package com.blog.demo.api.integration;
+package com.blog.demo.api.unit;
 
 import com.blog.demo.api.CategoryApiController;
 import com.blog.demo.restdocs.ApiDocs;
