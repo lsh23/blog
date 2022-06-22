@@ -1,0 +1,22 @@
+ifndef::snippets[]
+:snippets: ../../../build/generated-snippets
+endif::[]
+:doctype: book
+:icons: font
+:source-highlighter: highlightjs
+:toc: left
+:toclevels: 4
+
+== Category Controller
+
+=== post 저장
+
+====
+REQUEST
+include::{snippets}/category/http-request.adoc[]
+====
+
+====
+Response
+include::{snippets}/category/http-response.adoc[]
+====

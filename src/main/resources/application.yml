@@ -1,7 +1,35 @@
 spring:
   profiles:
-    active: dev
+    active: local
 
+---
+spring:
+  config:
+    activate:
+      on-profile: local
+
+  datasource:
+    url: jdbc:h2:tcp://localhost/~/blog
+    username: sa
+    password:
+    driver-class-name: org.h2.Driver
+
+  jpa:
+    hibernate:
+      ddl-auto: none
+    properties:
+      hibernate:
+        show_sql: false
+        default_batch_fetch_size: 100
+        format_sql: true
+    open-in-view: true
+
+  logging:
+    level:
+      root: info
+
+server:
+  port: 9090
 ---
 spring:
   config:
@@ -16,7 +44,7 @@ spring:
 
   jpa:
     hibernate:
-      ddl-auto: create
+      ddl-auto: update
     properties:
       hibernate:
         show_sql: true
