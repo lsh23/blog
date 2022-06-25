@@ -16,9 +16,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.assertj.core.api.Assertions.as;
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
 @Transactional
@@ -44,7 +42,7 @@ class TagServiceTest {
         tagService.save(tag);
 
         //then
-        assertThat(tagRepository.findOne(tag.getId())).isEqualTo(tag);
+        assertThat(tagRepository.findById(tag.getId()).get()).isEqualTo(tag);
 
     }
 
@@ -107,7 +105,7 @@ class TagServiceTest {
         TagDto tag = tagService.createTag(createTagRequest);
 
         //then
-        assertThat(tagRepository.findOne(tag.getId()).getName()).isEqualTo("tag");
+        assertThat(tagRepository.findById(tag.getId()).get().getName()).isEqualTo("tag");
     }
 
     @Test
@@ -132,7 +130,7 @@ class TagServiceTest {
         TagDto tagDto = tagService.updateTag(tag.getId(), updateTagRequest);
 
         //then
-        assertThat(tagRepository.findOne(tagDto.getId()).getName()).isEqualTo("tag2");
+        assertThat(tagRepository.findById(tagDto.getId()).get().getName()).isEqualTo("tag2");
     }
 
     @Test

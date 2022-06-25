@@ -44,7 +44,7 @@ class CommentServiceTest {
         Long commentId = commentService.save(comment);
 
         //then
-        assertThat(commentService.findOne(commentId)).isEqualTo(comment);
+        assertThat(commentService.findById(commentId)).isEqualTo(comment);
     }
 
 
@@ -56,7 +56,7 @@ class CommentServiceTest {
         Long commentId = commentService.save(comment);
 
         //when
-        String text = commentService.findOne(commentId).getText();
+        String text = commentService.findById(commentId).getText();
 
         //then
         assertThat(text).isEqualTo("text");
@@ -125,7 +125,7 @@ class CommentServiceTest {
         Long commentId = comment.getId();
 
         //then
-        Comment findOne = commentRepository.findOne(commentId);
+        Comment findOne = commentRepository.findById(commentId).get();
         assertThat(findOne.getMember().getId()).isEqualTo("member");
         assertThat(findOne.getPost().getTitle()).isEqualTo("title");
         assertThat(findOne.getText()).isEqualTo("text");

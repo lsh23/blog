@@ -5,6 +5,8 @@ import com.blog.demo.api.dto.tag.TagDto;
 import com.blog.demo.api.dto.tag.UpdateTagRequest;
 import com.blog.demo.domain.Member;
 import com.blog.demo.domain.Tag;
+import com.blog.demo.exception.NotFoundMemberException;
+import com.blog.demo.exception.NotFoundTagException;
 import com.blog.demo.repository.MemberRepository;
 import com.blog.demo.repository.TagRepository;
 import org.springframework.stereotype.Service;
@@ -32,7 +34,8 @@ public class TagService {
     }
 
     public TagDto findOne(long id) {
-        Tag one = tagRepository.findOne(id);
+        Tag one = tagRepository.findById(id)
+                .orElseThrow(() -> new NotFoundTagException());
         return new TagDto(one);
     }
     public List<TagDto> findAll() {
@@ -40,9 +43,8 @@ public class TagService {
         return all.stream().map(TagDto::new).collect(Collectors.toList());
     }
 
-    public TagDto deleteOne(Long id) {
-        Tag deleteOne = tagRepository.deleteOne(id);
-        return new TagDto(deleteOne);
+    public void deleteOne(Long id) {
+        tagRepository.deleteById(id);
     }
 
     public List<TagDto> findAll(String memberId) {
@@ -62,7 +64,8 @@ public class TagService {
     public TagDto createTag(CreateTagRequest createTagRequest) {
         String name = createTagRequest.getName();
         String memberId = createTagRequest.getMemberId();
-        Member findMember = memberRepository.findOne(memberId);
+        Member findMember = memberRepository.findById(memberId)
+                .orElseThrow(() -> new NotFoundMemberException());
         Tag tag = Tag.builder()
                 .name(name)
                 .member(findMember)
@@ -73,19 +76,22 @@ public class TagService {
 
     public TagDto updateTag(Long tagId, UpdateTagRequest updateTagRequest) {
         String name = updateTagRequest.getName();
-        Tag tag = tagRepository.findOne(tagId);
+        Tag tag = tagRepository.findById(tagId)
+                .orElseThrow(() -> new NotFoundTagException());
         tag.updateName(name);
         return new TagDto(tag);
     }
 
     public List<TagDto> bulkSearchAndIfNoneCreate(String memberId, List<TagDto> tagDtos) {
-        Member member = memberRepository.findOne(memberId);
+        Member member = memberRepository.findById(memberId)
+                .orElseThrow(() -> new NotFoundMemberException());
 
         List<Tag> result = new ArrayList<>();
         tagDtos.stream()
                 .forEach(t->{
                     if (t.getId() != -1){
-                        result.add(tagRepository.findOne(t.getId()));
+                        Tag tag = tagRepository.findById(t.getId()).orElseThrow();
+                        result.add(tag);
                     }else{
                         Tag newOne = Tag.builder()
                                 .name(t.getName())

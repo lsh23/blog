@@ -7,6 +7,9 @@ import com.blog.demo.api.dto.post.UpdatePostRequest;
 import com.blog.demo.api.dto.posttag.PostTagDto;
 import com.blog.demo.api.dto.tag.TagDto;
 import com.blog.demo.domain.*;
+import com.blog.demo.exception.NotFoundCategoryException;
+import com.blog.demo.exception.NotFoundMemberException;
+import com.blog.demo.exception.NotFoundPostException;
 import com.blog.demo.repository.CategoryRepository;
 import com.blog.demo.repository.MemberRepository;
 import com.blog.demo.repository.PostRepository;
@@ -40,7 +43,11 @@ public class PostService {
     }
 
     public PostDto findOne(long id) {
-        Post findOne = postRepository.findOne(id);
+        Post findOne = postRepository.findById(id)
+                .orElseThrow(()-> new NotFoundPostException());
+        if (findOne == null){
+            throw new NotFoundPostException();
+        }
         return new PostDto(findOne);
     }
 
@@ -54,9 +61,9 @@ public class PostService {
                 .collect(Collectors.toList());
     }
 
-    public PostDto deleteOne(long id) {
-        Post post = postRepository.deleteOne(id);
-        return new PostDto(post); }
+    public void deleteOne(long id) {
+        postRepository.deleteById(id);
+    }
 
     public PostDto createPost(CreatePostRequest createPostRequest) {
 
@@ -66,8 +73,11 @@ public class PostService {
         String memberId = createPostRequest.getMemberId();
         Long categoryId = createPostRequest.getCategoryId();
 
-        Member member = memberRepository.findOne(memberId);
-        Category category = categoryRepository.findOne(categoryId);
+        Member member = memberRepository.findById(memberId)
+                .orElseThrow(()->new NotFoundMemberException());
+
+        Category category = categoryRepository.findById(categoryId)
+                .orElseThrow(()->new NotFoundCategoryException());
 
         Post post = Post.builder()
                 .title(title)
@@ -96,10 +106,14 @@ public class PostService {
 
         List<TagDto> tagDtos = updatePostRequest.getTags();
 
-        Post post = postRepository.findOne(postId);
-        Member member = memberRepository.findOne(memberId);
+        Post post = postRepository.findById(postId)
+                .orElseThrow(()->new NotFoundPostException());
 
-        Category category = categoryRepository.findOne(categoryId);
+        Member member = memberRepository.findById(memberId)
+                .orElseThrow(()->new NotFoundMemberException());
+
+        Category category = categoryRepository.findById(categoryId)
+                .orElseThrow(() -> new NotFoundCategoryException());
 
         post.updateAll(title, contents, member, category);
 

@@ -18,7 +18,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
 @Transactional
@@ -46,7 +45,7 @@ class PostTagServiceTest {
         postTagService.save(postTag);
 
         // then
-        assertThat(postTagRepository.findOne(postTag.getId())).isEqualTo(postTag);
+        assertThat(postTagRepository.findById(postTag.getId()).get()).isEqualTo(postTag);
 
     }
 
@@ -61,7 +60,7 @@ class PostTagServiceTest {
         postTagRepository.save(postTag);
 
         // when
-        PostTagDto findOne = postTagService.findOne(postTag.getId());
+        PostTagDto findOne = postTagService.findById(postTag.getId());
 
         // then
         assertThat(findOne.getId()).isEqualTo(postTag.getId());

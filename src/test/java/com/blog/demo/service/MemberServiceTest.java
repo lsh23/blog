@@ -15,7 +15,6 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
 @Transactional
@@ -38,7 +37,7 @@ class MemberServiceTest {
         memberRepository.save(member);
 
         // when
-        Member findOne = memberService.findOne("id");
+        Member findOne = memberService.findById("id");
 
         // then
         assertThat(findOne).isEqualTo(member);
@@ -56,7 +55,7 @@ class MemberServiceTest {
 
         // when
         CreateMemberResponse CreateMemberResponse = memberService.createMember(createMemberRequest);
-        Member member = memberRepository.findOne("id");
+        Member member = memberRepository.findById("id").get();
 
         // then
         assertThat(member.getId()).isEqualTo("id");
@@ -96,7 +95,7 @@ class MemberServiceTest {
         memberRepository.save(member);
 
         // when
-        Member findOne = memberService.findOne("id");
+        Member findOne = memberService.findById("id");
 
         // then
         assertThat(findOne).isEqualTo(member);

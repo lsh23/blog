@@ -43,7 +43,7 @@ class CategoryServiceTest {
         Long categoryId = categoryService.save(category);
 
         // then
-        assertThat(categoryRepository.findOne(categoryId).getName()).isEqualTo("name");
+        assertThat(categoryRepository.findById(categoryId).get().getName()).isEqualTo("name");
     }
 
     @Test
@@ -57,7 +57,7 @@ class CategoryServiceTest {
         Long categoryId = categoryService.save(category);
 
         // when
-        Category findOne = categoryService.findOne(categoryId);
+        Category findOne = categoryService.findById(categoryId);
 
         // then
         assertThat(findOne.getId()).isEqualTo(categoryId);
@@ -187,7 +187,7 @@ class CategoryServiceTest {
         CategoryDto category = categoryService.createCategory(createCategoryRequest);
 
         // then
-        assertThat(categoryRepository.findOne(category.getId()).getName()).isEqualTo("category");
+        assertThat(categoryRepository.findById(category.getId()).get().getName()).isEqualTo("category");
     }
 
 
@@ -216,6 +216,6 @@ class CategoryServiceTest {
         CategoryDto categoryDto = categoryService.updateCategory(updateCategoryRequest,category.getId());
 
         // then
-        assertThat(categoryRepository.findOne(category.getId()).getName()).isEqualTo("category2");
+        assertThat(categoryRepository.findById(category.getId()).get().getName()).isEqualTo("category2");
     }
 }
