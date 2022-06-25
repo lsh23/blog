@@ -4,6 +4,7 @@ import com.blog.demo.api.dto.Result;
 import com.blog.demo.api.dto.post.*;
 import com.blog.demo.service.*;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -42,9 +43,9 @@ public class PostApiController {
     }
 
     @DeleteMapping("/{id}")
-    public DeletePostResponse deletePost(@PathVariable("id") Long id){
-        PostDto postDto = postService.deleteOne(id);
-        return new DeletePostResponse(postDto.getId(), postDto.getTitle());
+    public ResponseEntity<Void> deletePost(@PathVariable("id") Long id){
+        postService.deleteOne(id);
+        return ResponseEntity.noContent().build();
     }
 
 }
