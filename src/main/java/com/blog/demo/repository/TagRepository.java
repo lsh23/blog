@@ -1,39 +1,18 @@
 package com.blog.demo.repository;
 
 import com.blog.demo.domain.Tag;
-import org.springframework.stereotype.Repository;
-
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
 import java.util.List;
+import java.util.Optional;
 
-@Repository
-public class TagRepository {
-    @PersistenceContext
-    private EntityManager em;
+public interface TagRepository {
 
-    public void save(Tag tag){
-        em.persist(tag);
-    }
+    Tag save(Tag tag);
 
-    public List<Tag> findAll(){
-        return em.createQuery("select t from Tag t", Tag.class)
-                .getResultList();
-    }
+    void deleteById(Long id);
 
-    public Tag findOne(Long id){
-        return em.find(Tag.class, id);
-    }
+    Optional<Tag> findById(Long id);
 
-    public Tag deleteOne(Long id) {
-        Tag deletedOne = findOne(id);
-        em.remove(deletedOne);
-        return deletedOne;
-    }
+    List<Tag> findAll();
 
-    public List<Tag> findAllByMemberId(String memberId) {
-        return em.createQuery("select t from Tag t where t.member.id =: memberId", Tag.class)
-                .setParameter("memberId", memberId)
-                .getResultList();
-    }
+    List<Tag> findAllByMemberId(String memberId);
 }
