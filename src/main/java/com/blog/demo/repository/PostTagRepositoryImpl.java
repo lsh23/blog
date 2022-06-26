@@ -36,7 +36,7 @@ public class PostTagRepositoryImpl implements PostTagRepository{
     }
 
     public void deleteById(Long id) {
-        PostTag deletedOne = findById(id).orElseThrow(()->new NotFoundPostTagException());
+        PostTag deletedOne = findById(id).orElseThrow(NotFoundPostTagException::new);
         em.remove(deletedOne);
     }
 }

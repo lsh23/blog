@@ -35,7 +35,7 @@ public class TagService {
 
     public TagDto findOne(long id) {
         Tag one = tagRepository.findById(id)
-                .orElseThrow(() -> new NotFoundTagException());
+                .orElseThrow(NotFoundTagException::new);
         return new TagDto(one);
     }
     public List<TagDto> findAll() {
@@ -65,7 +65,7 @@ public class TagService {
         String name = createTagRequest.getName();
         String memberId = createTagRequest.getMemberId();
         Member findMember = memberRepository.findById(memberId)
-                .orElseThrow(() -> new NotFoundMemberException());
+                .orElseThrow(NotFoundMemberException::new);
         Tag tag = Tag.builder()
                 .name(name)
                 .member(findMember)
@@ -77,14 +77,14 @@ public class TagService {
     public TagDto updateTag(Long tagId, UpdateTagRequest updateTagRequest) {
         String name = updateTagRequest.getName();
         Tag tag = tagRepository.findById(tagId)
-                .orElseThrow(() -> new NotFoundTagException());
+                .orElseThrow(NotFoundTagException::new);
         tag.updateName(name);
         return new TagDto(tag);
     }
 
     public List<TagDto> bulkSearchAndIfNoneCreate(String memberId, List<TagDto> tagDtos) {
         Member member = memberRepository.findById(memberId)
-                .orElseThrow(() -> new NotFoundMemberException());
+                .orElseThrow(NotFoundMemberException::new);
 
         List<Tag> result = new ArrayList<>();
         tagDtos.stream()
@@ -101,6 +101,6 @@ public class TagService {
                         result.add(newOne);
                     }
         });
-        return result.stream().map(t-> new TagDto(t)).collect(Collectors.toList());
+        return result.stream().map(TagDto::new).collect(Collectors.toList());
     }
 }

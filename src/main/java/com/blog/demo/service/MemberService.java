@@ -42,7 +42,7 @@ public class MemberService {
 
     public MemberDto updateMember(String id, UpdateMemberRequest updateMemberRequest) {
         Member member = memberRepository.findById(id)
-                .orElseThrow(()-> new NotFoundMemberException());
+                .orElseThrow(NotFoundMemberException::new);
 
         String name = updateMemberRequest.getName();
         member.updateName(name);
@@ -52,7 +52,7 @@ public class MemberService {
 
     public Member findById(String id) {
         Member member = memberRepository.findById(id)
-                .orElseThrow(()-> new NotFoundMemberException());
+                .orElseThrow(NotFoundMemberException::new);
         return member;
     }
 

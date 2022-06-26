@@ -35,7 +35,7 @@ public class CategoryService {
     @Transactional(readOnly = true)
     public Category findById(long id) {
         Category category= categoryRepository.findById(id)
-                .orElseThrow(()->new NotFoundCategoryException());
+                .orElseThrow(NotFoundCategoryException::new);
         return category;
     }
 
@@ -47,7 +47,7 @@ public class CategoryService {
     @Transactional(readOnly = true)
     public List<CategoryDto> findAllRootCategories(String memberId) {
         return getRootCategories(memberId).stream()
-                .map(c -> new CategoryDto(c))
+                .map(CategoryDto::new)
                 .collect(Collectors.toList());
     }
 
@@ -64,7 +64,7 @@ public class CategoryService {
 
     public CategoryDto createCategory(CreateCategoryRequest createCategoryRequest) {
         Member member = memberRepository.findById(createCategoryRequest.getMemberId())
-                .orElseThrow(()->new NotFoundCategoryException());
+                .orElseThrow(NotFoundCategoryException::new);
 
         Category category = Category.builder()
                 .member(member)
@@ -85,7 +85,7 @@ public class CategoryService {
         Category category = findById(id);
 
         Member findMember = memberRepository.findById(updateCategoryRequest.getMemberId())
-                .orElseThrow(()->new NotFoundMemberException());
+                .orElseThrow(NotFoundMemberException::new);
         category.updateMember(findMember);
 
         category.updateName(updateCategoryRequest.getName());

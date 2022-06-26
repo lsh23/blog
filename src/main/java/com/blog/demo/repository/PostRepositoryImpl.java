@@ -1,6 +1,7 @@
 package com.blog.demo.repository;
 
 import com.blog.demo.domain.Post;
+import com.blog.demo.exception.NotFoundPostException;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
@@ -30,7 +31,7 @@ public class PostRepositoryImpl implements PostRepository{
     }
 
     public void deleteById(Long id) {
-        Post post = findById(id).orElseThrow();
+        Post post = findById(id).orElseThrow(NotFoundPostException::new);
         em.remove(post);
     }
 

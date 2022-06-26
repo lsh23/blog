@@ -74,10 +74,10 @@ public class PostService {
         Long categoryId = createPostRequest.getCategoryId();
 
         Member member = memberRepository.findById(memberId)
-                .orElseThrow(()->new NotFoundMemberException());
+                .orElseThrow(NotFoundMemberException::new);
 
         Category category = categoryRepository.findById(categoryId)
-                .orElseThrow(()->new NotFoundCategoryException());
+                .orElseThrow(NotFoundCategoryException::new);
 
         Post post = Post.builder()
                 .title(title)
@@ -107,13 +107,13 @@ public class PostService {
         List<TagDto> tagDtos = updatePostRequest.getTags();
 
         Post post = postRepository.findById(postId)
-                .orElseThrow(()->new NotFoundPostException());
+                .orElseThrow(NotFoundPostException::new);
 
         Member member = memberRepository.findById(memberId)
-                .orElseThrow(()->new NotFoundMemberException());
+                .orElseThrow(NotFoundMemberException::new);
 
         Category category = categoryRepository.findById(categoryId)
-                .orElseThrow(() -> new NotFoundCategoryException());
+                .orElseThrow(NotFoundCategoryException::new);
 
         post.updateAll(title, contents, member, category);
 

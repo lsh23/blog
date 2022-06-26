@@ -30,7 +30,7 @@ public class TagRepositoryImpl implements TagRepository{
     }
 
     public void deleteById(Long id) {
-        Tag deletedOne = findById(id).orElseThrow(()->new NotFoundTagException());
+        Tag deletedOne = findById(id).orElseThrow(NotFoundTagException::new);
         em.remove(deletedOne);
     }
 

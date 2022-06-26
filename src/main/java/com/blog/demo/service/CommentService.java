@@ -39,7 +39,7 @@ public class CommentService {
     @Transactional(readOnly = true)
     public Comment findById(long id) {
         Comment comment = commentRepository.findById(id)
-                .orElseThrow(()->new NotFoundCommentException());
+                .orElseThrow(NotFoundCommentException::new);
         return comment;
     }
 
@@ -61,10 +61,10 @@ public class CommentService {
     public CommentDto createComment(CreateCommentRequest createCommentRequest) {
         String memberId = createCommentRequest.getMemberId();
         Member findMember = memberRepository.findById(memberId)
-                .orElseThrow(() -> new NotFoundMemberException());
+                .orElseThrow(NotFoundMemberException::new);
         Long postId = createCommentRequest.getPostId();
         Post findPost = postRepository.findById(postId)
-                .orElseThrow(()-> new NotFoundPostException());
+                .orElseThrow(NotFoundPostException::new);
         String text = createCommentRequest.getText();
 
         Comment comment = Comment.builder()
@@ -77,7 +77,7 @@ public class CommentService {
 
         if (parentId != null) {
             Comment findComment = commentRepository.findById(parentId)
-                    .orElseThrow(()-> new NotFoundCommentException());
+                    .orElseThrow(NotFoundCommentException::new);
             comment.assignParent(findComment);
         }
 

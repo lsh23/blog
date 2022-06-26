@@ -39,7 +39,7 @@ public class PostTagService {
 
     public PostTagDto findById(Long id) {
         PostTag findOne = postTagRepository.findById(id)
-                .orElseThrow(()->new NotFoundPostTagException());
+                .orElseThrow(NotFoundPostTagException::new);
         return new PostTagDto(findOne);
     }
 
@@ -63,7 +63,7 @@ public class PostTagService {
         List<PostTag> result = new ArrayList<>();
         tagDtos.forEach(t->{
             Tag tag = tagRepository.findById(t.getId())
-                    .orElseThrow(()->new NotFoundTagException());
+                    .orElseThrow(NotFoundTagException::new);
             PostTag newOne = PostTag.builder()
                     .tag(tag)
                     .build();
@@ -72,7 +72,7 @@ public class PostTagService {
         });
 
         Post post = postRepository.findById(postId)
-                .orElseThrow(() -> new NotFoundPostException());
+                .orElseThrow(NotFoundPostException::new);
 
         result.forEach(pt->pt.assignPost(post));
         return result.stream().map(PostTagDto::new).collect(Collectors.toList());
@@ -81,7 +81,7 @@ public class PostTagService {
     public List<PostTagDto> updatePostTag(Long postId, List<TagDto> tagDtos) {
 
         Post post = postRepository.findById(postId)
-                .orElseThrow(()-> new NotFoundPostException());
+                .orElseThrow(NotFoundPostException::new);
 
         List<PostTag> postTags = post.getPostTags();
         postTags.stream().forEach(pt->{
@@ -94,7 +94,7 @@ public class PostTagService {
 
         tagDtos.forEach(t->{
             Tag tag = tagRepository.findById(t.getId())
-                    .orElseThrow(()-> new NotFoundTagException());
+                    .orElseThrow(NotFoundTagException::new);
             PostTag newOne = PostTag.builder()
                     .tag(tag)
                     .build();

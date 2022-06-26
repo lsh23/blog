@@ -38,7 +38,7 @@ public class CommentRepositoryImpl implements CommentRepository {
 
     public void deleteById(Long id) {
         Comment comment = findById(id)
-                .orElseThrow(()->new NotFoundCommentException());
+                .orElseThrow(NotFoundCommentException::new);
         em.remove(comment);
     }
 

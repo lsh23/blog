@@ -36,7 +36,7 @@ public class CategoryRepositoryImpl implements CategoryRepository {
 
     public void deleteById(Long id) {
         Category category = findById(id)
-                .orElseThrow(()->new NotFoundCategoryException());
+                .orElseThrow(NotFoundCategoryException::new);
         em.remove(category);
     }
 
