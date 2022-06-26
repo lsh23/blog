@@ -32,7 +32,7 @@ public class MemberApiController {
 
     @PutMapping("/{id}")
     public UpdateMemberResponse updateMember(
-            @PathVariable("id") String memberId,
+            @PathVariable("id") Long memberId,
             @RequestBody @Valid UpdateMemberRequest updateMemberRequest) {
         MemberDto member = memberService.updateMember(memberId, updateMemberRequest);
         return new UpdateMemberResponse(member.getId(), member.getName());

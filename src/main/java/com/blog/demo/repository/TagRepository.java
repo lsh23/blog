@@ -14,5 +14,5 @@ public interface TagRepository {
 
     List<Tag> findAll();
 
-    List<Tag> findAllByMemberId(String memberId);
+    List<Tag> findAllByMemberId(Long memberId);
 }

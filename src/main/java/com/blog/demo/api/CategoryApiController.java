@@ -18,7 +18,7 @@ public class CategoryApiController {
     private final CategoryService categoryService;
 
     @GetMapping
-    public Result getCategory(@RequestParam(required = false, value = "id") String memberId){
+    public Result getCategory(@RequestParam(required = false, value = "id") Long memberId){
         List<CategoryDto> categoryDtos = categoryService.findAllRootCategories(memberId);
         return new Result(categoryDtos.size(), categoryDtos);
     }

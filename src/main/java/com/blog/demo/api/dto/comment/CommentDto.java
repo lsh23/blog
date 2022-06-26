@@ -15,13 +15,13 @@ public class CommentDto {
 
     private Long id;
     private String text;
-    private String memberId;
+    private Long memberId;
     private Long parentId;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
     private List<CommentDto> child;
 
-    public CommentDto(Long id, String text, String memberId, Long parentId, LocalDateTime createdAt, LocalDateTime updatedAt) {
+    public CommentDto(Long id, String text, Long memberId, Long parentId, LocalDateTime createdAt, LocalDateTime updatedAt) {
         this.id = id;
         this.text = text;
         this.memberId = memberId;

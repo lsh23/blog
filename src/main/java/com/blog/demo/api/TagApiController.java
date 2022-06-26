@@ -19,7 +19,7 @@ public class TagApiController {
 
     @GetMapping
     public Result getPostags(
-            @RequestParam(value = "memberId", required = false) String memberId){
+            @RequestParam(value = "memberId", required = false) Long memberId){
         List<TagDto> tagDtos = tagService.findAll(memberId);
         return new Result(tagDtos.size(), tagDtos);
     }

@@ -14,7 +14,7 @@ import javax.validation.constraints.NotEmpty;
 @NoArgsConstructor
 public class CreateLoginRequest {
     @NotEmpty
-    private String id;
+    private Long id;
     @NotEmpty
     private String password;
 }

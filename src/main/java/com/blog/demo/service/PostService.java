@@ -52,7 +52,7 @@ public class PostService {
     }
 
     @Transactional(readOnly = true)
-    public List<PostListDto> findPosts(String memberId, Long categoryId) {
+    public List<PostListDto> findPosts(Long memberId, Long categoryId) {
         PostSearch postSearch = new PostSearch();
         postSearch.setMemberId(memberId);
         postSearch.setCategoryId(categoryId);
@@ -70,7 +70,7 @@ public class PostService {
         String title = createPostRequest.getTitle();
         String contents = createPostRequest.getContents();
 
-        String memberId = createPostRequest.getMemberId();
+        Long memberId = createPostRequest.getMemberId();
         Long categoryId = createPostRequest.getCategoryId();
 
         Member member = memberRepository.findById(memberId)
@@ -101,7 +101,7 @@ public class PostService {
         String title = updatePostRequest.getTitle();
         String contents = updatePostRequest.getContents();
 
-        String memberId = updatePostRequest.getMemberId();
+        Long memberId = updatePostRequest.getMemberId();
         Long categoryId = updatePostRequest.getCategoryId();
 
         List<TagDto> tagDtos = updatePostRequest.getTags();

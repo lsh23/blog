@@ -5,6 +5,6 @@ import lombok.Setter;
 
 @Getter @Setter
 public class PostSearch {
-    private String memberId;
+    private Long memberId;
     private Long categoryId;
 }

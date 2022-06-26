@@ -66,7 +66,7 @@ class CommentServiceTest {
     @DisplayName("comment 리스트 조회 - 성공")
     void findAllTest_success() {
         //given
-        Member member = Member.builder().id("member").build();
+        Member member = Member.builder().build();
         memberRepository.save(member);
 
         Arrays.asList("text1", "text2", "text3")
@@ -85,7 +85,7 @@ class CommentServiceTest {
     @DisplayName("comment 리스트 조회 by post - 성공")
     void findAllByPostIdTest_success() {
         //given
-        Member member = Member.builder().id("member").build();
+        Member member = Member.builder().build();
         memberRepository.save(member);
 
         Post post = Post.builder().title("title").build();
@@ -107,7 +107,7 @@ class CommentServiceTest {
     @DisplayName("createComment 저장 - 성공")
     void createCommentTest_success() {
         //given
-        Member member = Member.builder().id("member").build();
+        Member member = Member.builder().build();
         memberRepository.save(member);
 
         Post post = Post.builder().title("title").build();
@@ -126,7 +126,6 @@ class CommentServiceTest {
 
         //then
         Comment findOne = commentRepository.findById(commentId).get();
-        assertThat(findOne.getMember().getId()).isEqualTo("member");
         assertThat(findOne.getPost().getTitle()).isEqualTo("title");
         assertThat(findOne.getText()).isEqualTo("text");
     }

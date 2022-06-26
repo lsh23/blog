@@ -31,13 +31,12 @@ class MemberServiceTest {
     void saveTest_success() {
         // given
         Member member = Member.builder()
-                .id("id")
                 .name("member")
                 .build();
         memberRepository.save(member);
 
         // when
-        Member findOne = memberService.findById("id");
+        Member findOne = memberService.findById(member.getId());
 
         // then
         assertThat(findOne).isEqualTo(member);
@@ -48,17 +47,15 @@ class MemberServiceTest {
     void createUserTest_success() {
         // given
         CreateMemberRequest createMemberRequest = CreateMemberRequest.builder()
-                .id("id")
                 .name("name")
                 .password("password")
                 .build();
 
         // when
         CreateMemberResponse CreateMemberResponse = memberService.createMember(createMemberRequest);
-        Member member = memberRepository.findById("id").get();
+        Member member = memberRepository.findById(CreateMemberResponse.getId()).get();
 
         // then
-        assertThat(member.getId()).isEqualTo("id");
         assertThat(member.getName()).isEqualTo("name");
         assertThat(member.getPassword()).isEqualTo("password");
     }
@@ -68,7 +65,6 @@ class MemberServiceTest {
     void updateTest_success() {
         // given
         Member member = Member.builder()
-                .id("id")
                 .name("member")
                 .build();
         memberRepository.save(member);
@@ -78,7 +74,7 @@ class MemberServiceTest {
                 .name("change")
                 .build();
 
-        memberService.updateMember("id", updateMemberRequest);
+        memberService.updateMember(member.getId(), updateMemberRequest);
 
         // then
         assertThat(member.getName()).isEqualTo("change");
@@ -89,13 +85,12 @@ class MemberServiceTest {
     void findOneTest_success() {
         // given
         Member member = Member.builder()
-                .id("id")
                 .name("member")
                 .build();
         memberRepository.save(member);
 
         // when
-        Member findOne = memberService.findById("id");
+        Member findOne = memberService.findById(member.getId());
 
         // then
         assertThat(findOne).isEqualTo(member);
@@ -106,11 +101,9 @@ class MemberServiceTest {
     void findAllTest_success() {
         // given
         Member member1 = Member.builder()
-                .id("id1")
                 .name("member1")
                 .build();
         Member member2 = Member.builder()
-                .id("id2")
                 .name("member2")
                 .build();
 

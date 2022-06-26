@@ -15,7 +15,7 @@ import javax.validation.constraints.NotNull;
 public class UpdateCategoryRequest {
     @NotNull
     private Long id;
-    private String memberId;
+    private Long memberId;
     private Long parentId;
     @NotEmpty
     private String name;
