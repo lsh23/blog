@@ -55,7 +55,7 @@ public class PostTagService {
         return postTagRepository.findPostTagsByPostId(postId);
     }
 
-    public void deleteOne(Long id) {
+    public void deleteById(Long id) {
         postTagRepository.deleteById(id);
     }
 

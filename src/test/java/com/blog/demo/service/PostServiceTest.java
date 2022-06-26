@@ -75,7 +75,7 @@ class PostServiceTest {
         postRepository.save(post);
 
         //when
-        PostDto findOne = postService.findOne(post.getId());
+        PostDto findOne = postService.findById(post.getId());
 
         //then
         assertThat(findOne.getId()).isEqualTo(post.getId());

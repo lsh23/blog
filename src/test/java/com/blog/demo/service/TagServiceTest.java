@@ -54,7 +54,7 @@ class TagServiceTest {
         tagRepository.save(tag);
 
         //when
-        TagDto one = tagService.findOne(tag.getId());
+        TagDto one = tagService.findById(tag.getId());
 
         //then
         assertThat(one.getId()).isEqualTo(tag.getId());
@@ -84,7 +84,7 @@ class TagServiceTest {
         tagRepository.save(tag);
 
         //when
-        tagService.deleteOne(tag.getId());
+        tagService.deleteById(tag.getId());
 
         //then
         assertThat(tagRepository.findAll().size()).isEqualTo(0);

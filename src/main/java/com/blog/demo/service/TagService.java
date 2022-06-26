@@ -33,7 +33,7 @@ public class TagService {
         return tag.getId();
     }
 
-    public TagDto findOne(long id) {
+    public TagDto findById(long id) {
         Tag one = tagRepository.findById(id)
                 .orElseThrow(NotFoundTagException::new);
         return new TagDto(one);
@@ -43,7 +43,7 @@ public class TagService {
         return all.stream().map(TagDto::new).collect(Collectors.toList());
     }
 
-    public void deleteOne(Long id) {
+    public void deleteById(Long id) {
         tagRepository.deleteById(id);
     }
 

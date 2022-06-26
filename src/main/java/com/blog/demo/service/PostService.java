@@ -42,13 +42,13 @@ public class PostService {
         return post.getId();
     }
 
-    public PostDto findOne(long id) {
-        Post findOne = postRepository.findById(id)
-                .orElseThrow(()-> new NotFoundPostException());
-        if (findOne == null){
+    public PostDto findById(long id) {
+        Post post = postRepository.findById(id)
+                .orElseThrow(NotFoundPostException::new);
+        if (post == null){
             throw new NotFoundPostException();
         }
-        return new PostDto(findOne);
+        return new PostDto(post);
     }
 
     @Transactional(readOnly = true)
@@ -61,7 +61,7 @@ public class PostService {
                 .collect(Collectors.toList());
     }
 
-    public void deleteOne(long id) {
+    public void deleteById(long id) {
         postRepository.deleteById(id);
     }
 

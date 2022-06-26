@@ -26,7 +26,7 @@ public class PostApiController {
 
     @GetMapping("/{id}")
     public PostDto getPost(@PathVariable("id") Long id){
-        PostDto postDto = postService.findOne(id);
+        PostDto postDto = postService.findById(id);
         return postDto;
     }
     
@@ -44,7 +44,7 @@ public class PostApiController {
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deletePost(@PathVariable("id") Long id){
-        postService.deleteOne(id);
+        postService.deleteById(id);
         return ResponseEntity.noContent().build();
     }
 

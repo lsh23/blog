@@ -104,7 +104,7 @@ class PostTagServiceTest {
         postTagRepository.save(postTag);
 
         // when
-        postTagService.deleteOne(postTag.getId());
+        postTagService.deleteById(postTag.getId());
 
         // then
         assertThat(postTagRepository.findAll().size()).isEqualTo(0);
