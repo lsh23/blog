@@ -1,58 +1,22 @@
 package com.blog.demo.repository;
 
 import com.blog.demo.domain.Comment;
-import org.springframework.stereotype.Repository;
-
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
 import java.util.List;
+import java.util.Optional;
 
-@Repository
-public class CommentRepository {
-    @PersistenceContext
-    private EntityManager em;
+public interface CommentRepository {
 
-    public void save(Comment comment){
-        em.persist(comment);
-    }
+    Comment save(Comment comment);
 
-    public List<Comment> findAll(){
-        List<Comment> resultList = em.createQuery("select c from Comment c join fetch c.member m", Comment.class)
-                .getResultList();
-        return resultList;
-    }
+    void deleteById(Long id);
 
-    public List<Comment> findAllRootComment(){
-        List<Comment> resultList = em.createQuery("select c from Comment c join fetch c.member m where c.parent is null ", Comment.class)
-                .getResultList();
-        return resultList;
-    }
+    Optional<Comment> findById(Long id);
 
-    public Comment findOne(Long id){
-        return em.find(Comment.class, id);
-    }
+    List<Comment> findAll();
 
-    public void deleteOne(Long id) {
-        Comment deleteOne = findOne(id);
-        em.remove(deleteOne);
-    }
+    List<Comment> findAllRootComment();
 
-    public List<Comment> findAllByPostId(Long postId) {
-        return em.createQuery(
-                        "select c from Comment c "+
-                                " join fetch c.member m" +
-                                " where c.post.id =: postId " +
-                                " and c.parent is null", Comment.class)
-                .setParameter("postId", postId)
-                .getResultList();
-    }
+    List<Comment> findAllByPostId(Long postId);
 
-    public List<Comment> findAllRootCommentByPostId(Long postId) {
-        return em.createQuery(
-                        "select c from Comment c "+
-                                " join fetch c.member m" +
-                                " where c.post.id =: postId", Comment.class)
-                .setParameter("postId", postId)
-                .getResultList();
-    }
+    List<Comment> findAllRootCommentByPostId(Long postId);
 }

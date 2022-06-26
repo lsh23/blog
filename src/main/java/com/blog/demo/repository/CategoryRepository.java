@@ -1,48 +1,20 @@
 package com.blog.demo.repository;
 
 import com.blog.demo.domain.Category;
-import org.springframework.stereotype.Repository;
-
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
 import java.util.List;
+import java.util.Optional;
 
-@Repository
-public class CategoryRepository {
-    @PersistenceContext
-    private EntityManager em;
+public interface CategoryRepository {
 
-    public void save(Category category){
-        em.persist(category);
-    }
+    Category save(Category category);
 
-    public List<Category> findAll(){
-        return em.createQuery("select c from Category c", Category.class)
-                .getResultList();
-    }
+    void deleteById(Long id);
 
-    public List<Category> findAllRootCategories(){
-        return em.createQuery("select c from Category c where c.parent is null", Category.class)
-                .getResultList();
-    }
+    Optional<Category> findById(Long id);
 
-    public Category findOne(Long id){
-        return em.find(Category.class, id);
-    }
+    List<Category> findAll();
 
-    public Category deleteOne(Long id) {
-        Category deletedOne = findOne(id);
-        em.remove(deletedOne);
-        return deletedOne;
-    }
+    List<Category> findAllRootCategories();
 
-    public List<Category> findAllRootCategoriesByMember(String memberId) {
-        return em.createQuery(
-                "select c from Category c" +
-                            " join fetch c.member m "+
-                            " where m.id =:memberId" +
-                            " and c.parent is null", Category.class)
-                .setParameter("memberId",memberId)
-                .getResultList();
-    }
+    List<Category> findAllRootCategoriesByMember(String memberId);
 }

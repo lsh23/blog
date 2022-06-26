@@ -1,40 +1,20 @@
 package com.blog.demo.repository;
 
-import com.blog.demo.domain.Post;
 import com.blog.demo.domain.PostTag;
-import org.springframework.stereotype.Repository;
-
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
 import java.util.List;
+import java.util.Optional;
 
-@Repository
-public class PostTagRepository {
-    @PersistenceContext
-    private EntityManager em;
+public interface PostTagRepository{
 
-    public void save(PostTag postTag){
-        em.persist(postTag);
-    }
+    PostTag save(PostTag postTag);
 
-    public List<PostTag> findAll(){
-        return em.createQuery("select pt from PostTag pt", PostTag.class)
-                .getResultList();
-    }
+    void deleteById(Long id);
 
-    public PostTag findOne(Long id){
-        return em.find(PostTag.class, id);
-    }
+    Optional<PostTag> findById(Long id);
 
-    public List<PostTag> findPostTagsByPostId(Long postId) {
-        return em.createQuery("select pt from PostTag pt where pt.post.id =: postId", PostTag.class)
-                .setParameter("postId", postId)
-                .getResultList();
-    }
+    List<PostTag> findAll();
 
-    public PostTag deleteOne(Long id) {
-        PostTag deletedOne = findOne(id);
-        em.remove(deletedOne);
-        return deletedOne;
-    }
+    List<PostTag> findPostTagsByPostId(Long postId);
+
+
 }

@@ -16,7 +16,7 @@ public class AuthApiController {
 
     @PostMapping("/api/v1/auth/login")
     public CreateLoginResponse login(@RequestBody @Valid CreateLoginRequest createLoginRequest){
-        Member findMember = memberService.findOne(createLoginRequest.getId());
+        Member findMember = memberService.findById(createLoginRequest.getId());
 
         if (findMember.getPassword().equals(createLoginRequest.getPassword())){
             return new CreateLoginResponse(findMember.getId(), findMember.getName(),200);

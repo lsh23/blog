@@ -54,7 +54,7 @@ class PostServiceTest {
         postService.save(post);
 
         //then
-        assertThat(postRepository.findOne(post.getId())).isEqualTo(post);
+        assertThat(postRepository.findById(post.getId()).get()).isEqualTo(post);
     }
 
     @Test
@@ -75,7 +75,7 @@ class PostServiceTest {
         postRepository.save(post);
 
         //when
-        PostDto findOne = postService.findOne(post.getId());
+        PostDto findOne = postService.findById(post.getId());
 
         //then
         assertThat(findOne.getId()).isEqualTo(post.getId());
@@ -125,7 +125,7 @@ class PostServiceTest {
         postRepository.save(post);
 
         //when
-        postRepository.deleteOne(post.getId());
+        postRepository.deleteById(post.getId());
 
         //then
         assertThat(postRepository.findAll().size()).isEqualTo(0);
@@ -217,7 +217,7 @@ class PostServiceTest {
         PostDto postDto = postService.updatePost(post.getId(), updatePostRequest);
 
         //then
-        Post updated = postRepository.findOne(post.getId());
+        Post updated = postRepository.findById(post.getId()).get();
         assertThat(updated.getTitle()).isEqualTo("title2");
         assertThat(updated.getContent()).isEqualTo("content2");
         assertThat(updated.getCategory().getName()).isEqualTo("category2");

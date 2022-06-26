@@ -5,11 +5,13 @@ import com.blog.demo.api.dto.member.CreateMemberResponse;
 import com.blog.demo.api.dto.member.MemberDto;
 import com.blog.demo.api.dto.member.UpdateMemberRequest;
 import com.blog.demo.domain.Member;
+import com.blog.demo.exception.NotFoundMemberException;
 import com.blog.demo.repository.MemberRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -39,7 +41,8 @@ public class MemberService {
     }
 
     public MemberDto updateMember(String id, UpdateMemberRequest updateMemberRequest) {
-        Member member = memberRepository.findOne(id);
+        Member member = memberRepository.findById(id)
+                .orElseThrow(NotFoundMemberException::new);
 
         String name = updateMemberRequest.getName();
         member.updateName(name);
@@ -47,8 +50,10 @@ public class MemberService {
         return new MemberDto(member.getId(), member.getName());
     }
 
-    public Member findOne(String id) {
-        return memberRepository.findOne(id);
+    public Member findById(String id) {
+        Member member = memberRepository.findById(id)
+                .orElseThrow(NotFoundMemberException::new);
+        return member;
     }
 
     public List<MemberDto> findAll() {

@@ -5,6 +5,8 @@ import com.blog.demo.api.dto.category.CreateCategoryRequest;
 import com.blog.demo.api.dto.category.UpdateCategoryRequest;
 import com.blog.demo.domain.Category;
 import com.blog.demo.domain.Member;
+import com.blog.demo.exception.NotFoundCategoryException;
+import com.blog.demo.exception.NotFoundMemberException;
 import com.blog.demo.repository.CategoryRepository;
 import com.blog.demo.repository.MemberRepository;
 import org.springframework.stereotype.Service;
@@ -31,8 +33,10 @@ public class CategoryService {
     }
 
     @Transactional(readOnly = true)
-    public Category findOne(long id) {
-        return categoryRepository.findOne(id);
+    public Category findById(long id) {
+        Category category= categoryRepository.findById(id)
+                .orElseThrow(NotFoundCategoryException::new);
+        return category;
     }
 
     @Transactional(readOnly = true)
@@ -43,7 +47,7 @@ public class CategoryService {
     @Transactional(readOnly = true)
     public List<CategoryDto> findAllRootCategories(String memberId) {
         return getRootCategories(memberId).stream()
-                .map(c -> new CategoryDto(c))
+                .map(CategoryDto::new)
                 .collect(Collectors.toList());
     }
 
@@ -54,21 +58,21 @@ public class CategoryService {
         return categoryRepository.findAllRootCategoriesByMember(memberId);
     }
 
-    public CategoryDto deleteOne(Long id) {
-        Category deleteOne = categoryRepository.deleteOne(id);
-        return new CategoryDto(deleteOne.getId(), deleteOne.getName());
+    public void deleteOne(Long id) {
+        categoryRepository.deleteById(id);
     }
 
     public CategoryDto createCategory(CreateCategoryRequest createCategoryRequest) {
-        Member findMember = memberRepository.findOne(createCategoryRequest.getMemberId());
+        Member member = memberRepository.findById(createCategoryRequest.getMemberId())
+                .orElseThrow(NotFoundCategoryException::new);
 
         Category category = Category.builder()
-                .member(findMember)
+                .member(member)
                 .name(createCategoryRequest.getName())
                 .build();
 
         if(createCategoryRequest.getParentId() != null){
-            Category findCategory = findOne(createCategoryRequest.getParentId());
+            Category findCategory = findById(createCategoryRequest.getParentId());
             category.assignParent(findCategory);
         }
 
@@ -78,15 +82,16 @@ public class CategoryService {
     }
 
     public CategoryDto updateCategory(UpdateCategoryRequest updateCategoryRequest, Long id) {
-        Category category = findOne(id);
+        Category category = findById(id);
 
-        Member findMember = memberRepository.findOne(updateCategoryRequest.getMemberId());
+        Member findMember = memberRepository.findById(updateCategoryRequest.getMemberId())
+                .orElseThrow(NotFoundMemberException::new);
         category.updateMember(findMember);
 
         category.updateName(updateCategoryRequest.getName());
 
         if(updateCategoryRequest.getParentId() != null){
-            Category findCategory = findOne(updateCategoryRequest.getParentId());
+            Category findCategory = findById(updateCategoryRequest.getParentId());
             category.assignParent(findCategory);
         }
 

@@ -2,17 +2,13 @@ package com.blog.demo.api;
 
 import com.blog.demo.api.dto.Result;
 import com.blog.demo.api.dto.tag.*;
-import com.blog.demo.domain.Member;
-import com.blog.demo.domain.Tag;
 import com.blog.demo.service.MemberService;
 import com.blog.demo.service.TagService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
 import javax.validation.Valid;
 import java.util.List;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 @RestController
 @RequiredArgsConstructor
@@ -41,9 +37,9 @@ public class TagApiController {
     }
 
     @DeleteMapping("/{id}")
-    public DeleteTagResponse deleteTag(@PathVariable("id") Long id){
-        TagDto deleteOne = tagService.deleteOne(id);
-        return new DeleteTagResponse(deleteOne.getId(), deleteOne.getName());
+    public ResponseEntity<Void> deleteTag(@PathVariable("id") Long id){
+        tagService.deleteById(id);
+        return ResponseEntity.noContent().build();
     }
 }
 

@@ -5,6 +5,9 @@ import com.blog.demo.api.dto.comment.CreateCommentRequest;
 import com.blog.demo.domain.Comment;
 import com.blog.demo.domain.Member;
 import com.blog.demo.domain.Post;
+import com.blog.demo.exception.NotFoundCommentException;
+import com.blog.demo.exception.NotFoundMemberException;
+import com.blog.demo.exception.NotFoundPostException;
 import com.blog.demo.repository.CommentRepository;
 import com.blog.demo.repository.MemberRepository;
 import com.blog.demo.repository.PostRepository;
@@ -34,8 +37,10 @@ public class CommentService {
     }
 
     @Transactional(readOnly = true)
-    public Comment findOne(long id) {
-        return commentRepository.findOne(id);
+    public Comment findById(long id) {
+        Comment comment = commentRepository.findById(id)
+                .orElseThrow(NotFoundCommentException::new);
+        return comment;
     }
 
     @Transactional(readOnly = true)
@@ -55,9 +60,11 @@ public class CommentService {
 
     public CommentDto createComment(CreateCommentRequest createCommentRequest) {
         String memberId = createCommentRequest.getMemberId();
-        Member findMember = memberRepository.findOne(memberId);
+        Member findMember = memberRepository.findById(memberId)
+                .orElseThrow(NotFoundMemberException::new);
         Long postId = createCommentRequest.getPostId();
-        Post findPost = postRepository.findOne(postId);
+        Post findPost = postRepository.findById(postId)
+                .orElseThrow(NotFoundPostException::new);
         String text = createCommentRequest.getText();
 
         Comment comment = Comment.builder()
@@ -69,7 +76,8 @@ public class CommentService {
         Long parentId = createCommentRequest.getParentId();
 
         if (parentId != null) {
-            Comment findComment = commentRepository.findOne(parentId);
+            Comment findComment = commentRepository.findById(parentId)
+                    .orElseThrow(NotFoundCommentException::new);
             comment.assignParent(findComment);
         }
 

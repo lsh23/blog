@@ -4,8 +4,8 @@ package com.blog.demo.api;
 import com.blog.demo.api.dto.Result;
 import com.blog.demo.api.dto.category.*;
 import com.blog.demo.service.CategoryService;
-import com.blog.demo.service.MemberService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -36,9 +36,9 @@ public class CategoryApiController {
     }
 
     @DeleteMapping("/{id}")
-    public DeleteCategoryResponse deleteCategory(@PathVariable("id") Long categoryId){
-        CategoryDto deleteOne = categoryService.deleteOne(categoryId);
-        return new DeleteCategoryResponse(deleteOne.getId(), deleteOne.getName());
+    public ResponseEntity<Void> deleteCategory(@PathVariable("id") Long categoryId){
+        categoryService.deleteOne(categoryId);
+        return ResponseEntity.noContent().build();
     }
 
 }
