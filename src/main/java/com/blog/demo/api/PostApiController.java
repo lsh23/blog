@@ -18,7 +18,7 @@ public class PostApiController {
     private final PostService postService;
 
     @GetMapping
-    public Result getPosts(@RequestParam(value = "memberId",required = false) String memberId,
+    public Result getPosts(@RequestParam(value = "memberId",required = false) Long memberId,
                            @RequestParam(value = "categoryId",required = false) Long categoryId){
         List<PostListDto> postListDtos = postService.findPosts(memberId, categoryId);
         return new Result(postListDtos.size(), postListDtos);

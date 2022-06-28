@@ -45,13 +45,13 @@ public class CategoryService {
     }
 
     @Transactional(readOnly = true)
-    public List<CategoryDto> findAllRootCategories(String memberId) {
+    public List<CategoryDto> findAllRootCategories(Long memberId) {
         return getRootCategories(memberId).stream()
                 .map(CategoryDto::new)
                 .collect(Collectors.toList());
     }
 
-    private List<Category> getRootCategories(String memberId) {
+    private List<Category> getRootCategories(Long memberId) {
         if (memberId == null) {
             return categoryRepository.findAllRootCategories();
         }

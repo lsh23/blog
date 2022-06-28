@@ -13,7 +13,7 @@ import javax.validation.constraints.NotEmpty;
 @NoArgsConstructor
 public class CreateCategoryRequest {
     @NotEmpty
-    private String memberId;
+    private Long memberId;
     private Long parentId;
     @NotEmpty
     private String name;

@@ -47,14 +47,14 @@ public class TagService {
         tagRepository.deleteById(id);
     }
 
-    public List<TagDto> findAll(String memberId) {
+    public List<TagDto> findAll(Long memberId) {
         return getAllTag(memberId)
                 .stream()
                 .map(TagDto::new)
                 .collect(Collectors.toList());
     }
 
-    private List<Tag> getAllTag(String memberId){
+    private List<Tag> getAllTag(Long memberId){
         if (memberId == null){
             return tagRepository.findAll();
         }
@@ -63,7 +63,7 @@ public class TagService {
 
     public TagDto createTag(CreateTagRequest createTagRequest) {
         String name = createTagRequest.getName();
-        String memberId = createTagRequest.getMemberId();
+        Long memberId = createTagRequest.getMemberId();
         Member findMember = memberRepository.findById(memberId)
                 .orElseThrow(NotFoundMemberException::new);
         Tag tag = Tag.builder()
@@ -82,7 +82,7 @@ public class TagService {
         return new TagDto(tag);
     }
 
-    public List<TagDto> bulkSearchAndIfNoneCreate(String memberId, List<TagDto> tagDtos) {
+    public List<TagDto> bulkSearchAndIfNoneCreate(Long memberId, List<TagDto> tagDtos) {
         Member member = memberRepository.findById(memberId)
                 .orElseThrow(NotFoundMemberException::new);
 

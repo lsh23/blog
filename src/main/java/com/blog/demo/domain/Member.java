@@ -9,13 +9,13 @@ import javax.persistence.*;
 @Getter
 public class Member {
     @Id @Column(name="MEMBER_ID")
-    private String id;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
     private String name;
     private String password;
 
     @Builder
-    public Member(String id, String name, String password) {
-        this.id = id;
+    public Member(String name, String password){
         this.name = name;
         this.password = password;
     }

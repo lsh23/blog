@@ -16,5 +16,5 @@ public interface CategoryRepository {
 
     List<Category> findAllRootCategories();
 
-    List<Category> findAllRootCategoriesByMember(String memberId);
+    List<Category> findAllRootCategoriesByMember(Long memberId);
 }

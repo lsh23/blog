@@ -29,7 +29,7 @@ class CategoryControllerTest extends PreprocessController {
                 .given(categoryService).createCategory(any(CreateCategoryRequest.class));
         CreateCategoryRequest request = CreateCategoryRequest.builder()
                 .parentId(1L)
-                .memberId("memberId")
+                .memberId(1L)
                 .name("name")
                 .build();
 

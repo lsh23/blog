@@ -94,7 +94,7 @@ class TagServiceTest {
     @DisplayName("요청에 의한 Tag 생성 - 성공")
     void createTagTest_success() {
         //given
-        Member member = Member.builder().id("member").build();
+        Member member = Member.builder().build();
         memberRepository.save(member);
         CreateTagRequest createTagRequest = CreateTagRequest.builder()
                 .memberId(member.getId())
@@ -112,7 +112,7 @@ class TagServiceTest {
     @DisplayName("Tag 수정 - 성공")
     void updateTagTest_success() {
         //given
-        Member member = Member.builder().id("member").build();
+        Member member = Member.builder().build();
         memberRepository.save(member);
         CreateTagRequest createTagRequest = CreateTagRequest.builder()
                 .memberId(member.getId())
@@ -123,7 +123,7 @@ class TagServiceTest {
         //when
         UpdateTagRequest updateTagRequest = UpdateTagRequest
                 .builder()
-                .memberId("member")
+                .memberId(1L)
                 .name("tag2")
                 .build();
 
@@ -137,7 +137,7 @@ class TagServiceTest {
     @DisplayName("Tag bulk update - 성공")
     void bulkSearchAndIfNoneCreateTest_success() {
         //given
-        Member member = Member.builder().id("member").build();
+        Member member = Member.builder().build();
         memberRepository.save(member);
 
         CreateTagRequest createTagRequest = CreateTagRequest.builder()

@@ -40,7 +40,7 @@ public class CategoryRepositoryImpl implements CategoryRepository {
         em.remove(category);
     }
 
-    public List<Category> findAllRootCategoriesByMember(String memberId) {
+    public List<Category> findAllRootCategoriesByMember(Long memberId) {
         return em.createQuery(
                 "select c from Category c" +
                             " join fetch c.member m "+

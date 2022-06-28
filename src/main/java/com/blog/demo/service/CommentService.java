@@ -59,7 +59,7 @@ public class CommentService {
     }
 
     public CommentDto createComment(CreateCommentRequest createCommentRequest) {
-        String memberId = createCommentRequest.getMemberId();
+        Long memberId = createCommentRequest.getMemberId();
         Member findMember = memberRepository.findById(memberId)
                 .orElseThrow(NotFoundMemberException::new);
         Long postId = createCommentRequest.getPostId();

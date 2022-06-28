@@ -34,7 +34,7 @@ public class TagRepositoryImpl implements TagRepository{
         em.remove(deletedOne);
     }
 
-    public List<Tag> findAllByMemberId(String memberId) {
+    public List<Tag> findAllByMemberId(Long memberId) {
         return em.createQuery("select t from Tag t where t.member.id =: memberId", Tag.class)
                 .setParameter("memberId", memberId)
                 .getResultList();

@@ -13,7 +13,7 @@ import javax.validation.constraints.NotEmpty;
 @NoArgsConstructor
 public class CreateTagRequest {
     @NotEmpty
-    String memberId;
+    Long memberId;
     @NotEmpty
     String name;
 }

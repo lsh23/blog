@@ -131,7 +131,7 @@ class CategoryServiceTest {
     @DisplayName("category root 리스트 by member 조회 - 성공")
     void findCategoriesByMemberTest_success() throws Exception {
         // given
-        Member member = Member.builder().id("member1").build();
+        Member member = Member.builder().build();
         memberRepository.save(member);
 
         Category category1 = Category.builder()
@@ -175,7 +175,7 @@ class CategoryServiceTest {
     @DisplayName("category 생성 - 성공")
     void createCategoryTest_success() throws Exception {
         // given
-        Member member = Member.builder().id("member1").build();
+        Member member = Member.builder().build();
         memberRepository.save(member);
 
         CreateCategoryRequest createCategoryRequest = CreateCategoryRequest.builder()
@@ -195,7 +195,7 @@ class CategoryServiceTest {
     @DisplayName("category 수정 - 성공")
     void updateCategoryTest_success() throws Exception {
         // given
-        Member member = Member.builder().id("member1").build();
+        Member member = Member.builder().build();
         memberRepository.save(member);
 
         CreateCategoryRequest createCategoryRequest = CreateCategoryRequest.builder()
