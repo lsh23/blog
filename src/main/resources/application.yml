@@ -24,6 +24,11 @@ spring:
         format_sql: true
     open-in-view: true
 
+  jwt:
+    token:
+      secret-key: blog_secret_key_in_dev
+      expire-length: 86400000
+
   logging:
     level:
       root: info
