@@ -14,10 +14,17 @@ public class Member {
     private String name;
     private String password;
 
+    @Enumerated(EnumType.STRING)
+    private OauthProvider oauthProvider;
+
+    private String email;
+
     @Builder
-    public Member(String name, String password){
+    public Member(String name, String email, String password, OauthProvider oauthProvider){
         this.name = name;
+        this.email = email;
         this.password = password;
+        this.oauthProvider = oauthProvider;
     }
 
     public void updateName(String name) {
