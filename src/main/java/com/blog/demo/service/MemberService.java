@@ -1,10 +1,13 @@
 package com.blog.demo.service;
 
+import com.blog.demo.api.dto.auth.OauthCreateMemberRequest;
 import com.blog.demo.api.dto.member.CreateMemberRequest;
 import com.blog.demo.api.dto.member.CreateMemberResponse;
 import com.blog.demo.api.dto.member.MemberDto;
 import com.blog.demo.api.dto.member.UpdateMemberRequest;
 import com.blog.demo.domain.Member;
+import com.blog.demo.domain.OauthProvider;
+import com.blog.demo.exception.DuplicateEmailException;
 import com.blog.demo.exception.NotFoundMemberException;
 import com.blog.demo.repository.MemberRepository;
 import org.springframework.stereotype.Service;
@@ -36,7 +39,7 @@ public class MemberService {
                 .build();
         memberRepository.save(member);
 
-        return new CreateMemberResponse(member.getId());
+        return CreateMemberResponse.from(member);
     }
 
     public MemberDto updateMember(Long id, UpdateMemberRequest updateMemberRequest) {
@@ -61,4 +64,25 @@ public class MemberService {
                 .collect(Collectors.toList());
     }
 
+    public CreateMemberResponse createMemberByOauth(OauthCreateMemberRequest oauthCreateMemberRequest) {
+        String email = oauthCreateMemberRequest.getEmail();
+        OauthProvider oauthProvider = OauthProvider.valueOfWithIgnoreCase(oauthCreateMemberRequest.getOauthProvider());
+
+        validateDuplicateEmail(email);
+
+        Member member = Member.builder()
+                .email(email)
+                .oauthProvider(oauthProvider)
+                .build();
+
+        Member saveMember = memberRepository.save(member);
+        return CreateMemberResponse.from(saveMember);
+    }
+
+    @Transactional(readOnly = true)
+    public void validateDuplicateEmail(final String email) {
+        if (memberRepository.existsByEmail(email)) {
+            throw new DuplicateEmailException();
+        }
+    }
 }
