@@ -2,9 +2,13 @@ package com.blog.demo.api;
 
 import com.blog.demo.api.dto.auth.CreateLoginRequest;
 import com.blog.demo.api.dto.auth.CreateLoginResponse;
+import com.blog.demo.api.dto.auth.TokenResponse;
+import com.blog.demo.domain.OauthProvider;
 import com.blog.demo.domain.Member;
 import com.blog.demo.service.MemberService;
+import com.blog.demo.service.AuthService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -13,6 +17,7 @@ import javax.validation.Valid;
 @RequiredArgsConstructor
 public class AuthApiController {
     private final MemberService memberService;
+    private final AuthService authService;
 
     @PostMapping("/api/v1/auth/login")
     public CreateLoginResponse login(@RequestBody @Valid CreateLoginRequest createLoginRequest){
@@ -23,5 +28,11 @@ public class AuthApiController {
         }
 
         return new CreateLoginResponse(findMember.getId(), findMember.getName(),404);
+    }
+
+    @GetMapping("/api/v1/auth/{oauthProvider}")
+    public ResponseEntity<TokenResponse> loginByOauth(@PathVariable OauthProvider oauthProvider, @RequestParam String code) {
+        return ResponseEntity.ok()
+                .body(authService.loginByOauth(oauthProvider, code));
     }
 }

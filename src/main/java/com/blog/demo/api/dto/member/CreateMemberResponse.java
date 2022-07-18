@@ -1,10 +1,20 @@
 package com.blog.demo.api.dto.member;
 
-import lombok.AllArgsConstructor;
+import com.blog.demo.domain.Member;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Data
-@AllArgsConstructor
+@NoArgsConstructor
+
 public class CreateMemberResponse {
     private Long id;
+    
+    private CreateMemberResponse( Long id) {
+        this.id = id;
+    }
+    
+    public static CreateMemberResponse from(Member member) {
+        return new CreateMemberResponse(member.getId());
+    }
 }

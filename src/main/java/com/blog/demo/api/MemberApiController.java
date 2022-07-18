@@ -1,16 +1,16 @@
 package com.blog.demo.api;
 
 import com.blog.demo.api.dto.Result;
+import com.blog.demo.api.dto.auth.OauthCreateMemberRequest;
 import com.blog.demo.api.dto.member.*;
-import com.blog.demo.domain.Member;
 import com.blog.demo.service.MemberService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.net.URI;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api/v1/members")
@@ -36,6 +36,14 @@ public class MemberApiController {
             @RequestBody @Valid UpdateMemberRequest updateMemberRequest) {
         MemberDto member = memberService.updateMember(memberId, updateMemberRequest);
         return new UpdateMemberResponse(member.getId(), member.getName());
+    }
+
+    @PostMapping("/oauth")
+    public ResponseEntity<Void> createByOauth(@RequestBody @Valid OauthCreateMemberRequest oauthCreateMemberRequest) {
+        CreateMemberResponse createMemberResponse = memberService.createMemberByOauth(oauthCreateMemberRequest);
+        return ResponseEntity
+                .created(URI.create("/api/v1/members/" + createMemberResponse.getId()))
+                .build();
     }
 
 

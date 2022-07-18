@@ -24,6 +24,20 @@ spring:
         format_sql: true
     open-in-view: true
 
+  security:
+    oauth2:
+      client:
+        registration:
+          github:
+            client-id: 9a10bd63b3e75dab97d5
+            client-secret: eb44c2a2ee7e287c86944fd41ab3f559d9ebd290
+            scope: name,email,avatar_url
+
+  jwt:
+    token:
+      secret-key: blog_secret_key_in_dev
+      expire-length: 86400000
+
   logging:
     level:
       root: info
