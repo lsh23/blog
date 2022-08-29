@@ -14,10 +14,18 @@ public class OauthCreateMemberRequest {
     @Email
     private String email;
 
+    @NotBlank
+    private String name;
+
+    @NotBlank
+    private String loginId;
+
     @NotNull
     private String oauthProvider;
 
     public OauthCreateMemberRequest(final String email,
+                                    final String name,
+                                    final String loginId,
                                     final String oauthProvider) {
         this.email = email;
         this.oauthProvider = oauthProvider;

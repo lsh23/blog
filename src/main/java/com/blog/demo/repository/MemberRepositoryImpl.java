@@ -51,5 +51,18 @@ public class MemberRepositoryImpl implements MemberRepository{
         return member.isPresent();
     }
 
+    @Override
+    public boolean existsByLoginId(String loginId) {
+        Optional<Member> member = findByLoginId(loginId);
+        return member.isPresent();
+    }
+
+    private Optional<Member> findByLoginId(String loginId) {
+        List<Member> member = em.createQuery("select m from Member m where m.loginId = :loginId", Member.class)
+                .setParameter("loginId", loginId)
+                .getResultList();
+        return member.stream().findAny();
+    }
+
 
 }

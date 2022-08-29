@@ -56,6 +56,7 @@ public class JwtUtils {
     public static class PayloadBuilder {
         private final Claims claims;
         private final String USER_EMAIL = "email";
+        private final String USER_LOGIN_ID = "loginId";
         private final String USER_ID = "userId";
 
         private PayloadBuilder() {
@@ -69,6 +70,11 @@ public class JwtUtils {
 
         public PayloadBuilder setUserId(Long userId) {
             claims.put(USER_ID,userId);
+            return this;
+        }
+
+        public PayloadBuilder setUserLoginId(String userLoginId) {
+            claims.put(USER_LOGIN_ID,userLoginId);
             return this;
         }
 

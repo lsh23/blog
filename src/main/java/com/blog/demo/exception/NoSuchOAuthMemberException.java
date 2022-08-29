@@ -8,10 +8,12 @@ public class NoSuchOAuthMemberException extends RuntimeException {
     private static final String MESSAGE = "소셜 로그인 회원이 아닙니다. 회원가입을 진행합니다.";
 
     private final String email;
+    private final String name;
     private final HttpStatus status = HttpStatus.BAD_REQUEST;
 
-    public NoSuchOAuthMemberException(String email) {
+    public NoSuchOAuthMemberException(String email, String name) {
         super(MESSAGE);
         this.email = email;
+        this.name = name;
     }
 }

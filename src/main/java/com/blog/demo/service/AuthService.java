@@ -29,9 +29,10 @@ public class AuthService {
     public TokenResponse loginByOauth(final OauthProvider oauthProvider, final String code) {
         OauthUserInfo userInfoFromCode = oauthHandler.getUserInfoFromCode(oauthProvider, code);
         String email = userInfoFromCode.getEmail();
+        String name = userInfoFromCode.getName();
 
         Member member = memberRepository.findByEmail(email)
-                .orElseThrow(() -> new NoSuchOAuthMemberException(email));
+                .orElseThrow(() -> new NoSuchOAuthMemberException(email,name));
 
         String token = issueToken(member);
         return TokenResponse.from(token);
@@ -40,6 +41,7 @@ public class AuthService {
     private String issueToken(final Member findMember) {
         Map<String, Object> payload = JwtUtils.payloadBuilder()
                 .setUserEmail(findMember.getEmail())
+                .setUserLoginId(findMember.getLoginId())
                 .setUserId(findMember.getId())
                 .build();
 

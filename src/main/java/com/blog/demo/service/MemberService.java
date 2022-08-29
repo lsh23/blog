@@ -8,6 +8,7 @@ import com.blog.demo.api.dto.member.UpdateMemberRequest;
 import com.blog.demo.domain.Member;
 import com.blog.demo.domain.OauthProvider;
 import com.blog.demo.exception.DuplicateEmailException;
+import com.blog.demo.exception.DuplicateLoginIdException;
 import com.blog.demo.exception.NotFoundMemberException;
 import com.blog.demo.repository.MemberRepository;
 import org.springframework.stereotype.Service;
@@ -66,12 +67,17 @@ public class MemberService {
 
     public CreateMemberResponse createMemberByOauth(OauthCreateMemberRequest oauthCreateMemberRequest) {
         String email = oauthCreateMemberRequest.getEmail();
+        String name = oauthCreateMemberRequest.getName();
+        String loginId = oauthCreateMemberRequest.getLoginId();
         OauthProvider oauthProvider = OauthProvider.valueOfWithIgnoreCase(oauthCreateMemberRequest.getOauthProvider());
 
+        validateDuplicateLoginId(loginId);
         validateDuplicateEmail(email);
 
         Member member = Member.builder()
+                .name(name)
                 .email(email)
+                .loginId(loginId)
                 .oauthProvider(oauthProvider)
                 .build();
 
@@ -83,6 +89,13 @@ public class MemberService {
     public void validateDuplicateEmail(final String email) {
         if (memberRepository.existsByEmail(email)) {
             throw new DuplicateEmailException();
+        }
+    }
+
+    @Transactional(readOnly = true)
+    public void validateDuplicateLoginId(final String loginId) {
+        if (memberRepository.existsByLoginId(loginId)) {
+            throw new DuplicateLoginIdException();
         }
     }
 }
