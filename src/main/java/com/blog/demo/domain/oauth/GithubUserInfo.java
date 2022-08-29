@@ -22,6 +22,11 @@ public class GithubUserInfo implements OauthUserInfo {
         return (String) info.get("email");
     }
 
+    @Override
+    public String getName() {
+        return (String) info.get("name");
+    }
+
     private void validatePublicEmailHasBeenSet() {
         if (info.get("email") == null) {
             throw new NoPublicEmailOnGithubException();

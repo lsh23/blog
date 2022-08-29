@@ -18,4 +18,6 @@ public interface MemberRepository {
     Optional<Member> findByEmail(String email);
 
     boolean existsByEmail(String email);
+
+    boolean existsByLoginId(String loginId);
 }

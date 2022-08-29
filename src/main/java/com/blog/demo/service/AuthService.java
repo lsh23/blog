@@ -40,6 +40,7 @@ public class AuthService {
     private String issueToken(final Member findMember) {
         Map<String, Object> payload = JwtUtils.payloadBuilder()
                 .setUserEmail(findMember.getEmail())
+                .setUserLoginId(findMember.getLoginId())
                 .setUserId(findMember.getId())
                 .build();
 
