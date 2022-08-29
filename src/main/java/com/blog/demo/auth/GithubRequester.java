@@ -15,16 +15,19 @@ import org.springframework.web.reactive.function.client.WebClient;
 import java.util.Map;
 
 @Component
+@PropertySource("classpath:config/oauth.properties")
 public class GithubRequester implements OauthAPIRequester{
     private final String clientId;
     private final String secretId;
     private final WebClient githubOauthLoginClient;
     private final WebClient githubOpenApiClient;
 
-    private final WebClient githubOpenApiClient = WebClient.create().mutate()
-            .baseUrl("https://api.github.com")
-                .defaultHeader(HttpHeaders.ACCEPT, MediaType.APPLICATION_JSON_VALUE)
-                .build();
+    public GithubRequester(
+            @Value("${github.client-id}") final String clientId,
+            @Value("${github.secret-id}") final String secretId,
+            @Value("${github.uri.oauth-login}") final String githubOauthUrl,
+            @Value("${github.uri.open-api}") final String githubOpenApiUrl,
+            final WebClient webClient) {
 
         this.clientId = clientId;
         this.secretId = secretId;
