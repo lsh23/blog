@@ -23,7 +23,7 @@ public class Category {
     @JoinColumn(name="PARENT_ID")
     private Category parent;
 
-    @OneToMany(mappedBy = "parent", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "parent", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Category> child = new ArrayList<>();
 
     @Builder
