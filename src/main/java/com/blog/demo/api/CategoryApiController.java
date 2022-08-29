@@ -23,16 +23,16 @@ public class CategoryApiController {
         return new Result(categoryDtos.size(), categoryDtos);
     }
 
-    @PostMapping
-    public CreateCategoryResponse createCategory(@RequestBody @Valid CreateCategoryRequest createCategoryRequest){
-        CategoryDto categoryDto = categoryService.createCategory(createCategoryRequest);
-        return new CreateCategoryResponse(categoryDto.getId(),categoryDto.getName());
-    }
-
     @PatchMapping("/{id}")
     public UpdateCategoryResponse updateCategory(@RequestBody @Valid UpdateCategoryRequest updateCategoryRequest, @PathVariable("id") Long categoryId){
         CategoryDto categoryDto = categoryService.updateCategory(updateCategoryRequest, categoryId);
         return new UpdateCategoryResponse(categoryDto.getId(),categoryDto.getName());
+    }
+
+    @PostMapping
+    public ResponseEntity<Void> saveCategory(@RequestBody @Valid BulkCategorySaveRequest bulkCategorySaveRequest){
+        categoryService.saveCategory(bulkCategorySaveRequest);
+        return ResponseEntity.ok().build();
     }
 
     @DeleteMapping("/{id}")
