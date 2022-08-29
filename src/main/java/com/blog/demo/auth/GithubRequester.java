@@ -4,6 +4,8 @@ import com.blog.demo.domain.OauthProvider;
 import com.blog.demo.domain.oauth.GithubUserInfo;
 import com.blog.demo.domain.oauth.OauthUserInfo;
 import com.blog.demo.exception.UnableToGetTokenResponseFromGithubException;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.PropertySource;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
@@ -14,18 +16,21 @@ import java.util.Map;
 
 @Component
 public class GithubRequester implements OauthAPIRequester{
-    private final String clientId = "9a10bd63b3e75dab97d5" ;
-    private final String secretId = "eb44c2a2ee7e287c86944fd41ab3f559d9ebd290";
-    private final WebClient githubOauthLoginClient = WebClient.create().mutate()
-            .baseUrl("https://github.com/login/oauth/")
-            .defaultHeader(HttpHeaders.ACCEPT, MediaType.APPLICATION_JSON_VALUE)
-            .build();;
+    private final String clientId;
+    private final String secretId;
+    private final WebClient githubOauthLoginClient;
+    private final WebClient githubOpenApiClient;
 
     private final WebClient githubOpenApiClient = WebClient.create().mutate()
             .baseUrl("https://api.github.com")
                 .defaultHeader(HttpHeaders.ACCEPT, MediaType.APPLICATION_JSON_VALUE)
                 .build();
 
+        this.clientId = clientId;
+        this.secretId = secretId;
+        this.githubOauthLoginClient = githubOauthLoginClient(webClient,githubOauthUrl);
+        this.githubOpenApiClient = githubOpenApiClient(webClient, githubOpenApiUrl);
+    }
 
     @Override
     public boolean supports(OauthProvider oauthProvider) {
@@ -73,5 +78,19 @@ public class GithubRequester implements OauthAPIRequester{
         if (!responseBody.containsKey("access_token")) {
             throw new UnableToGetTokenResponseFromGithubException();
         }
+    }
+
+    private WebClient githubOauthLoginClient(final WebClient webClient, final String githubOauthUrl) {
+        return webClient.mutate()
+                .baseUrl(githubOauthUrl)
+                .defaultHeader(HttpHeaders.ACCEPT, MediaType.APPLICATION_JSON_VALUE)
+                .build();
+    }
+
+    private WebClient githubOpenApiClient(final WebClient webClient, String githubOpenApiUrl) {
+        return webClient.mutate()
+                .baseUrl(githubOpenApiUrl)
+                .defaultHeader(HttpHeaders.ACCEPT, MediaType.APPLICATION_JSON_VALUE)
+                .build();
     }
 }
