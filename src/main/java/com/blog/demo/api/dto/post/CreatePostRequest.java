@@ -15,7 +15,7 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 public class CreatePostRequest {
-    @NotEmpty
+    @NotNull
     private Long memberId;
     @NotEmpty
     private String title;
