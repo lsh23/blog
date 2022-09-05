@@ -15,7 +15,7 @@ import javax.validation.constraints.NotNull;
 public class CreateCommentRequest {
     @NotNull
     private Long postId;
-    @NotEmpty
+    @NotNull
     private Long memberId;
     @NotEmpty
     private String text;
